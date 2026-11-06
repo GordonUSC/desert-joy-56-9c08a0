@@ -54,7 +54,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,11vw,58px);li
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}
 @media (prefers-reduced-motion:reduce){.bar i,.star{transition:none}}
 /* ---------- The Faraway Room ---------- */
-.fw{--deep:#0b0820;--deep2:#15103a;--gold:#ffd27a;--gold2:#f2a93b;--glow:rgba(255,196,96,.55);position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px)) 34px;background:radial-gradient(120% 60% at 50% 0%,#2a1d63 0%,var(--deep2) 45%,var(--deep) 100%);display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.fw{--deep:#0b0820;--deep2:#15103a;--gold:#ffd27a;--gold2:#f2a93b;--glow:rgba(255,196,96,.55);position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px)) 34px;background:radial-gradient(120% 60% at 50% 0%,#2a1d63 0%,var(--deep2) 45%,var(--deep) 100%);display:flex;flex-direction:column;gap:18px;overflow:hidden;overflow:clip}
 .fw::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.4px 1.4px at 12% 18%,#fff8,transparent),radial-gradient(1.2px 1.2px at 78% 9%,#fff9,transparent),radial-gradient(1.6px 1.6px at 40% 52%,#ffe7a8aa,transparent),radial-gradient(1.2px 1.2px at 88% 64%,#fff8,transparent),radial-gradient(1.4px 1.4px at 22% 80%,#ffe7a8aa,transparent),radial-gradient(1px 1px at 60% 92%,#fff8,transparent);background-size:220px 260px;animation:twinkle 6s ease-in-out infinite alternate}
 @keyframes twinkle{from{opacity:.45}to{opacity:1}}
 .sky{position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
@@ -134,6 +134,61 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
 @media (prefers-reduced-motion:reduce){.fw::before,.skylant,.st i{animation:none}.wheel{transition-duration:.01s}.flyer{animation:fadeup 1.6s ease forwards}.heart .hl{transition:none}.glassbtn.clink{animation:none}.bub{display:none}}
 @keyframes fadeup{0%{opacity:0}30%{opacity:1}100%{opacity:0;transform:translateY(-60px)}}
 
+
+/* Faraway Room v2: glow tracker, seat, quiz, secret star, crew card */
+.glow{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));background:rgba(11,8,32,.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-block:1px solid rgba(255,210,122,.35)}
+.glow ol{list-style:none;margin:0;padding:0;display:flex;justify-content:space-between;gap:4px}
+.glow li{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--mono);font-size:14px;color:#8d7fb8}
+.glow li a{color:inherit;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:44px;justify-content:center}
+.glow .lamp{width:20px;height:26px;border-radius:7px 7px 10px 10px;background:#3b2f63;border:1.5px solid #6f5fa3;transition:all .5s}
+.glow li.on{color:var(--gold)}
+.glow li.on .lamp{background:radial-gradient(circle at 50% 60%,#fff2c4,#ffb340 60%,#c86a10);border-color:#ffd27a;box-shadow:0 0 14px 3px var(--glow)}
+.glow li.pop .lamp{animation:lamppop .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lamppop{0%{transform:scale(.6)}60%{transform:scale(1.45)}100%{transform:scale(1)}}
+.glow p{margin:6px 0 0;text-align:center;font-size:15px;font-weight:800;color:#f4e9ff}
+.glow p b{color:var(--gold)}
+.table{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:8px 10px;padding:6px 4px}
+.table::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:30px;transform:translateY(-50%);border-radius:14px;background:linear-gradient(180deg,#f7e2bc,#d9b47a);box-shadow:0 0 30px rgba(255,200,120,.35),0 6px 0 #8a5a2a}
+.table::after{content:"🕯️ 🌵 🕯️ 🌵 🕯️";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:16px;letter-spacing:.4em;pointer-events:none}
+.chair{position:relative;z-index:1;min-height:58px;border-radius:14px 14px 8px 8px;border:1.5px solid rgba(255,210,122,.6);background:linear-gradient(180deg,#4a3780,#2a1d55);color:#f4e9ff;font:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.4,1),background .3s}
+.chair:nth-child(n+5){margin-top:38px}
+.chair:nth-child(-n+4){margin-bottom:38px}
+.chair[aria-pressed=true]{background:linear-gradient(180deg,#ffe2a0,#f2a93b);color:#2a1600;transform:translateY(-6px) scale(1.06)}
+.chair:nth-child(n+5)[aria-pressed=true]{transform:translateY(6px) scale(1.06)}
+.placecard{margin:12px 0 0;padding:14px;border-radius:14px;background:#fff7e8;color:#2a1600;text-align:center;transform-origin:50% 0;animation:cardin .6s cubic-bezier(.2,1.4,.4,1)}
+.placecard small{display:block;font-family:var(--mono);font-size:14px;color:#8a5a2a}
+.placecard b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1;margin:4px 0}
+.placecard span{display:block;font-size:16px}
+@keyframes cardin{from{transform:rotateX(80deg);opacity:0}to{transform:none;opacity:1}}
+.quiz .q{font-size:18px;font-weight:800;color:#fff3d6;margin:0 0 10px}
+.quiz .opts{display:grid;gap:8px}
+.quiz .opt{min-height:50px;border-radius:14px;border:1.5px solid rgba(255,210,122,.55);background:rgba(255,255,255,.06);color:#f4e9ff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;text-align:left;padding:10px 14px}
+.quiz .opt.right{background:#2ed3c6;color:#062a27;border-color:#9fe6de}
+.quiz .opt.nope{opacity:.55}
+.quiz .say{min-height:2.6em;margin:10px 0 0;font-size:16px;color:#9fe6de}
+.quiz .dots{display:flex;gap:6px;margin:0 0 10px}
+.quiz .dots i{width:10px;height:10px;border-radius:50%;background:#3b2f63}
+.quiz .dots i.ok{background:var(--gold);box-shadow:0 0 8px var(--glow)}
+.secret-hint{margin:0;text-align:center;font-family:var(--mono);font-size:14px;color:#8d7fb8}
+.shoot{position:fixed;z-index:60;left:-120px;top:14vh;width:120px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#fff,#ffd27a);box-shadow:0 0 12px #fff;pointer-events:none;animation:shoot 1.3s ease-in forwards}
+@keyframes shoot{to{transform:translate(130vw,36vh) rotate(16deg);opacity:0}}
+.secretmsg{margin:12px 0 0;padding:12px 14px;border-radius:14px;border:1.5px dashed var(--gold);color:#fff3d6;text-align:center;font-size:16px}
+.crew .lock{text-align:center;padding:18px 8px;border-radius:16px;border:1.5px dashed rgba(255,210,122,.45);color:#b6a6e6;font-size:16px}
+.crew canvas{display:block;width:100%;max-width:100%;height:auto;border-radius:16px;box-shadow:0 0 40px rgba(255,190,90,.35)}
+.crew .row{display:flex;gap:8px;margin-top:10px}
+.crew .row>*{flex:1;min-width:0}
+.crew a.gold-btn{display:flex;align-items:center;justify-content:center;text-decoration:none}
+.finale{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-left,0px));background:radial-gradient(circle,rgba(42,29,99,.92),rgba(11,8,32,.96));text-align:center;animation:fadein .5s}
+.finale h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,10vw,54px);line-height:1;color:#fff3d6;text-shadow:0 0 30px var(--glow);margin:0 0 10px;text-wrap:balance}
+.finale p{color:#f4e9ff;font-size:18px;margin:0 0 18px;max-width:30ch}
+@keyframes fadein{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){.glow li.pop .lamp,.placecard,.shoot,.finale{animation:none}.shoot{display:none}}
+
+.navpill{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:40;min-height:46px;padding:10px 16px;border-radius:99px;border:1.5px solid var(--pool);background:rgba(11,8,32,.9);color:#e8fffb;font:inherit;font-weight:800;font-size:15px;text-decoration:none;display:flex;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.skip{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;padding:6px 14px;border-radius:99px;border:1.5px solid rgba(255,255,255,.5);background:rgba(11,8,32,.55);color:#fff;font-weight:800;font-size:15px;text-decoration:none}
+.homebtn{display:flex;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(180deg,#9ff3ea,#2ed3c6)!important;color:#062a27!important}
+.sndinvite{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border-radius:99px;border:1.5px dashed var(--gold);background:transparent;color:#fff3d6;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+.sndinvite[aria-pressed=true]{border-style:solid;background:rgba(255,210,122,.15)}
 </style></head><body>
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="wrap">
@@ -143,10 +198,25 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
       <div class="sky-copy">
         <span class="fw-kick">The Faraway Room</span>
         <h2 class="fwh" id="fwh">Can’t make it to Palm Springs? This room is for you.</h2>
+        <a class="skip" href="#weekend">See the birthday weekend ↓</a>
       </div>
     </div>
     <p class="fw-lede">Gordon turns 56 on <b>Monday, November 9</b>. There’s a chair at the long table with your name on it. Light a lantern, send a wish, raise a glass, from wherever you are.</p>
 
+    <nav class="glow" id="glow" aria-label="Your progress in the Faraway Room">
+      <ol>
+        <li data-k="lantern"><a href="#h-lant"><i class="lamp"></i>Lantern</a></li>
+        <li data-k="stars"><a href="#h-con"><i class="lamp"></i>Stars</a></li>
+        <li data-k="wish"><a href="#h-wish"><i class="lamp"></i>Wish</a></li>
+        <li data-k="toast"><a href="#h-toast"><i class="lamp"></i>Toast</a></li>
+        <li data-k="wheel"><a href="#h-wheel"><i class="lamp"></i>Wheel</a></li>
+        <li data-k="seat"><a href="#h-seat"><i class="lamp"></i>Seat</a></li>
+        <li data-k="quiz"><a href="#h-quiz"><i class="lamp"></i>Quiz</a></li>
+      </ol>
+      <p id="glowtxt" aria-live="polite">Light all 7 to unlock your <b>Honorary Crew card</b>.</p>
+    </nav>
+    <button class="sndinvite" id="sndinvite" type="button" aria-pressed="false">🔇 Tap for the room’s sound: night air, lanterns, chimes</button>
+    <p class="secret-hint">psst… the sky up top has a secret. Tap it.</p>
     <article class="fwc" aria-labelledby="h-lant">
       <span class="fwn">01 · LANTERN</span>
       <h3 id="h-lant">Light a lantern for Gordon</h3>
@@ -213,9 +283,34 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
       <button class="gold-btn" id="spin" type="button"><span>Spin the wheel</span></button>
       <p class="isword" id="isword" aria-live="polite"></p>
     </article>
+    <article class="fwc" aria-labelledby="h-seat">
+      <span class="fwn">06 · YOUR SEAT</span>
+      <h3 id="h-seat">Pull up a chair at the long table</h3>
+      <p class="sub">There’s a seat saved for you. Pick one and look under the plate.</p>
+      <div class="table" id="table"></div>
+      <div id="placecard" aria-live="polite"></div>
+    </article>
+
+    <article class="fwc quiz" aria-labelledby="h-quiz">
+      <span class="fwn">07 · QUIZ</span>
+      <h3 id="h-quiz">How well do you know Gordon?</h3>
+      <p class="sub">Five quick ones. No wrong way to love him.</p>
+      <div class="dots" id="qdots" aria-hidden="true"></div>
+      <p class="q" id="qq"></p>
+      <div class="opts" id="qopts"></div>
+      <p class="say" id="qsay" aria-live="polite"></p>
+    </article>
+
+    <article class="fwc crew" aria-labelledby="h-crew">
+      <span class="fwn">★ · YOUR CARD</span>
+      <h3 id="h-crew">Honorary Desert Joy Crew</h3>
+      <p class="sub">Light all 7 lanterns at the top to unlock a card with your name on it. Save it, send it to Gordon.</p>
+      <div id="crewbox"><div class="lock">🔒 <span id="crewleft">7 lanterns to go</span></div></div>
+    </article>
+    <a class="gold-btn homebtn" href="#weekend">🌴 Back to the birthday weekend</a>
   </section>
 
-  <div class="bridge"><h2>Meanwhile, in the desert</h2><p>Here is the weekend he’s playing. Tap along.</p></div>
+  <div class="bridge" id="weekend"><h2>Meanwhile, in the desert</h2><p>Here is the weekend he’s playing. Tap along.</p></div>
   <div class="hero"><img src="hero.jpg" alt="A Palm Springs pool at dusk with palms, a disco ball and a birthday cake"><div class="stamp" aria-hidden="true">56<small>NOV 9</small></div></div>
   <header class="title">
     <span class="kick">Desert Joy x Gordon · Palm Springs Pride</span>
@@ -300,11 +395,11 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   var fx=window.__djBurst||function(){};
 
   /* sound: off by default */
-  var on=false,A={},files={night:"fw-night.mp3",lantern:"fw-lantern.mp3",clink:"fw-clink.mp3",chime:"fw-chime.mp3"};
+  var on=false,A={},files={night:"fw-night.mp3",lantern:"fw-lantern.mp3",clink:"fw-clink.mp3",chime:"fw-chime.mp3",wheel:"fw-wheel.mp3",right:"fw-right.mp3",nope:"fw-nope.mp3",send:"fw-send.mp3",seat:"fw-seat.mp3",star:"fw-star.mp3",finale:"fw-finale.mp3"};
   function aud(n){if(!A[n]){A[n]=new Audio(files[n]);A[n].preload="auto";if(n==="night"){A[n].loop=true;A[n].volume=.45}}return A[n]}
-  function play(n){if(!on)return;try{var a=aud(n);a.currentTime=0;var p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
+  function play(n,rate){if(!on)return;try{var a=aud(n);a.currentTime=0;if("preservesPitch" in a)a.preservesPitch=false;if("webkitPreservesPitch" in a)a.webkitPreservesPitch=false;a.playbackRate=rate||1;var p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
   var pill=document.createElement("button");pill.className="sndpill";pill.type="button";pill.setAttribute("aria-pressed","false");pill.textContent="🔇 Sound off";document.body.appendChild(pill);
-  pill.addEventListener("click",function(){on=!on;pill.setAttribute("aria-pressed",on);pill.textContent=on?"🔊 Sound on":"🔇 Sound off";
+  pill.addEventListener("click",function(){on=!on;pill.setAttribute("aria-pressed",on);pill.textContent=on?"🔊 Sound on":"🔇 Sound off";var si=document.getElementById("sndinvite");if(si){si.setAttribute("aria-pressed",on);si.textContent=on?"🔊 Room sound is on. Tap to mute":"🔇 Tap for the room’s sound: night air, lanterns, chimes"}if(on)setTimeout(function(){play("chime")},60);
     try{if(on){var p=aud("night").play();if(p&&p.catch)p.catch(function(){})}else{aud("night").pause()}}catch(e){}});
 
   /* 01 lantern */
@@ -315,7 +410,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   S.names.slice(-18).forEach(function(n,i){skyLantern(n,i)});
   function lcount(){$("#lcount").textContent=S.l?(S.l===1?"1 lantern lit from this device. It’s in his sky now.":S.l+" lanterns lit from this device."):""}
   function setP(p){btn.style.setProperty("--p",p);orn.style.setProperty("--p",p)}
-  function launch(){var name=($("#lname").value||"").trim().slice(0,24);S.l++;S.names.push(name);if(S.names.length>40)S.names.shift();save();lcount();
+  function launch(){var name=($("#lname").value||"").trim().slice(0,24);S.l++;S.names.push(name);mark("lantern");if(S.names.length>40)S.names.shift();save();lcount();
     var r=orn.getBoundingClientRect(),f=document.createElement("div");f.className="flyer";
     f.style.left=(r.left+r.width/2-32)+"px";f.style.top=(r.top+10)+"px";f.style.setProperty("--dx",(Math.random()*120-60)+"px");
     var im=document.createElement("img");im.src="fw-lantern.webp";im.alt="";f.appendChild(im);
@@ -346,8 +441,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     b.addEventListener("click",function(){var fresh=!S.stars[i];S.stars[i]=1;save();b.setAttribute("aria-pressed","true");var n=lit();
       var r=b.getBoundingClientRect();
       $("#gline").innerHTML="";$("#gline").appendChild(document.createTextNode(LINES[i]));var sm=document.createElement("small");sm.textContent=n+" of 12 lit";$("#gline").appendChild(sm);
-      if(fresh){play("chime");fx(r.left+22,r.top+22,14)}
-      if(n===12&&fresh)finish()})});
+      if(fresh){play("chime",0.75+n*0.06);fx(r.left+22,r.top+22,14)}
+      if(n===12&&fresh){finish();mark("stars")}})});
   function finish(){heart.classList.add("done");var r=heart.getBoundingClientRect();setTimeout(function(){play("chime");fx(r.left+r.width/2,r.top+r.height/2,140)},reduce?0:900);
     var sm=$("#gline small");if(sm)sm.textContent="All 12 lit. You drew him a heart in the sky."}
   if(lit()===12){heart.classList.add("done");$("#gline").innerHTML="You already drew him a heart in the sky.<small>All 12 lit. Tap any star to read it again.</small>"}
@@ -367,10 +462,10 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     box.appendChild(p1);box.appendChild(pre);box.appendChild(cb);box.appendChild(p2);var res=$("#wresult");res.innerHTML="";res.appendChild(box)}
   form.addEventListener("submit",function(e){e.preventDefault();var res=$("#wresult");
     if(!$("#wname").value.trim()||!wt.value.trim()){res.innerHTML="";var w=document.createElement("p");w.className="honest";w.textContent="Add your first name and a few words first.";res.appendChild(w);return}
-    var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";
+    var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";play("send");
     var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},12000),done=false;
     function fin(ok){if(done)return;done=true;clearTimeout(timer);send.disabled=false;send.querySelector("span").textContent="Send my wish ✦";
-      if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
+      S.w=1;mark("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
     try{fetch("https://formsubmit.co/ajax/gbellamyai@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
       body:JSON.stringify({name:$("#wname").value.trim(),wish:wt.value.trim(),mood:m?m.value:"",_subject:"Desert Joy 56 wish from afar",_captcha:"false",_template:"table"}),signal:ctl?ctl.signal:undefined})
       .then(function(r){return r.json().then(function(j){fin(r.ok&&(j.success===true||j.success==="true"))},function(){fin(false)})},function(){fin(false)})}catch(err){fin(false)}
@@ -379,7 +474,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   /* 04 toast */
   var glass=$("#glass"),card=$("#toastcard");
   function tcount(){$("#tcount").textContent=S.t?(S.t===1?"1 toast from afar on this device. Cheers!":S.t+" toasts from afar on this device."):""}
-  glass.addEventListener("click",function(){S.t++;save();tcount();play("clink");glass.classList.remove("clink");void glass.offsetWidth;glass.classList.add("clink");
+  glass.addEventListener("click",function(){S.t++;save();mark("toast");tcount();play("clink");glass.classList.remove("clink");void glass.offsetWidth;glass.classList.add("clink");
     var gr=glass.getBoundingClientRect(),cr=card.getBoundingClientRect();
     for(var i=0;i<12&&!reduce;i++){var b=document.createElement("i");b.className="bub";b.style.left=(gr.left-cr.left+gr.width/2-5+(Math.random()*60-30))+"px";b.style.top=(gr.top-cr.top+gr.height*.3)+"px";b.style.bottom="auto";
       b.style.setProperty("--dx",(Math.random()*40-20)+"px");b.style.animationDelay=(i*60)+"ms";var sz=6+Math.random()*10;b.style.width=b.style.height=sz+"px";card.appendChild(b);setTimeout(function(x){return function(){x.remove()}}(b),2400)}
@@ -392,9 +487,98 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   WORDS.forEach(function(w,i){var s=document.createElement("span"),a=(i*30+15)*Math.PI/180,R=38;var em=document.createElement("em");em.textContent=w[1];
     em.style.left=(Math.sin(a)*R*2.8)+"px";em.style.top=(-Math.cos(a)*R*2.8)+"px";s.appendChild(em);wheel.appendChild(s)});
   $("#spin").addEventListener("click",function(){if(spinning)return;spinning=true;var i=Math.floor(Math.random()*12),target=(360-(i*30+15))%360;
-    rot+=1440+((target-rot%360)+360)%360;wheel.style.transform="rotate("+rot+"deg)";play("chime");$("#isword").innerHTML="<small>spinning…</small>";
+    rot+=1440+((target-rot%360)+360)%360;wheel.style.transform="rotate("+rot+"deg)";play("wheel");$("#isword").innerHTML="<small>spinning…</small>";
     setTimeout(function(){spinning=false;var p=$("#isword");p.innerHTML="";var sm=document.createElement("small");sm.textContent="Gordon is…";var b=document.createElement("b");b.textContent=WORDS[i][0]+" "+WORDS[i][1];
-      p.appendChild(sm);p.appendChild(b);var r=wheel.getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,50);play("chime")},reduce?150:3300)});
+      p.appendChild(sm);p.appendChild(b);S.spun=1;mark("wheel");var r=wheel.getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,50);play("chime")},reduce?150:3300)});
+
+  /* v2: glow tracker */
+  function done(){return{lantern:S.l>0,stars:lit()===12,wish:!!S.w,toast:S.t>0,wheel:!!S.spun,seat:S.seat!=null,quiz:!!S.quiz}}
+  function glow(popK){var d=done(),n=0;document.querySelectorAll("#glow li").forEach(function(li){var k=li.dataset.k;li.classList.toggle("on",d[k]);if(d[k])n++;
+      li.querySelector("a").setAttribute("aria-label",li.textContent.trim()+(d[k]?", lit":", not yet"));
+      if(k===popK){li.classList.remove("pop");void li.offsetWidth;li.classList.add("pop")}});
+    var t=$("#glowtxt");t.innerHTML="";var b=document.createElement("b");b.textContent=n+" of 7";
+    if(n<7){t.appendChild(document.createTextNode("The room is "));t.appendChild(b);t.appendChild(document.createTextNode(" lit. "+(n===6?"One more!":"Keep going.")))}
+    else{t.appendChild(document.createTextNode("✨ The whole room glows. "));var c=document.createElement("b");c.textContent="Your card is unlocked.";t.appendChild(c)}
+    $("#crewleft").textContent=(7-n)===1?"1 lantern to go":(7-n)+" lanterns to go";
+    return n}
+  function mark(k){var before=done()[k];save();var n=glow(k);if(n===7&&!S.fin){S.fin=1;save();setTimeout(finale,700)}else if(n===7)crew()}
+
+  /* v2: seat at the long table */
+  var FAV=[["A tiny disco ball for your keychain","🪩"],["A pool float shaped like a 56","🛟"],["A golden ticket: one dance with Gordon, any time","🎟️"],["A player card: FRIENDSHIP 99 OVR","🎮"],["A desert sunset in a jar","🌅"],["A rainbow sash: Honorary Palm Springs Local","🌈"],["A standing invite to the next long table","💌"],["A mixtape: Songs Gordon would dance to","📼"]];
+  var table=$("#table");
+  function who(){return(($("#wname")&&$("#wname").value.trim())||($("#lname")&&$("#lname").value.trim())||S.nm||"").slice(0,24)}
+  function showSeat(i,fresh){table.querySelectorAll(".chair").forEach(function(c,j){c.setAttribute("aria-pressed",j===i)});
+    var pc=$("#placecard");pc.innerHTML="";var d=document.createElement("div");d.className="placecard";
+    var sm=document.createElement("small");sm.textContent="Seat "+(i+1)+" · reserved for";var b=document.createElement("b");b.textContent=who()||"You, from far away";
+    var sp=document.createElement("span");sp.textContent="Under your plate: "+FAV[i][0]+" "+FAV[i][1];d.appendChild(sm);d.appendChild(b);d.appendChild(sp);pc.appendChild(d);
+    if(fresh){var r=table.querySelectorAll(".chair")[i].getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,36);play("seat")}}
+  FAV.forEach(function(f,i){var c=document.createElement("button");c.type="button";c.className="chair";c.textContent="Seat "+(i+1);c.setAttribute("aria-pressed","false");
+    c.addEventListener("click",function(){var nm=who();if(nm)S.nm=nm;S.seat=i;showSeat(i,true);mark("seat")});table.appendChild(c)});
+  if(S.seat!=null)showSeat(S.seat,false);
+
+  /* v2: quiz */
+  var QZ=[["When is Gordon’s birthday?",["November 6","November 9","December 9"],1,"Monday, November 9. Put it in your phone!"],
+    ["How old is he turning?",["50","56","65"],1,"56, and dancing like he’s 26."],
+    ["Where is he celebrating this weekend?",["Paris","Provincetown","Palm Springs"],2,"Palm Springs, for Pride weekend. 🌴"],
+    ["Which community did Gordon start?",["A bowling league","Gay Gaming Professionals","A book club"],1,"Gay Gaming Professionals, around 20 years ago. A room where everyone belongs."],
+    ["Where will you find him at any party?",["The dance floor","The dance floor","The dance floor"],-1,"Trick question. It’s always the dance floor. 🪩"]];
+  var qi=0,qs=0,qlock=false;
+  function qdots(){var d=$("#qdots");d.innerHTML="";QZ.forEach(function(_,i){var e=document.createElement("i");if(i<qi)e.className="ok";d.appendChild(e)})}
+  function qshow(){qdots();var o=$("#qopts");o.innerHTML="";$("#qsay").textContent="";
+    if(qi>=QZ.length){$("#qq").textContent=(S.qs||qs)+" of 5. "+((S.qs||qs)>=4?"You’re basically family. 💛":"Now you know him even better. 💛");
+      var again=document.createElement("button");again.type="button";again.className="opt";again.textContent="↺ Play again";again.addEventListener("click",function(){qi=0;qs=0;qshow()});o.appendChild(again);return}
+    var q=QZ[qi];$("#qq").textContent=(qi+1)+". "+q[0];
+    q[1].forEach(function(a,j){var b=document.createElement("button");b.type="button";b.className="opt";b.textContent=a;
+      b.addEventListener("click",function(){if(qlock)return;qlock=true;var ok=q[2]<0||j===q[2];if(ok)qs++;
+        o.querySelectorAll(".opt").forEach(function(x,k){x.classList.add(q[2]<0||k===q[2]?"right":"nope")});
+        $("#qsay").textContent=(ok?"Yes! ":"Close! ")+q[3];var r=b.getBoundingClientRect();if(ok){fx(r.left+r.width/2,r.top,24);play("right")}else play("nope")
+        setTimeout(function(){qlock=false;qi++;if(qi>=QZ.length){S.quiz=1;S.qs=qs;mark("quiz")}qshow()},reduce?900:1900)});o.appendChild(b)})}
+  qshow();
+
+  /* v2: secret shooting star (tap the sky 3 times) */
+  var taps=0,tt=0;
+  $(".sky-bg").addEventListener("click",function(){clearTimeout(tt);taps++;tt=setTimeout(function(){taps=0},1500);
+    if(taps>=3){taps=0;star()}});
+  function star(){play("star");if(!reduce){for(var i=0;i<3;i++){var s=document.createElement("i");s.className="shoot";s.style.top=(8+i*9)+"vh";s.style.animationDelay=(i*220)+"ms";document.body.appendChild(s);setTimeout(function(x){return function(){x.remove()}}(s),2200)}}
+    var lede=$(".secret-hint");if(!$("#secretmsg")){var m=document.createElement("p");m.id="secretmsg";m.className="secretmsg";m.setAttribute("role","status");
+      m.textContent="🌠 You caught a shooting star! Gordon’s wish for you: that someone throws you a party this joyful. Make one for yourself too.";lede.after(m)}
+    S.secret=1;save()}
+
+  /* v2: finale + crew card */
+  function finale(){play("finale");fx(innerWidth/2,innerHeight*.45,180);
+    var f=document.createElement("div");f.className="finale";f.setAttribute("role","dialog");f.setAttribute("aria-label","The whole room glows");
+    var h=document.createElement("h2");h.textContent="The whole room glows for Gordon";var p=document.createElement("p");p.textContent="You lit all 7. That’s love from far away, and he’ll feel it. Your Honorary Crew card is ready.";
+    var b=document.createElement("button");b.type="button";b.className="gold-btn";b.innerHTML="<span>See my card ✦</span>";b.style.maxWidth="320px";
+    b.addEventListener("click",function(){f.remove();crew();var c=$("#h-crew");if(c)c.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})});
+    f.appendChild(h);f.appendChild(p);f.appendChild(b);document.body.appendChild(f);setTimeout(function(){b.focus()},50)}
+  function crew(){var box=$("#crewbox");if(box.dataset.made)return;box.dataset.made=1;box.innerHTML="";
+    var cv=document.createElement("canvas");cv.width=1080;cv.height=1350;cv.setAttribute("role","img");box.appendChild(cv);
+    var nm=who()||S.nm||"A friend far away";cv.setAttribute("aria-label","Honorary Desert Joy Crew card for "+nm);
+    var g=cv.getContext("2d"),im=new Image();
+    function draw(){g.fillStyle="#0b0820";g.fillRect(0,0,1080,1350);
+      if(im.complete&&im.naturalWidth){g.globalAlpha=.85;g.drawImage(im,0,0,1080,1350);g.globalAlpha=1}
+      var gr=g.createLinearGradient(0,500,0,1350);gr.addColorStop(0,"rgba(11,8,32,0)");gr.addColorStop(.45,"rgba(11,8,32,.88)");gr.addColorStop(1,"#0b0820");g.fillStyle=gr;g.fillRect(0,0,1080,1350);
+      g.strokeStyle="#ffd27a";g.lineWidth=6;g.strokeRect(36,36,1008,1278);
+      g.textAlign="center";g.fillStyle="#ffd27a";g.font="500 34px 'DM Mono',monospace";g.fillText("HONORARY  DESERT  JOY  CREW",540,820);
+      g.fillStyle="#fff3d6";g.font="400 92px Shrikhand,Georgia,serif";g.shadowColor="rgba(255,196,96,.8)";g.shadowBlur=30;
+      var t=nm;while(g.measureText(t).width>900&&g.font.indexOf("92px")>-1){g.font="400 70px Shrikhand,Georgia,serif"}g.fillText(t,540,940);g.shadowBlur=0;
+      g.fillStyle="#f4e9ff";g.font="600 38px Figtree,Arial,sans-serif";g.fillText("The Faraway Chapter · lit all 7 lanterns",540,1020);
+      g.fillText("for Gordon’s 56th · November 9, 2026",540,1070);
+      if(S.seat!=null){g.fillStyle="#9fe6de";g.font="600 34px Figtree,Arial,sans-serif";g.fillText("Seat "+(S.seat+1)+" · "+FAV[S.seat][0],540,1150)}
+      g.fillStyle="#ffd27a";g.font="500 28px 'DM Mono',monospace";g.fillText("✦ DESERT JOY 56 ✦",540,1250)}
+    im.onload=draw;im.onerror=draw;im.src="fw-hero.jpg";draw();
+    var row=document.createElement("div");row.className="row";var a=document.createElement("a");a.className="gold-btn";a.download="Desert-Joy-56-crew-card.png";a.href="#";a.innerHTML="<span>Save my card</span>";
+    a.addEventListener("click",function(){try{a.href=cv.toDataURL("image/png")}catch(e){a.removeAttribute("download");a.textContent="Press and hold the card to save it"}});
+    row.appendChild(a);box.appendChild(row);var tip=document.createElement("p");tip.className="fwstat";tip.textContent="Then text it to Gordon. He’ll love it.";box.appendChild(tip)}
+  glow();if(S.fin)crew();
+
+  /* v2: sound invite + way home */
+  $("#sndinvite").addEventListener("click",function(){pill.click()});
+  var nav=document.createElement("a");nav.className="navpill";document.body.appendChild(nav);
+  var room=$("#faraway");
+  function navset(){var r=room.getBoundingClientRect(),inside=r.bottom>innerHeight*.5;
+    if(inside){nav.href="#weekend";nav.textContent="🌴 Weekend ↓"}else{nav.href="#faraway";nav.textContent="🏮 Faraway Room ↑"}}
+  addEventListener("scroll",navset,{passive:true});addEventListener("resize",navset);navset();
 })();
 </script>
 </body></html>
