@@ -1,0 +1,139 @@
+<!doctype html>
+<!-- STYLE: Palm Springs resort-postcard quest board, public share cut | WHY: the same world as Gordon's private page so it reads as one celebration, minus anything private (friends' messages, hosts, class, tickets, venues) | ALT: a plain invite card, rejected because the game frame is the joy -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Desert Joy 56</title>
+<meta name="description" content="Gordon Bellamy turns 56 in the desert. A Palm Springs Pride birthday weekend, played as a game.">
+<meta property="og:title" content="Desert Joy 56">
+<meta property="og:description" content="Gordon turns 56. A Palm Springs Pride birthday weekend, played as a game.">
+<meta property="og:image" content="hero.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Figtree:wght@400;600;800&family=DM+Mono:wght@500&display=swap">
+<style>
+:root{--night:#24123d;--plum:#3a1f5c;--card:#fff4e2;--ink:#24123d;--muted:#6c5a86;--sun:#ffc23d;--pink:#ff4f9a;--pool:#2ed3c6;--sage:#9fd36a;
+--display:"Shrikhand","Georgia",serif;--body:"Figtree","Helvetica Neue",Arial,sans-serif;--mono:"DM Mono",ui-monospace,Menlo,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--night)}
+body{background:var(--night);color:var(--card);font-family:var(--body);font-size:16px;line-height:1.45;margin:0}
+img{max-width:100%}
+.wrap{max-width:600px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px;display:flex;flex-direction:column;gap:22px}
+.hero{position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+.hero img{display:block;width:100%;height:auto}
+.stamp{position:absolute;right:14px;top:14px;width:92px;height:92px;border-radius:50%;background:var(--pink);color:#fff;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:38px;line-height:.8;transform:rotate(-10deg);box-shadow:0 0 0 4px var(--sun),0 8px 20px rgba(0,0,0,.35)}
+.stamp small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;margin-top:6px}
+.title{display:flex;flex-direction:column;gap:6px}
+.kick{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--pool)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,11vw,58px);line-height:.95;margin:0;color:var(--sun);text-wrap:balance}
+.lede{margin:0;font-size:17px;max-width:34em}
+.meter{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--plum);border:2px solid var(--sun);border-radius:14px;padding:10px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.meter b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--sun);font-variant-numeric:tabular-nums}
+.bar{height:12px;background:rgba(255,244,226,.18);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pool),var(--sage),var(--sun),var(--pink));transition:width .5s cubic-bezier(.2,.9,.3,1.3)}
+.meter span{font-family:var(--mono);font-size:12px}
+.level{background:var(--card);color:var(--ink);border-radius:18px;overflow:hidden;box-shadow:0 10px 0 var(--c)}
+.level img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.lh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:14px 16px 4px}
+.lh .n{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.lh h2{font-family:var(--display);font-weight:400;font-size:30px;margin:0;color:var(--c2);line-height:1}
+.lh .day{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.stops{list-style:none;margin:0;padding:6px 10px 14px;display:flex;flex-direction:column;gap:6px}
+.stop{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-radius:12px;padding:10px 6px;font:inherit;color:inherit;cursor:pointer}
+.stop:hover{background:rgba(36,18,61,.05)}
+.stop:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.star{width:36px;height:36px;border-radius:50%;border:2px dashed var(--muted);display:grid;place-items:center;font-size:18px;color:transparent;transition:transform .25s}
+.stop[aria-pressed="true"] .star{border:0;background:var(--c);color:#fff;transform:rotate(-12deg) scale(1.08)}
+.stop b{font-weight:800}
+.stop[aria-pressed="true"] .what{text-decoration:line-through;text-decoration-color:var(--c);text-decoration-thickness:2px;opacity:.7}
+.win{text-align:center;background:var(--pink);color:#fff;border-radius:18px;padding:18px 14px}
+.win strong{font-family:var(--display);font-weight:400;font-size:32px;display:block}
+.toast{background:var(--plum);border:2px dashed var(--sun);border-radius:18px;padding:18px 16px;text-align:center}
+.toast h3{font-family:var(--display);font-weight:400;font-size:26px;color:var(--sun);margin:0 0 6px}
+.toast p{margin:0}
+.raise{margin-top:12px;background:var(--sun);color:var(--ink);border:0;border-radius:99px;padding:12px 20px;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+.raise:focus-visible{outline:3px solid var(--card);outline-offset:3px}
+#raised{display:block;margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--pool);min-height:1.2em}
+.foot{font-size:12px;color:rgba(255,244,226,.65);text-align:center}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}
+@media (prefers-reduced-motion:reduce){.bar i,.star{transition:none}}
+</style></head><body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+  <div class="hero"><img src="hero.jpg" alt="A Palm Springs pool at dusk with palms, a disco ball and a birthday cake"><div class="stamp" aria-hidden="true">56<small>NOV 9</small></div></div>
+  <header class="title">
+    <span class="kick">Desert Joy x Gordon · Palm Springs Pride</span>
+    <h1>Gordon turns 56 in the desert.</h1>
+    <p class="lede">A Pride weekend in Palm Springs, then a birthday on Monday, November 9. Play along: tap each stop to light it up and help him clear the weekend.</p>
+  </header>
+  <div class="meter" role="status" aria-live="polite"><b id="stars">0 / 8 ★</b><div class="bar"><i id="fill"></i></div><span id="cd">Nov 9</span></div>
+
+  <section class="level" style="--c:#ff4f9a;--c2:#c2216b">
+    <img src="day-fri.jpg" alt="A desert bar glowing pink and gold under laser beams at night">
+    <div class="lh"><span class="n">LEVEL 1</span><h2>Arrive</h2><span class="day">FRI 11/6</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="f1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Roll into the desert</b> for Pride weekend.</span></button></li>
+      <li><button class="stop" data-id="f2" aria-pressed="false"><span class="star">★</span><span class="what"><b>First dance floor</b> of the weekend.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#2ed3c6;--c2:#0f857c">
+    <img src="day-sat.jpg" alt="A sunny pool with rainbow floats, pride flags and a DJ tent">
+    <div class="lh"><span class="n">LEVEL 2</span><h2>Play</h2><span class="day">SAT 11/7</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="s1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Sun, pool and the Pride festival.</b></span></button></li>
+      <li><button class="stop" data-id="s2" aria-pressed="false"><span class="star">★</span><span class="what"><b>One great DJ set</b> with the crew.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#9fd36a;--c2:#4d8a1c">
+    <img src="day-sun.jpg" alt="A poolside brunch table under a pergola with a rainbow flag">
+    <div class="lh"><span class="n">LEVEL 3</span><h2>Brunch</h2><span class="day">SUN 11/8</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="u1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Pride Sunday</b> in Palm Springs.</span></button></li>
+      <li><button class="stop" data-id="u2" aria-pressed="false"><span class="star">★</span><span class="what"><b>A long poolside brunch</b> with friends.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#ffc23d;--c2:#b07800">
+    <img src="day-mon.jpg" alt="A birthday cake with lit candles before golden desert mountains at sunrise, cards flying in">
+    <div class="lh"><span class="n">BOSS LEVEL</span><h2>He's 56</h2><span class="day">MON 11/9</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="m1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Wake up 56.</b></span></button></li>
+      <li><button class="stop" data-id="m2" aria-pressed="false"><span class="star">★</span><span class="what"><b>Make a wish</b> and blow out the candles.</span></button></li>
+    </ul>
+  </section>
+
+  <div class="win" id="win" role="status" hidden><strong>Weekend cleared.</strong>Every stop, every star. Happy 56th, Gordon.</div>
+
+  <section class="toast">
+    <h3>Raise a glass</h3>
+    <p>Wherever you are this weekend, tap to send a little desert joy his way. Then tell him yourself.</p>
+    <button class="raise" id="raise">Cheers to 56 ✦</button>
+    <span id="raised" aria-live="polite"></span>
+  </section>
+
+  <p class="foot">Desert Joy x Gordon · Palm Springs, November 2026 · Art by Higgsfield</p>
+</div>
+<script>
+(function(){
+  var KEY="dj56-public",got={};
+  try{got=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){got={}}
+  var stops=[].slice.call(document.querySelectorAll(".stop"));
+  var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function render(){var n=0;stops.forEach(function(b){var on=!!got[b.dataset.id];b.setAttribute("aria-pressed",on);if(on)n++;});
+    document.getElementById("stars").textContent=n+" / "+stops.length+" ★";
+    document.getElementById("fill").style.width=(100*n/stops.length)+"%";
+    document.getElementById("win").hidden=(n!==stops.length);return n;}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(got))}catch(e){}}
+  var cv=document.getElementById("fx"),cx=cv.getContext("2d"),parts=[],raf=0,dpr=window.devicePixelRatio||1;
+  function size(){cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;}size();addEventListener("resize",size);
+  var cols=["#ffc23d","#ff4f9a","#2ed3c6","#9fd36a","#fff4e2"];
+  function burst(x,y,n){if(reduce)return;for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=2+Math.random()*6;parts.push({x:x*dpr,y:y*dpr,vx:Math.cos(a)*s*dpr,vy:(Math.sin(a)*s-4)*dpr,r:(3+Math.random()*4)*dpr,c:cols[i%cols.length],life:60+Math.random()*30,rot:Math.random()*6});}if(!raf)raf=requestAnimationFrame(tick);}
+  function tick(){cx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(function(p){return p.life>0});
+    parts.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.25*dpr;p.vx*=.98;p.life--;p.rot+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;cx.globalAlpha=Math.min(1,p.life/30);cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore();});
+    raf=parts.length?requestAnimationFrame(tick):0;}
+  stops.forEach(function(b){b.addEventListener("click",function(){var id=b.dataset.id;got[id]=!got[id];save();var n=render();
+    if(got[id]){var r=b.querySelector(".star").getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,n===stops.length?160:36);}});});
+  var k=0;document.getElementById("raise").addEventListener("click",function(e){k++;var r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top,60);
+    document.getElementById("raised").textContent=k===1?"Cheers sent. Now text him.":"Cheers x"+k+". He felt that.";});
+  function cd(){var t=new Date("2026-11-09T00:00:00-08:00")-new Date(),el=document.getElementById("cd");
+    if(t<=0&&t>-864e5){el.textContent="It's his birthday";return;}if(t<=0){el.textContent="56 and counting";return;}
+    var d=Math.floor(t/864e5),h=Math.floor(t%864e5/36e5);el.textContent=(d?d+"d ":"")+h+"h to 56";}
+  cd();setInterval(cd,60000);render();
+})();
+</script>
+</body></html>
