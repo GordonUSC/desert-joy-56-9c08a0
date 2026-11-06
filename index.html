@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- STYLE: Palm Springs resort-postcard quest board, public share cut | WHY: the same world as Gordon's private page so it reads as one celebration, minus anything private (friends' messages, hosts, class, tickets, venues) | ALT: a plain invite card, rejected because the game frame is the joy -->
+<!-- STYLE: The Faraway Room, a lantern-lit desert night sky in darkness, stars and warm gold, opening onto the Palm Springs resort-postcard quest board | WHY: friends who cannot make the trip get their own magical room to light a lantern, send a wish and toast him, public-safe | ALT: a plain guestbook form, rejected because the joy is in play -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Desert Joy 56</title>
-<meta name="description" content="Gordon Bellamy turns 56 in the desert. A Palm Springs Pride birthday weekend, played as a game.">
+<meta name="description" content="Gordon Bellamy turns 56. Can’t make it to Palm Springs? The Faraway Room is for you: light a lantern, send a wish, raise a glass.">
 <meta property="og:title" content="Desert Joy 56">
-<meta property="og:description" content="Gordon turns 56. A Palm Springs Pride birthday weekend, played as a game.">
-<meta property="og:image" content="hero.jpg">
+<meta property="og:description" content="Can’t make it to Palm Springs? Light a lantern, send a wish and raise a glass for Gordon’s 56th.">
+<meta property="og:image" content="fw-hero.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Figtree:wght@400;600;800&family=DM+Mono:wght@500&display=swap">
 <style>
 :root{--night:#24123d;--plum:#3a1f5c;--card:#fff4e2;--ink:#24123d;--muted:#6c5a86;--sun:#ffc23d;--pink:#ff4f9a;--pool:#2ed3c6;--sage:#9fd36a;
@@ -14,26 +14,26 @@
 html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--night)}
 body{background:var(--night);color:var(--card);font-family:var(--body);font-size:16px;line-height:1.45;margin:0}
 img{max-width:100%}
-.wrap{max-width:600px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px;display:flex;flex-direction:column;gap:22px}
+.wrap{max-width:600px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 84px;display:flex;flex-direction:column;gap:22px}
 .hero{position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
 .hero img{display:block;width:100%;height:auto}
 .stamp{position:absolute;right:14px;top:14px;width:92px;height:92px;border-radius:50%;background:var(--pink);color:#fff;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:38px;line-height:.8;transform:rotate(-10deg);box-shadow:0 0 0 4px var(--sun),0 8px 20px rgba(0,0,0,.35)}
-.stamp small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;margin-top:6px}
+.stamp small{display:block;font-family:var(--mono);font-size:14px;letter-spacing:.04em;margin-top:6px}
 .title{display:flex;flex-direction:column;gap:6px}
-.kick{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--pool)}
+.kick{font-family:var(--mono);font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--pool)}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,11vw,58px);line-height:.95;margin:0;color:var(--sun);text-wrap:balance}
 .lede{margin:0;font-size:17px;max-width:34em}
 .meter{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--plum);border:2px solid var(--sun);border-radius:14px;padding:10px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
 .meter b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--sun);font-variant-numeric:tabular-nums}
 .bar{height:12px;background:rgba(255,244,226,.18);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pool),var(--sage),var(--sun),var(--pink));transition:width .5s cubic-bezier(.2,.9,.3,1.3)}
-.meter span{font-family:var(--mono);font-size:12px}
+.meter span{font-family:var(--mono);font-size:14px}
 .level{background:var(--card);color:var(--ink);border-radius:18px;overflow:hidden;box-shadow:0 10px 0 var(--c)}
 .level img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .lh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:14px 16px 4px}
-.lh .n{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.lh .n{font-family:var(--mono);font-size:14px;letter-spacing:.14em;color:var(--muted)}
 .lh h2{font-family:var(--display);font-weight:400;font-size:30px;margin:0;color:var(--c2);line-height:1}
-.lh .day{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.lh .day{margin-left:auto;font-family:var(--mono);font-size:14px;letter-spacing:.1em;color:var(--muted)}
 .stops{list-style:none;margin:0;padding:6px 10px 14px;display:flex;flex-direction:column;gap:6px}
 .stop{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-radius:12px;padding:10px 6px;font:inherit;color:inherit;cursor:pointer}
 .stop:hover{background:rgba(36,18,61,.05)}
@@ -50,12 +50,172 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,11vw,58px);li
 .raise{margin-top:12px;background:var(--sun);color:var(--ink);border:0;border-radius:99px;padding:12px 20px;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
 .raise:focus-visible{outline:3px solid var(--card);outline-offset:3px}
 #raised{display:block;margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--pool);min-height:1.2em}
-.foot{font-size:12px;color:rgba(255,244,226,.65);text-align:center}
+.foot{font-size:14px;color:rgba(255,244,226,.65);text-align:center}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}
 @media (prefers-reduced-motion:reduce){.bar i,.star{transition:none}}
+/* ---------- The Faraway Room ---------- */
+.fw{--deep:#0b0820;--deep2:#15103a;--gold:#ffd27a;--gold2:#f2a93b;--glow:rgba(255,196,96,.55);position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px)) 34px;background:radial-gradient(120% 60% at 50% 0%,#2a1d63 0%,var(--deep2) 45%,var(--deep) 100%);display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.fw::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.4px 1.4px at 12% 18%,#fff8,transparent),radial-gradient(1.2px 1.2px at 78% 9%,#fff9,transparent),radial-gradient(1.6px 1.6px at 40% 52%,#ffe7a8aa,transparent),radial-gradient(1.2px 1.2px at 88% 64%,#fff8,transparent),radial-gradient(1.4px 1.4px at 22% 80%,#ffe7a8aa,transparent),radial-gradient(1px 1px at 60% 92%,#fff8,transparent);background-size:220px 260px;animation:twinkle 6s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.45}to{opacity:1}}
+.sky{position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+.sky-bg{display:block;width:100%;height:auto}
+.sky::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;background:linear-gradient(transparent,var(--deep2) 92%);pointer-events:none}
+.sky-copy{position:absolute;left:0;right:0;bottom:6px;z-index:2;padding:0 max(16px,env(safe-area-inset-left,0px));text-align:center}
+.fw-kick{font-family:var(--mono);font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.fw h2.fwh{font-family:var(--display);font-weight:400;font-size:clamp(32px,9vw,46px);line-height:1;margin:6px 0 0;color:#fff7e6;text-shadow:0 0 22px var(--glow),0 2px 0 #0008;text-wrap:balance}
+.fw-lede{position:relative;margin:0;font-size:17px;text-align:center;color:#f4e9ff;text-wrap:pretty}
+.fw-lede b{color:var(--gold)}
+.skylant{position:absolute;z-index:1;width:22px;pointer-events:none;filter:drop-shadow(0 0 8px var(--glow));animation:bob 5s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.fwc{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1.5px solid rgba(255,210,122,.55);border-radius:22px;padding:18px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.3) inset,0 14px 36px rgba(0,0,0,.35)}
+.fwc h3{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.05;color:var(--gold);margin:0 0 4px}
+.fwc .sub{margin:0 0 12px;font-size:15px;color:#d9cdf2}
+.fwn{font-family:var(--mono);font-size:14px;letter-spacing:.12em;color:#b6a6e6;display:block;margin-bottom:4px}
+.station{display:grid;justify-items:center;gap:12px}
+.orn{width:132px;height:auto;filter:drop-shadow(0 0 calc(18px + 40px * var(--p,0)) rgba(255,170,70,calc(.45 + .5 * var(--p,0))));transform:scale(calc(1 + .12 * var(--p,0)));transition:filter .2s}
+.fwf{display:grid;gap:6px;width:100%;font-size:15px;color:#e9ddff}
+.fwf input,.fwf textarea{font:inherit;font-size:16px;color:#1c1440;background:#fff7e6;border:2px solid transparent;border-radius:12px;padding:11px 12px;min-height:46px;width:100%}
+.fwf textarea{min-height:110px;resize:vertical}
+.fwf input:focus,.fwf textarea:focus{outline:none;border-color:var(--gold)}
+.gold-btn{position:relative;overflow:hidden;min-height:52px;width:100%;border:0;border-radius:99px;background:linear-gradient(180deg,#ffe2a0,var(--gold2));color:#2a1600;font:inherit;font-weight:800;font-size:17px;padding:12px 18px;cursor:pointer;box-shadow:0 0 22px rgba(255,190,90,.35);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.gold-btn:focus-visible,.fw button:focus-visible,.fw input[type=radio]:focus-visible+span{outline:3px solid #fff;outline-offset:3px}
+.gold-btn .fillbar{position:absolute;inset:0;width:calc(100% * var(--p,0));background:rgba(255,255,255,.55);mix-blend-mode:soft-light;pointer-events:none}
+.gold-btn span{position:relative}
+.ghost-btn{min-height:46px;border:1.5px solid var(--gold);background:transparent;color:var(--gold);border-radius:99px;padding:10px 18px;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.fwstat{font-family:var(--mono);font-size:14px;color:#9fe6de;min-height:1.3em;margin:10px 0 0;text-align:center}
+#flyers{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+.flyer{position:absolute;width:64px;display:grid;justify-items:center;animation:rise 7.5s cubic-bezier(.3,.1,.4,1) forwards}
+.flyer img{width:64px;height:auto;filter:drop-shadow(0 0 16px rgba(255,170,70,.8))}
+.flyer b{font-family:var(--mono);font-weight:500;font-size:14px;color:#fff3d6;text-shadow:0 0 8px #000,0 0 10px rgba(255,170,70,.9);white-space:nowrap}
+@keyframes rise{0%{transform:translate(0,0) scale(1);opacity:0}8%{opacity:1}100%{transform:translate(var(--dx,0px),calc(-100vh - 140px)) scale(.45);opacity:.15}}
+.heart{position:relative;width:100%;aspect-ratio:10/9;margin:4px 0 8px}
+.heart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.heart .faint{fill:none;stroke:rgba(255,210,122,.18);stroke-width:.5;stroke-dasharray:1 2}
+.heart .hl{fill:none;stroke:var(--gold);stroke-width:1.2;stroke-linejoin:round;filter:drop-shadow(0 0 2px #ffb347);stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset 2.2s ease}
+.heart.done .hl{stroke-dashoffset:0}
+.st{position:absolute;width:44px;height:44px;transform:translate(-50%,-50%);border:0;background:transparent;border-radius:50%;cursor:pointer;display:grid;place-items:center;padding:0}
+.st i{display:block;width:14px;height:14px;border-radius:50%;background:#cfc4ff;box-shadow:0 0 6px #fff8;transition:transform .3s,background .3s,box-shadow .3s;animation:pulse 2.4s ease-in-out infinite}
+.st:nth-child(odd) i{animation-delay:-1.2s}
+@keyframes pulse{50%{transform:scale(1.35)}}
+.st[aria-pressed=true] i{background:var(--gold);box-shadow:0 0 14px 4px rgba(255,190,90,.75);animation:none;transform:scale(1.25)}
+.gline{min-height:3.2em;margin:0;text-align:center;font-size:17px;color:#fff3d6;text-wrap:balance}
+.gline small{display:block;font-family:var(--mono);font-size:14px;color:#b6a6e6;margin-top:4px}
+.moods{display:flex;justify-content:space-between;gap:6px;border:0;margin:0;padding:0}
+.moods legend{font-size:15px;color:#e9ddff;margin-bottom:6px;padding:0}
+.moods label{flex:1;position:relative}
+.moods input{position:absolute;opacity:0;width:1px;height:1px}
+.moods span{display:grid;place-items:center;min-height:52px;border-radius:14px;background:rgba(255,255,255,.08);font-size:26px;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.moods input:checked+span{border-color:var(--gold);background:rgba(255,210,122,.18);transform:scale(1.06)}
+.cnt{font-family:var(--mono);font-size:14px;color:#b6a6e6;text-align:right}
+.wishform{display:grid;gap:12px}
+.honest{font-size:14px;color:#d9cdf2;margin:0}
+.fallback{display:grid;gap:10px;background:rgba(255,79,154,.14);border:1.5px dashed var(--pink);border-radius:16px;padding:14px;font-size:15px}
+.fallback pre{white-space:pre-wrap;font-family:var(--mono);font-size:14px;margin:0;color:#fff3d6}
+.ok{background:rgba(46,211,198,.14);border:1.5px solid var(--pool);border-radius:16px;padding:14px;font-size:16px}
+.glassbtn{display:grid;place-items:center;margin:0 auto;width:132px;height:132px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle at 50% 40%,rgba(255,226,160,.35),rgba(255,255,255,.04));font-size:58px;cursor:pointer;box-shadow:0 0 30px rgba(255,190,90,.3)}
+.glassbtn.clink{animation:clink .45s ease}
+@keyframes clink{30%{transform:rotate(-14deg) scale(1.08)}60%{transform:rotate(10deg)}}
+.bub{position:absolute;bottom:40%;width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,240,200,.9);pointer-events:none;animation:bub 1.8s ease-out forwards}
+@keyframes bub{to{transform:translate(var(--dx,0),-170px);opacity:0}}
+.wheelwrap{position:relative;width:min(280px,82vw);aspect-ratio:1;margin:6px auto 12px}
+.wheel{position:absolute;inset:0;border-radius:50%;border:4px solid var(--gold);background:conic-gradient(#ff4f9a 0 30deg,#2b1f6b 0 60deg,#ffc23d 0 90deg,#1b6f8a 0 120deg,#ff4f9a 0 150deg,#2b1f6b 0 180deg,#ffc23d 0 210deg,#1b6f8a 0 240deg,#ff4f9a 0 270deg,#2b1f6b 0 300deg,#ffc23d 0 330deg,#1b6f8a 0 360deg);transition:transform 3.2s cubic-bezier(.15,.85,.2,1);box-shadow:0 0 34px rgba(255,190,90,.35)}
+.wheel span{position:absolute;left:50%;top:50%;width:0;height:0;font-size:24px}
+.wheel span em{position:absolute;font-style:normal;transform:translate(-50%,-50%)}
+.pin{position:absolute;left:50%;top:-12px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:24px solid #fff3d6;z-index:2;filter:drop-shadow(0 2px 4px #0008)}
+.hub{position:absolute;left:50%;top:50%;width:58px;height:58px;transform:translate(-50%,-50%);border-radius:50%;background:#0b0820;border:3px solid var(--gold);display:grid;place-items:center;font-family:var(--display);color:var(--gold);font-size:22px;z-index:2}
+.isword{text-align:center;margin:12px 0 0;min-height:2.4em}
+.isword b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(30px,9vw,40px);color:#fff3d6;text-shadow:0 0 18px var(--glow);line-height:1.05}
+.isword small{font-family:var(--mono);font-size:14px;color:#b6a6e6}
+.sndpill{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:40;min-height:46px;min-width:46px;padding:10px 16px;border-radius:99px;border:1.5px solid var(--sun);background:rgba(11,8,32,.9);color:#fff3d6;font:inherit;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sndpill[aria-pressed=true]{background:var(--sun);color:#24123d}
+.bridge{text-align:center;margin:6px 0 -6px}
+.bridge h2{font-family:var(--display);font-weight:400;font-size:30px;color:var(--sun);margin:0}
+.bridge p{margin:4px 0 0;font-size:16px;color:#e9ddff}
+@media (prefers-reduced-motion:reduce){.fw::before,.skylant,.st i{animation:none}.wheel{transition-duration:.01s}.flyer{animation:fadeup 1.6s ease forwards}.heart .hl{transition:none}.glassbtn.clink{animation:none}.bub{display:none}}
+@keyframes fadeup{0%{opacity:0}30%{opacity:1}100%{opacity:0;transform:translateY(-60px)}}
+
 </style></head><body>
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="wrap">
+  <section class="fw" id="faraway" aria-labelledby="fwh">
+    <div class="sky" id="sky">
+      <img class="sky-bg" src="fw-hero.jpg" width="896" height="1120" alt="A desert night sky full of floating paper lanterns, a giant 56 drawn in stars, and a long glowing table with empty chairs saved for you">
+      <div class="sky-copy">
+        <span class="fw-kick">The Faraway Room</span>
+        <h2 class="fwh" id="fwh">Can’t make it to Palm Springs? This room is for you.</h2>
+      </div>
+    </div>
+    <p class="fw-lede">Gordon turns 56 on <b>Monday, November 9</b>. There’s a chair at the long table with your name on it. Light a lantern, send a wish, raise a glass, from wherever you are.</p>
+
+    <article class="fwc" aria-labelledby="h-lant">
+      <span class="fwn">01 · LANTERN</span>
+      <h3 id="h-lant">Light a lantern for Gordon</h3>
+      <p class="sub">Hold the button until the lantern glows, then let go to send it up into his sky.</p>
+      <div class="station">
+        <img class="orn" id="orn" src="fw-lantern.webp" width="147" height="197" alt="A glowing paper sky lantern, made in Blender">
+        <label class="fwf">Your first name (optional, it rides on the lantern)
+          <input id="lname" maxlength="24" autocomplete="given-name" placeholder="First name">
+        </label>
+        <button class="gold-btn" id="light" type="button"><i class="fillbar"></i><span id="lightlbl">Hold to light, let go to send</span></button>
+      </div>
+      <p class="fwstat" id="lcount" aria-live="polite"></p>
+    </article>
+
+    <article class="fwc" aria-labelledby="h-con">
+      <span class="fwn">02 · CONSTELLATION</span>
+      <h3 id="h-con">The gratitude constellation</h3>
+      <p class="sub">Twelve stars, twelve things Gordon gives the people he loves. Tap each one.</p>
+      <div class="heart" id="heart">
+        <svg viewBox="0 0 100 90" aria-hidden="true" preserveAspectRatio="none"><path class="faint" id="hfaint" d=""/><path class="hl" id="hline" d=""/></svg>
+      </div>
+      <p class="gline" id="gline" aria-live="polite">Tap a star to begin.<small>0 of 12 lit</small></p>
+    </article>
+
+    <article class="fwc" aria-labelledby="h-wish">
+      <span class="fwn">03 · WISH</span>
+      <h3 id="h-wish">Send Gordon a birthday wish</h3>
+      <p class="sub">A few words from far away, for his birthday.</p>
+      <form class="wishform" id="wishform" novalidate>
+        <label class="fwf">First name
+          <input id="wname" name="name" maxlength="40" autocomplete="given-name" required>
+        </label>
+        <label class="fwf">Your wish for him
+          <textarea id="wtext" name="wish" maxlength="300" required></textarea>
+          <span class="cnt" id="wcnt">0 / 300</span>
+        </label>
+        <fieldset class="moods">
+          <legend>Your mood, sending this</legend>
+          <label><input type="radio" name="mood" value="🥹 moved"><span aria-label="Moved">🥹</span></label>
+          <label><input type="radio" name="mood" value="😂 laughing"><span aria-label="Laughing">😂</span></label>
+          <label><input type="radio" name="mood" value="🥳 partying" checked><span aria-label="Partying">🥳</span></label>
+          <label><input type="radio" name="mood" value="🌈 proud"><span aria-label="Proud">🌈</span></label>
+          <label><input type="radio" name="mood" value="💛 grateful"><span aria-label="Grateful">💛</span></label>
+        </fieldset>
+        <button class="gold-btn" id="wsend" type="submit"><span>Send my wish ✦</span></button>
+        <p class="honest">Darby collects these and gives them to Gordon on his birthday. (Darby is Gordon’s AI helper. Your wish goes by email to Darby’s inbox and nowhere else.)</p>
+        <div id="wresult" aria-live="polite"></div>
+      </form>
+    </article>
+
+    <article class="fwc" aria-labelledby="h-toast" id="toastcard">
+      <span class="fwn">04 · TOAST</span>
+      <h3 id="h-toast">A toast from afar</h3>
+      <p class="sub">Wherever you are, lift something sparkly. Tap the glasses.</p>
+      <button class="glassbtn" id="glass" type="button" aria-label="Raise a glass to Gordon">🥂</button>
+      <p class="fwstat" id="tcount" aria-live="polite"></p>
+    </article>
+
+    <article class="fwc" aria-labelledby="h-wheel">
+      <span class="fwn">05 · WHEEL</span>
+      <h3 id="h-wheel">Gordon is…</h3>
+      <p class="sub">Spin for a word. Screenshot it and send it to him.</p>
+      <div class="wheelwrap"><div class="pin" aria-hidden="true"></div><div class="wheel" id="wheel" aria-hidden="true"></div><div class="hub" aria-hidden="true">56</div></div>
+      <button class="gold-btn" id="spin" type="button"><span>Spin the wheel</span></button>
+      <p class="isword" id="isword" aria-live="polite"></p>
+    </article>
+  </section>
+
+  <div class="bridge"><h2>Meanwhile, in the desert</h2><p>Here is the weekend he’s playing. Tap along.</p></div>
   <div class="hero"><img src="hero.jpg" alt="A Palm Springs pool at dusk with palms, a disco ball and a birthday cake"><div class="stamp" aria-hidden="true">56<small>NOV 9</small></div></div>
   <header class="title">
     <span class="kick">Desert Joy x Gordon · Palm Springs Pride</span>
@@ -99,14 +259,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
 
   <div class="win" id="win" role="status" hidden><strong>Weekend cleared.</strong>Every stop, every star. Happy 56th, Gordon.</div>
 
-  <section class="toast">
-    <h3>Raise a glass</h3>
-    <p>Wherever you are this weekend, tap to send a little desert joy his way. Then tell him yourself.</p>
-    <button class="raise" id="raise">Cheers to 56 ✦</button>
-    <span id="raised" aria-live="polite"></span>
-  </section>
 
-  <p class="foot">Desert Joy x Gordon · Palm Springs, November 2026 · Art by Higgsfield</p>
+  <p class="foot">Desert Joy x Gordon · Palm Springs, November 2026 · Art by Higgsfield · lantern made in Blender · sound by ElevenLabs</p>
 </div>
 <script>
 (function(){
@@ -128,12 +282,119 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     raf=parts.length?requestAnimationFrame(tick):0;}
   stops.forEach(function(b){b.addEventListener("click",function(){var id=b.dataset.id;got[id]=!got[id];save();var n=render();
     if(got[id]){var r=b.querySelector(".star").getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,n===stops.length?160:36);}});});
-  var k=0;document.getElementById("raise").addEventListener("click",function(e){k++;var r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top,60);
-    document.getElementById("raised").textContent=k===1?"Cheers sent. Now text him.":"Cheers x"+k+". He felt that.";});
+  window.__djBurst=burst;
   function cd(){var t=new Date("2026-11-09T00:00:00-08:00")-new Date(),el=document.getElementById("cd");
     if(t<=0&&t>-864e5){el.textContent="It's his birthday";return;}if(t<=0){el.textContent="56 and counting";return;}
     var d=Math.floor(t/864e5),h=Math.floor(t%864e5/36e5);el.textContent=(d?d+"d ":"")+h+"h to 56";}
   cd();setInterval(cd,60000);render();
+})();
+</script>
+<script>
+/* The Faraway Room */
+(function(){
+  function $(s){return document.querySelector(s)}
+  var KEY="dj56-faraway",S={l:0,names:[],t:0,stars:{}};
+  try{var o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)S=Object.assign(S,o)}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fx=window.__djBurst||function(){};
+
+  /* sound: off by default */
+  var on=false,A={},files={night:"fw-night.mp3",lantern:"fw-lantern.mp3",clink:"fw-clink.mp3",chime:"fw-chime.mp3"};
+  function aud(n){if(!A[n]){A[n]=new Audio(files[n]);A[n].preload="auto";if(n==="night"){A[n].loop=true;A[n].volume=.45}}return A[n]}
+  function play(n){if(!on)return;try{var a=aud(n);a.currentTime=0;var p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
+  var pill=document.createElement("button");pill.className="sndpill";pill.type="button";pill.setAttribute("aria-pressed","false");pill.textContent="🔇 Sound off";document.body.appendChild(pill);
+  pill.addEventListener("click",function(){on=!on;pill.setAttribute("aria-pressed",on);pill.textContent=on?"🔊 Sound on":"🔇 Sound off";
+    try{if(on){var p=aud("night").play();if(p&&p.catch)p.catch(function(){})}else{aud("night").pause()}}catch(e){}});
+
+  /* 01 lantern */
+  var layer=document.createElement("div");layer.id="flyers";layer.setAttribute("aria-hidden","true");document.body.appendChild(layer);
+  var sky=$("#sky"),btn=$("#light"),orn=$("#orn"),NEED=650,t0=0,rq=0;
+  function skyLantern(name,i){var im=document.createElement("img");im.src="fw-lantern.webp";im.alt="";im.className="skylant";
+    var x=8+((i*37)%84),y=6+((i*23)%40);im.style.left=x+"%";im.style.top=y+"%";im.style.animationDelay=(-(i%5))+"s";if(name)im.title=name;sky.appendChild(im)}
+  S.names.slice(-18).forEach(function(n,i){skyLantern(n,i)});
+  function lcount(){$("#lcount").textContent=S.l?(S.l===1?"1 lantern lit from this device. It’s in his sky now.":S.l+" lanterns lit from this device."):""}
+  function setP(p){btn.style.setProperty("--p",p);orn.style.setProperty("--p",p)}
+  function launch(){var name=($("#lname").value||"").trim().slice(0,24);S.l++;S.names.push(name);if(S.names.length>40)S.names.shift();save();lcount();
+    var r=orn.getBoundingClientRect(),f=document.createElement("div");f.className="flyer";
+    f.style.left=(r.left+r.width/2-32)+"px";f.style.top=(r.top+10)+"px";f.style.setProperty("--dx",(Math.random()*120-60)+"px");
+    var im=document.createElement("img");im.src="fw-lantern.webp";im.alt="";f.appendChild(im);
+    if(name){var b=document.createElement("b");b.textContent=name;f.appendChild(b)}
+    layer.appendChild(f);setTimeout(function(){f.remove()},8000);
+    skyLantern(name,S.names.length-1);fx(r.left+r.width/2,r.top+r.height/2,40);play("lantern");
+    $("#lightlbl").textContent="Sent. Light another?"}
+  function tick(){if(!t0)return;var p=Math.min(1,(performance.now()-t0)/NEED);setP(p);
+    $("#lightlbl").textContent=p<1?"Keep holding…":"Let go to send it up ✦";rq=requestAnimationFrame(tick)}
+  btn.addEventListener("pointerdown",function(e){e.preventDefault();t0=performance.now();try{btn.setPointerCapture(e.pointerId)}catch(_){}rq=requestAnimationFrame(tick)});
+  function end(){if(!t0)return;var dt=performance.now()-t0;t0=0;cancelAnimationFrame(rq);setP(0);
+    if(dt>=NEED)launch();else $("#lightlbl").textContent="Hold a little longer, then let go"}
+  btn.addEventListener("pointerup",end);btn.addEventListener("pointercancel",function(){t0=0;setP(0);$("#lightlbl").textContent="Hold to light, let go to send"});
+  btn.addEventListener("click",function(e){if(e.detail===0)launch()});
+  btn.addEventListener("contextmenu",function(e){e.preventDefault()});
+  lcount();
+
+  /* 02 constellation */
+  var LINES=["He brings people together, and his introductions turn into friendships.","He builds rooms where everyone belongs, like Gay Gaming Professionals.","He teaches the next generation of game makers at USC.","He shows up with joy, every single time.","He celebrates Pride out loud, and makes it a party.","He cheers loudest for your wins.","He hands the mic to new voices.","He turns a dance floor into a family reunion.","He sees who you could become before you do.","He makes the game industry more welcoming, one person at a time.","He says yes to the big idea, then helps you build it.","He leads with gratitude, and it is contagious."];
+  var heart=$("#heart"),pts=[],btns=[];
+  for(var i=0;i<12;i++){var t=i*Math.PI/6,s=Math.sin(t);
+    pts.push([50+2.65*16*s*s*s,42-2.65*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))])}
+  var d="M"+pts.map(function(p){return p[0].toFixed(1)+" "+p[1].toFixed(1)}).join(" L")+" Z";
+  $("#hfaint").setAttribute("d",d);$("#hline").setAttribute("d",d);
+  function lit(){var n=0;for(var k in S.stars)if(S.stars[k])n++;return n}
+  pts.forEach(function(p,i){var b=document.createElement("button");b.type="button";b.className="st";b.style.left=p[0]+"%";b.style.top=(p[1]/90*100)+"%";
+    b.setAttribute("aria-label","Star "+(i+1));b.setAttribute("aria-pressed",!!S.stars[i]);b.innerHTML="<i></i>";heart.appendChild(b);btns.push(b);
+    b.addEventListener("click",function(){var fresh=!S.stars[i];S.stars[i]=1;save();b.setAttribute("aria-pressed","true");var n=lit();
+      var r=b.getBoundingClientRect();
+      $("#gline").innerHTML="";$("#gline").appendChild(document.createTextNode(LINES[i]));var sm=document.createElement("small");sm.textContent=n+" of 12 lit";$("#gline").appendChild(sm);
+      if(fresh){play("chime");fx(r.left+22,r.top+22,14)}
+      if(n===12&&fresh)finish()})});
+  function finish(){heart.classList.add("done");var r=heart.getBoundingClientRect();setTimeout(function(){play("chime");fx(r.left+r.width/2,r.top+r.height/2,140)},reduce?0:900);
+    var sm=$("#gline small");if(sm)sm.textContent="All 12 lit. You drew him a heart in the sky."}
+  if(lit()===12){heart.classList.add("done");$("#gline").innerHTML="You already drew him a heart in the sky.<small>All 12 lit. Tap any star to read it again.</small>"}
+
+  /* 03 wish */
+  var form=$("#wishform"),wt=$("#wtext");
+  wt.addEventListener("input",function(){$("#wcnt").textContent=wt.value.length+" / 300"});
+  function wishText(){var m=form.querySelector("input[name=mood]:checked");return "Birthday wish for Gordon from "+($("#wname").value.trim()||"a friend far away")+" ("+(m?m.value:"")+"):\n"+wt.value.trim()}
+  function copy(txt,cb){function old(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}ta.remove();cb(ok)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){cb(true)},old)}else old()}
+  function fallback(){var txt=wishText(),box=document.createElement("div");box.className="fallback";
+    var p1=document.createElement("p");p1.style.margin="0";p1.textContent="The wish mailbox did not answer just now. Your words are safe here:";
+    var pre=document.createElement("pre");pre.textContent=txt;
+    var cb=document.createElement("button");cb.type="button";cb.className="ghost-btn";cb.id="copywish";cb.textContent="Copy my wish";
+    var p2=document.createElement("p");p2.style.margin="0";p2.textContent="Then paste it into a text to Gordon directly, if you have his number. Or try sending again in a minute.";
+    cb.addEventListener("click",function(){copy(txt,function(ok){cb.textContent=ok?"Copied ✓":"Select the text above to copy it"})});
+    box.appendChild(p1);box.appendChild(pre);box.appendChild(cb);box.appendChild(p2);var res=$("#wresult");res.innerHTML="";res.appendChild(box)}
+  form.addEventListener("submit",function(e){e.preventDefault();var res=$("#wresult");
+    if(!$("#wname").value.trim()||!wt.value.trim()){res.innerHTML="";var w=document.createElement("p");w.className="honest";w.textContent="Add your first name and a few words first.";res.appendChild(w);return}
+    var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";
+    var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},12000),done=false;
+    function fin(ok){if(done)return;done=true;clearTimeout(timer);send.disabled=false;send.querySelector("span").textContent="Send my wish ✦";
+      if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
+    try{fetch("https://formsubmit.co/ajax/gbellamyai@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({name:$("#wname").value.trim(),wish:wt.value.trim(),mood:m?m.value:"",_subject:"Desert Joy 56 wish from afar",_captcha:"false",_template:"table"}),signal:ctl?ctl.signal:undefined})
+      .then(function(r){return r.json().then(function(j){fin(r.ok&&(j.success===true||j.success==="true"))},function(){fin(false)})},function(){fin(false)})}catch(err){fin(false)}
+    setTimeout(function(){fin(false)},12500)});
+
+  /* 04 toast */
+  var glass=$("#glass"),card=$("#toastcard");
+  function tcount(){$("#tcount").textContent=S.t?(S.t===1?"1 toast from afar on this device. Cheers!":S.t+" toasts from afar on this device."):""}
+  glass.addEventListener("click",function(){S.t++;save();tcount();play("clink");glass.classList.remove("clink");void glass.offsetWidth;glass.classList.add("clink");
+    var gr=glass.getBoundingClientRect(),cr=card.getBoundingClientRect();
+    for(var i=0;i<12&&!reduce;i++){var b=document.createElement("i");b.className="bub";b.style.left=(gr.left-cr.left+gr.width/2-5+(Math.random()*60-30))+"px";b.style.top=(gr.top-cr.top+gr.height*.3)+"px";b.style.bottom="auto";
+      b.style.setProperty("--dx",(Math.random()*40-20)+"px");b.style.animationDelay=(i*60)+"ms";var sz=6+Math.random()*10;b.style.width=b.style.height=sz+"px";card.appendChild(b);setTimeout(function(x){return function(){x.remove()}}(b),2400)}
+    fx(gr.left+gr.width/2,gr.top+20,30)});
+  tcount();
+
+  /* 05 wheel */
+  var WORDS=[["Abundance","🌻"],["Joy","✨"],["Convener","🤝"],["Dance-floor legend","🪩"],["Mentor","🎓"],["Trailblazer","🌈"],["Bridge-builder","🌉"],["Sunshine","☀️"],["Host with the most","🥂"],["Family","💛"],["Game changer","🎮"],["Pure delight","🎉"]];
+  var wheel=$("#wheel"),rot=0,spinning=false;
+  WORDS.forEach(function(w,i){var s=document.createElement("span"),a=(i*30+15)*Math.PI/180,R=38;var em=document.createElement("em");em.textContent=w[1];
+    em.style.left=(Math.sin(a)*R*2.8)+"px";em.style.top=(-Math.cos(a)*R*2.8)+"px";s.appendChild(em);wheel.appendChild(s)});
+  $("#spin").addEventListener("click",function(){if(spinning)return;spinning=true;var i=Math.floor(Math.random()*12),target=(360-(i*30+15))%360;
+    rot+=1440+((target-rot%360)+360)%360;wheel.style.transform="rotate("+rot+"deg)";play("chime");$("#isword").innerHTML="<small>spinning…</small>";
+    setTimeout(function(){spinning=false;var p=$("#isword");p.innerHTML="";var sm=document.createElement("small");sm.textContent="Gordon is…";var b=document.createElement("b");b.textContent=WORDS[i][0]+" "+WORDS[i][1];
+      p.appendChild(sm);p.appendChild(b);var r=wheel.getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,50);play("chime")},reduce?150:3300)});
 })();
 </script>
 </body></html>
