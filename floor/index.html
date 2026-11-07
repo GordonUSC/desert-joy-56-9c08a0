@@ -141,8 +141,8 @@ h2{font-size:clamp(32px,9.5vw,46px)}
     </details>
     <p class="kick" style="margin-top:4px">Your festival passport</p>
     <div class="tree" id="tree"></div>
-    <button class="btn" id="go" type="button">Start with sound 🔊 (best)</button>
-    <button class="btn alt" id="goq" type="button">Start quietly 🔇 (follow the ring)</button>
+    <button class="btn" id="go" type="button" disabled>Start with sound 🔊 (best)</button>
+    <button class="btn alt" id="goq" type="button" disabled>Start quietly 🔇 (follow the ring)</button>
     <p class="note" id="best"></p>
     <a class="btn teal" href="../">← Back to the birthday page</a>
     <p class="note" id="loadmsg">Loading the stage…</p>
@@ -302,6 +302,7 @@ function buildLeg(slot){clearLeg(slot);const z0=-slot*LEG,acc=ST(slot).accent,tr
 function colorStage(slot){const s=stages[slot];if(!s)return;const st=ST(slot);s.userData.leds.forEach(m=>m.material.color.setHex(st.led[0]));s.traverse(o=>{if(o.isMesh&&/^beam/.test(o.name))o.material.color.setHex(st.accent[0])})}
 
 /* Blender assets */
+THREE.DefaultLoadingManager.onProgress=(u,l,t)=>{const m=$("#loadmsg");if(m&&state==="load")m.textContent="Setting up the stage… "+Math.round(100*l/Math.max(1,t))+"%"};
 const loader=new GLTFLoader();const load=u=>new Promise((res,rej)=>loader.load(u,g=>res(g.scene),undefined,rej));
 let dancer,arms={},stageProto;const stages=[];const player=new THREE.Group();scene.add(player);
 
@@ -345,7 +346,7 @@ function showCall(i){callSlot=i;state="call";$("#pad").hidden=true;$("#call").hi
     const used=route.slice(0,i);let pool=[1,2,3,4].filter(k=>!used.includes(k));pool=pool.sort(()=>Math.random()-.5).slice(0,2);
     pool.forEach(k=>row.appendChild(optCard("🗺️",STAGES[k].name,[STAGES[k].sub,STAGES[k].trait],0,()=>{pick.route=k})));box.appendChild(row)}
   // 2) crew (Football Manager): assign roles
-  const n=crew.length;if(n){const rc=roleCount();assign={...rc};box.appendChild(sec((i===1||i===2?"2":"1")+" · Set your crew ("+n+")"));
+  const n=crew.length;if(n){const rc=roleCount();assign={...rc};const det=document.createElement("details");det.className="howto";const sm=document.createElement("summary");sm.textContent="👯 Your crew of "+n+": 🔥"+rc.hype+" 🧭"+rc.nav+" 🛡️"+rc.guard+" (tap to tweak)";det.appendChild(sm);box.appendChild(det);
     const grid=document.createElement("div");grid.className="assign";
     Object.keys(ROLES).forEach(k=>{const r=document.createElement("div");r.className="arow";const lab=document.createElement("span");lab.innerHTML="<b>"+ROLES[k].e+" "+ROLES[k].n+"</b>";const d=document.createElement("small");d.textContent=ROLES[k].d;lab.appendChild(d);
       const mi=document.createElement("button");mi.type="button";mi.textContent="−";mi.setAttribute("aria-label","Fewer "+ROLES[k].n);const val=document.createElement("output");val.textContent=assign[k];
@@ -354,11 +355,11 @@ function showCall(i){callSlot=i;state="call";$("#pad").hidden=true;$("#call").hi
       mi.addEventListener("click",()=>{if(assign[k]<=0)return;assign[k]--;const o=order.find(x=>x!==k&&x==="hype")||"hype";assign[k==="hype"?"nav":"hype"]++;refresh()});
       pl.addEventListener("click",()=>{const donor=order.filter(x=>x!==k).sort((a,b)=>assign[b]-assign[a])[0];if(assign[donor]<=0)return;assign[donor]--;assign[k]++;refresh()});
       r.append(lab,mi,val,pl);r.dataset.k=k;grid.appendChild(r)});
-    function refresh(){grid.querySelectorAll(".arow").forEach(r=>r.querySelector("output").textContent=assign[r.dataset.k]);play("gate",1.3,.4)}
-    box.appendChild(grid)}
+    function refresh(){grid.querySelectorAll(".arow").forEach(r=>r.querySelector("output").textContent=assign[r.dataset.k]);sm.textContent="👯 Your crew of "+n+": 🔥"+assign.hype+" 🧭"+assign.nav+" 🛡️"+assign.guard+" (tap to tweak)";play("gate",1.3,.4)}
+    det.appendChild(grid)}
   else{const p=document.createElement("p");p.className="note";p.textContent="Your crew is just you so far. Dance by a 💗 crowd on the beat to sign them.";box.appendChild(p)}
   // 3) play call (Madden): visible risk and reward
-  box.appendChild(sec((n?(i===1||i===2?"3":"2"):(i===1||i===2?"2":"1"))+" · Call the play"));const row2=document.createElement("div");row2.className="cards";
+  box.appendChild(sec(((i===1||i===2)?"2":"1")+" · Call the play"));const row2=document.createElement("div");row2.className="cards";
   PLAYS.slice().sort(()=>Math.random()-.5).slice(0,techOn(1)?4:3).forEach(pl=>row2.appendChild(optCard(pl.e,pl.n,["✅ "+pl.up,"⚠️ "+pl.down],0,()=>{pick.play=pl.id})));box.appendChild(row2);
   const go=document.createElement("button");go.type="button";go.className="btn";go.id="gobtn";go.disabled=true;go.textContent=i===0?"Gates open ▶":"Back on the floor ▶";
   go.addEventListener("click",()=>{if(go.disabled)return;
@@ -495,8 +496,8 @@ Promise.all([load("dancer.glb"),load("stage.glb"),load("palm.glb").catch(()=>nul
   for(let i=0;i<4;i++){const s=stageProto.clone(true);const leds=[];s.traverse(o=>{if(o.isMesh){o.material=o.material.clone();if(/^led/.test(o.name)){o.material=new THREE.MeshBasicMaterial({color:ST(i).led[0]});leds.push(o)}
       if(/^beam/.test(o.name)){o.material=new THREE.MeshBasicMaterial({color:ST(i).accent[0],transparent:true,opacity:.18,depthWrite:false})}}});
     s.userData.leds=leds;s.position.set(0,0,-(i+1)*LEG-16);s.visible=i===0;scene.add(s);stages.push(s)}
-  buildRoute();route=[0,1,2,5];buildLeg(0);setLegQuiet(0);state="title";$("#loadmsg").textContent="";
-}).catch(err=>{$("#loadmsg").textContent="The stage couldn’t load. Try again in a moment.";console.error(err)});
+  buildRoute();route=[0,1,2,5];buildLeg(0);setLegQuiet(0);state="title";$("#loadmsg").textContent="";$("#go").disabled=false;$("#goq").disabled=false;
+}).catch(err=>{$("#loadmsg").textContent="The stage couldn’t load. Try again in a moment.";$("#go").disabled=false;$("#goq").disabled=false;console.error(err)});
 function setLegQuiet(i){legNow=i;applySky(i);floorMat.color.setHex(ST(i).floor);props.forEach(p=>p.visible=p.userData.leg===i);stages.forEach((s,k)=>s.visible=k===i)}
 window.__ro={beat:()=>beatInfo(),state:()=>state};
 requestAnimationFrame(tick);
