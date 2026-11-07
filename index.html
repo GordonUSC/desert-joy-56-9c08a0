@@ -194,16 +194,80 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
 .paradecta b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1.05}
 .paradecta span{font-size:15px}
 .paradecta i{font-style:normal;display:inline-block;margin-top:6px;padding:6px 12px;border-radius:99px;background:#ffd27a;color:#2a1600;font-weight:800;font-size:15px}
+.doors{display:grid;gap:10px;margin:4px 0 6px}
+.door{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;padding:14px 16px;border-radius:22px;text-decoration:none;color:#fff3d6;min-height:64px}
+.door em{grid-row:span 2;font-style:normal;font-size:34px;line-height:1}
+.door b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.05}
+.door span{font-size:15px;opacity:.92}
+.door.d1{background:radial-gradient(120% 140% at 0% 0%,#2a1d63,#0b0820);box-shadow:inset 0 0 0 2px #ffd27a,0 0 26px rgba(255,190,90,.3)}
+.door.d2{background:linear-gradient(120deg,#3a1260,#ff4f9a);box-shadow:inset 0 0 0 2px #9ff3ea}
+.door.d3{background:linear-gradient(120deg,#0f857c,#2ed3c6);color:#062a27}
+.fw3dwrap{position:sticky;top:0;height:100vh;height:100lvh;margin-bottom:calc(-100vh - 18px);margin-bottom:calc(-100lvh - 18px);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));z-index:0;pointer-events:none}
+.fw3dwrap canvas{display:block;width:100%;height:100%;opacity:0;transition:opacity 1.2s}
+.fw3dwrap canvas.on{opacity:1}
+.fw>*:not(.fw3dwrap):not(.glow){position:relative;z-index:1}
+.fwc{background:linear-gradient(180deg,rgba(21,16,58,.62),rgba(11,8,32,.5));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+body.in-fw .meter{visibility:hidden;opacity:0}
 </style></head><body>
 <canvas id="fx" aria-hidden="true"></canvas>
-<div class="wrap">
+<div class="wrap" id="top">
+
+  <div class="hero"><img src="hero.jpg" alt="A Palm Springs pool at dusk with palms, a disco ball and a birthday cake"><div class="stamp" aria-hidden="true">56<small>NOV 9</small></div></div>
+  <header class="title">
+    <span class="kick">Desert Joy x Gordon · Palm Springs Pride</span>
+    <h1>Gordon turns 56 in the desert.</h1>
+    <p class="lede">A Pride weekend in Palm Springs, then a birthday on Monday, November 9. Play along: tap each stop to light it up and help him clear the weekend.</p>
+  </header>
+  <nav class="doors" aria-label="Three ways to celebrate">
+    <a class="door d1" href="#faraway"><em>🏮</em><b>The Faraway Room</b><span>Can’t make it? Light a lantern, send a wish.</span></a>
+    <a class="door d2" href="floor/"><em>🪩</em><b>The Running Order</b><span>3D game: dance his favorite nights.</span></a>
+    <a class="door d3" href="#play"><em>🌴</em><b>Play the weekend</b><span>Light all 8 stops with him.</span></a>
+  </nav>
+  <div class="meter" id="play" role="status" aria-live="polite"><b id="stars">0 / 8 ★</b><div class="bar"><i id="fill"></i></div><span id="cd">Nov 9</span></div>
+
+  <section class="level" style="--c:#ff4f9a;--c2:#c2216b">
+    <img src="day-fri.jpg" alt="A desert bar glowing pink and gold under laser beams at night">
+    <div class="lh"><span class="n">LEVEL 1</span><h2>Arrive</h2><span class="day">FRI 11/6</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="f1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Roll into the desert</b> for Pride weekend.</span></button></li>
+      <li><button class="stop" data-id="f2" aria-pressed="false"><span class="star">★</span><span class="what"><b>First dance floor</b> of the weekend.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#2ed3c6;--c2:#0f857c">
+    <img src="day-sat.jpg" alt="A sunny pool with rainbow floats, pride flags and a DJ tent">
+    <div class="lh"><span class="n">LEVEL 2</span><h2>Play</h2><span class="day">SAT 11/7</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="s1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Sun, pool and the Pride festival.</b></span></button></li>
+      <li><button class="stop" data-id="s2" aria-pressed="false"><span class="star">★</span><span class="what"><b>One great DJ set</b> with the crew.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#9fd36a;--c2:#4d8a1c">
+    <img src="day-sun.jpg" alt="A poolside brunch table under a pergola with a rainbow flag">
+    <div class="lh"><span class="n">LEVEL 3</span><h2>Brunch</h2><span class="day">SUN 11/8</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="u1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Pride Sunday</b> in Palm Springs.</span></button></li>
+      <li><button class="stop" data-id="u2" aria-pressed="false"><span class="star">★</span><span class="what"><b>A long poolside brunch</b> with friends.</span></button></li>
+    </ul>
+  </section>
+  <section class="level" style="--c:#ffc23d;--c2:#b07800">
+    <img src="day-mon.jpg" alt="A birthday cake with lit candles before golden desert mountains at sunrise, cards flying in">
+    <div class="lh"><span class="n">BOSS LEVEL</span><h2>He's 56</h2><span class="day">MON 11/9</span></div>
+    <ul class="stops">
+      <li><button class="stop" data-id="m1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Wake up 56.</b></span></button></li>
+      <li><button class="stop" data-id="m2" aria-pressed="false"><span class="star">★</span><span class="what"><b>Make a wish</b> and blow out the candles.</span></button></li>
+    </ul>
+  </section>
+
+  <div class="win" id="win" role="status" hidden><strong>Weekend cleared.</strong>Every stop, every star. Happy 56th, Gordon.</div>
+
   <section class="fw" id="faraway" aria-labelledby="fwh">
+    <div class="fw3dwrap" aria-hidden="true"><canvas id="fw3d"></canvas></div>
     <div class="sky" id="sky">
       <img class="sky-bg" src="fw-hero.jpg" width="896" height="1120" alt="A desert night sky full of floating paper lanterns, a giant 56 drawn in stars, and a long glowing table with empty chairs saved for you">
       <div class="sky-copy">
         <span class="fw-kick">The Faraway Room</span>
         <h2 class="fwh" id="fwh">Can’t make it to Palm Springs? This room is for you.</h2>
-        <a class="skip" href="#weekend">See the birthday weekend ↓</a>
+        <a class="skip" href="#top">↑ Back to the birthday weekend</a>
       </div>
     </div>
     <p class="fw-lede">Gordon turns 56 on <b>Monday, November 9</b>. There’s a chair at the long table with your name on it. Light a lantern, send a wish, raise a glass, from wherever you are.</p>
@@ -299,7 +363,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     <article class="fwc quiz" aria-labelledby="h-quiz">
       <span class="fwn">07 · QUIZ</span>
       <h3 id="h-quiz">How well do you know Gordon?</h3>
-      <p class="sub">Five quick ones. No wrong way to love him.</p>
+      <p class="sub">Five questions, a couple of deep cuts. No wrong way to love him.</p>
       <div class="dots" id="qdots" aria-hidden="true"></div>
       <p class="q" id="qq"></p>
       <div class="opts" id="qopts"></div>
@@ -313,57 +377,96 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
       <div id="crewbox"><div class="lock">🔒 <span id="crewleft">7 lanterns to go</span></div></div>
     </article>
     <a class="paradecta" href="floor/"><em>🪩</em><span><b>The Running Order</b><span>Can’t be in Palm Springs? Dance Gordon’s favorite nights with him, in 3D.</span><br><i>Hit the dance floor ▶</i></span></a>
-    <a class="gold-btn homebtn" href="#weekend">🌴 Back to the birthday weekend</a>
+    <a class="gold-btn homebtn" href="#top">🌴 Back to the birthday weekend ↑</a>
   </section>
 
-  <a class="paradecta" href="floor/"><em>🪩</em><span><b>The Running Order</b><span>New 3D game: dance through Gordon’s own festival nights, from his first EDC to midnight at Countdown with Joe. Beat 5,600.</span><br><i>Hit the dance floor ▶</i></span></a>
-<div class="bridge" id="weekend"><h2>Meanwhile, in the desert</h2><p>Here is the weekend he’s playing. Tap along.</p></div>
-  <div class="hero"><img src="hero.jpg" alt="A Palm Springs pool at dusk with palms, a disco ball and a birthday cake"><div class="stamp" aria-hidden="true">56<small>NOV 9</small></div></div>
-  <header class="title">
-    <span class="kick">Desert Joy x Gordon · Palm Springs Pride</span>
-    <h1>Gordon turns 56 in the desert.</h1>
-    <p class="lede">A Pride weekend in Palm Springs, then a birthday on Monday, November 9. Play along: tap each stop to light it up and help him clear the weekend.</p>
-  </header>
-  <div class="meter" role="status" aria-live="polite"><b id="stars">0 / 8 ★</b><div class="bar"><i id="fill"></i></div><span id="cd">Nov 9</span></div>
 
-  <section class="level" style="--c:#ff4f9a;--c2:#c2216b">
-    <img src="day-fri.jpg" alt="A desert bar glowing pink and gold under laser beams at night">
-    <div class="lh"><span class="n">LEVEL 1</span><h2>Arrive</h2><span class="day">FRI 11/6</span></div>
-    <ul class="stops">
-      <li><button class="stop" data-id="f1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Roll into the desert</b> for Pride weekend.</span></button></li>
-      <li><button class="stop" data-id="f2" aria-pressed="false"><span class="star">★</span><span class="what"><b>First dance floor</b> of the weekend.</span></button></li>
-    </ul>
-  </section>
-  <section class="level" style="--c:#2ed3c6;--c2:#0f857c">
-    <img src="day-sat.jpg" alt="A sunny pool with rainbow floats, pride flags and a DJ tent">
-    <div class="lh"><span class="n">LEVEL 2</span><h2>Play</h2><span class="day">SAT 11/7</span></div>
-    <ul class="stops">
-      <li><button class="stop" data-id="s1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Sun, pool and the Pride festival.</b></span></button></li>
-      <li><button class="stop" data-id="s2" aria-pressed="false"><span class="star">★</span><span class="what"><b>One great DJ set</b> with the crew.</span></button></li>
-    </ul>
-  </section>
-  <section class="level" style="--c:#9fd36a;--c2:#4d8a1c">
-    <img src="day-sun.jpg" alt="A poolside brunch table under a pergola with a rainbow flag">
-    <div class="lh"><span class="n">LEVEL 3</span><h2>Brunch</h2><span class="day">SUN 11/8</span></div>
-    <ul class="stops">
-      <li><button class="stop" data-id="u1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Pride Sunday</b> in Palm Springs.</span></button></li>
-      <li><button class="stop" data-id="u2" aria-pressed="false"><span class="star">★</span><span class="what"><b>A long poolside brunch</b> with friends.</span></button></li>
-    </ul>
-  </section>
-  <section class="level" style="--c:#ffc23d;--c2:#b07800">
-    <img src="day-mon.jpg" alt="A birthday cake with lit candles before golden desert mountains at sunrise, cards flying in">
-    <div class="lh"><span class="n">BOSS LEVEL</span><h2>He's 56</h2><span class="day">MON 11/9</span></div>
-    <ul class="stops">
-      <li><button class="stop" data-id="m1" aria-pressed="false"><span class="star">★</span><span class="what"><b>Wake up 56.</b></span></button></li>
-      <li><button class="stop" data-id="m2" aria-pressed="false"><span class="star">★</span><span class="what"><b>Make a wish</b> and blow out the candles.</span></button></li>
-    </ul>
-  </section>
-
-  <div class="win" id="win" role="status" hidden><strong>Weekend cleared.</strong>Every stop, every star. Happy 56th, Gordon.</div>
-
-
-  <p class="foot">Desert Joy x Gordon · Palm Springs, November 2026 · Art by Higgsfield · lantern made in Blender · sound by ElevenLabs</p>
+  <p class="foot">Desert Joy x Gordon · Palm Springs, November 2026</p>
 </div>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+/* The Faraway Room in 3D: one night sky that every action changes. Lanterns rise, stars join the heart, a seat lights at the long table. */
+const room=document.getElementById("faraway"),cv=document.getElementById("fw3d");
+const queue=[];window.fw3d=(t,d)=>queue.push([t,d||{}]);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let started=false;
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!started){started=true;boot()}})},{rootMargin:"300px"}).observe(room);
+async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
+  let S={l:0,names:[],stars:{},seat:null};try{Object.assign(S,JSON.parse(localStorage.getItem("dj56-faraway")||"{}"))}catch(e){}
+  let r;try{r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true})}catch(e){return}
+  r.setPixelRatio(Math.min(devicePixelRatio,2));r.outputColorSpace=THREE.SRGBColorSpace;
+  const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x0b0820,.018);
+  const cam=new THREE.PerspectiveCamera(55,1,.1,300);
+  function size(){const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+  addEventListener("resize",size);size();
+  // star field with depth
+  {const n=reduce?500:1400,g=new THREE.BufferGeometry(),a=new Float32Array(n*3);for(let i=0;i<n;i++){a[i*3]=(Math.random()-.5)*160;a[i*3+1]=Math.random()*70-4;a[i*3+2]=-20-Math.random()*90}
+   g.setAttribute("position",new THREE.BufferAttribute(a,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xfff2d6,size:.28,sizeAttenuation:true,transparent:true,opacity:.85})))}
+  // desert ridge silhouettes
+  for(let k=0;k<3;k++){const sh=new THREE.Shape();sh.moveTo(-120,-10);let x=-120;while(x<120){sh.lineTo(x,Math.random()*(6+k*3)+k*2);x+=8+Math.random()*12}sh.lineTo(120,-10);sh.lineTo(-120,-10);
+    const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshBasicMaterial({color:[0x2a1d63,0x1d1450,0x140e38][k]}));m.position.set(0,-6,-70+k*18);scene.add(m)}
+  // lantern sprites (the Blender lantern)
+  const tex=new THREE.TextureLoader().load("fw-lantern.webp");tex.colorSpace=THREE.SRGBColorSpace;
+  const lmat=new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false});
+  const lanterns=[];
+  function lantern(fresh){const sp=new THREE.Sprite(lmat);const d=fresh?14+Math.random()*6:20+Math.random()*50;sp.position.set((Math.random()-.5)*d*1.1,fresh?-4:Math.random()*40,-d);
+    const sc=fresh?2.2:1.2+Math.random();sp.scale.set(sc*.75,sc,1);sp.userData={v:.35+Math.random()*.4,ph:Math.random()*6,top:30+Math.random()*30,fresh};scene.add(sp);lanterns.push(sp);
+    if(fresh){const gl=new THREE.PointLight(0xffb36b,6,14,1.5);sp.add(gl);sp.userData.light=gl}}
+  for(let i=0;i<(reduce?14:26)+Math.min(30,S.l||0);i++)lantern(false);
+  // the gratitude heart constellation
+  const heart=new THREE.Group();heart.position.set(0,20,-34);scene.add(heart);
+  const starMat=()=>new THREE.MeshBasicMaterial({color:0x6a5aa0});const stars=[];
+  for(let i=0;i<12;i++){const t=i*Math.PI/6,s=Math.sin(t);const x=16*s*s*s*.42,y=(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*.42;
+    const m=new THREE.Mesh(new THREE.OctahedronGeometry(.42,0),starMat());m.position.set(x,y,0);heart.add(m);stars.push(m)}
+  const lineGeo=new THREE.BufferGeometry().setFromPoints([...stars.map(s=>s.position),stars[0].position]);const line=new THREE.Line(lineGeo,new THREE.LineBasicMaterial({color:0xffd27a,transparent:true,opacity:0}));heart.add(line);
+  function lightStar(i,instant){const m=stars[i];m.material.color.setHex(0xffe7a8);m.userData.lit=1;m.userData.pop=instant?0:1}
+  Object.keys(S.stars||{}).forEach(k=>{if(S.stars[k])lightStar(+k,true)});
+  if(Object.keys(S.stars||{}).filter(k=>S.stars[k]).length===12)line.material.opacity=.9;
+  // the long table with eight seats
+  const table=new THREE.Group();table.position.set(0,-4.5,-26);table.scale.setScalar(.8);scene.add(table);
+  const top=new THREE.Mesh(new THREE.BoxGeometry(14,.3,2.2),new THREE.MeshBasicMaterial({color:0x3a2a20}));table.add(top);
+  const cloth=new THREE.Mesh(new THREE.BoxGeometry(14.2,.05,1.6),new THREE.MeshBasicMaterial({color:0xfff0d8}));cloth.position.y=.18;table.add(cloth);
+  for(let k=0;k<7;k++){const c=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,.5,8),new THREE.MeshBasicMaterial({color:0xfff2d6}));c.position.set(-6+k*2,.45,0);table.add(c);
+    const f=new THREE.Mesh(new THREE.SphereGeometry(.1,8,6),new THREE.MeshBasicMaterial({color:0xffb340}));f.position.set(-6+k*2,.78,0);f.userData.flame=1;table.add(f)}
+  const seats=[];for(let i=0;i<8;i++){const side=i<4?-1:1,x=-5.25+(i%4)*3.5;const m=new THREE.Mesh(new THREE.BoxGeometry(1.1,1.4,.25),new THREE.MeshBasicMaterial({color:0x4a3780}));m.position.set(x,.3,side*1.7);table.add(m);seats.push(m)}
+  const tlight=new THREE.PointLight(0xffc27a,10,18,1.4);tlight.position.set(0,0,-24);scene.add(tlight);
+  function sitAt(i){seats.forEach((m,k)=>m.material.color.setHex(k===i?0xffd27a:0x4a3780));if(i!=null)seats[i].userData.pop=1}
+  if(S.seat!=null)sitAt(S.seat);
+  // sparks
+  const MAX=reduce?150:600,pg=new THREE.BufferGeometry(),pp=new Float32Array(MAX*3),pc=new Float32Array(MAX*3);pg.setAttribute("position",new THREE.BufferAttribute(pp,3));pg.setAttribute("color",new THREE.BufferAttribute(pc,3));
+  const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:.35,vertexColors:true,transparent:true,depthWrite:false}));pts.frustumCulled=false;scene.add(pts);
+  const parts=Array.from({length:MAX},(_,i)=>({i,life:0,v:new THREE.Vector3()}));let pi=0;const tc=new THREE.Color();for(let i=0;i<MAX;i++)pp[i*3+1]=-999;
+  function burst(x,y,z,n,cols,sp){for(let k=0;k<n;k++){const p=parts[pi];pi=(pi+1)%MAX;p.life=1.6+Math.random();pp[p.i*3]=x;pp[p.i*3+1]=y;pp[p.i*3+2]=z;const a=Math.random()*6.28,b=Math.random()*3.14;const v=(sp||6)*(.4+Math.random()*.6);
+    p.v.set(Math.cos(a)*Math.sin(b)*v,Math.cos(b)*v,Math.sin(a)*Math.sin(b)*v);tc.setHex(cols[k%cols.length]);pc[p.i*3]=tc.r;pc[p.i*3+1]=tc.g;pc[p.i*3+2]=tc.b}}
+  const GOLD=[0xffd27a,0xfff2d6,0xffb340],PRIDE=[0xe40303,0xff8c00,0xffed00,0x008026,0x24408e,0x732982,0xffffff];
+  function handle(t,d){
+    if(t==="lantern"){lantern(true);burst(0,-3,-14,40,GOLD,4)}
+    if(t==="star"&&d.i!=null){lightStar(d.i);const p=stars[d.i].getWorldPosition(new THREE.Vector3());burst(p.x,p.y,p.z,30,GOLD,3)}
+    if(t==="stars-done"){line.material.opacity=.01;line.userData.fade=1;burst(0,20,-34,160,[0xffd27a,0xff4f9a,0xffffff],7)}
+    if(t==="toast"){for(let k=0;k<3;k++)setTimeout(()=>burst((Math.random()-.5)*30,12+Math.random()*10,-40,90,PRIDE,8),k*250)}
+    if(t==="seat"){sitAt(d.i);{const w=seats[d.i].getWorldPosition(new THREE.Vector3());burst(w.x,w.y+1,w.z,40,GOLD,3)}}
+    if(t==="wish"){const s=new THREE.Sprite(lmat);s.position.set(0,-2,-10);s.scale.set(1.2,1.6,1);s.userData={v:2.2,ph:0,top:60,wish:1};scene.add(s);lanterns.push(s)}
+    if(t==="spin"){burst(0,8,-24,60,[0xff4f9a,0x2ed3c6,0xffd27a],5)}
+    if(t==="finale"){for(let k=0;k<8;k++)setTimeout(()=>burst((Math.random()-.5)*40,10+Math.random()*14,-44,120,PRIDE,9),k*220);for(let k=0;k<10;k++)lantern(true)}}
+  window.fw3d=handle;queue.splice(0).forEach(([t,d])=>handle(t,d));
+  let visible=true;new IntersectionObserver(es=>es.forEach(e=>{visible=e.isIntersecting}),{rootMargin:"100px"}).observe(room);
+  const clock=new THREE.Clock();cv.classList.add("on");size();
+  (function tick(){requestAnimationFrame(tick);if(!visible||document.hidden)return;const dt=Math.min(.05,clock.getDelta()),t=clock.elapsedTime;
+    const rc=room.getBoundingClientRect(),prog=Math.max(0,Math.min(1,-rc.top/Math.max(1,rc.height-innerHeight)));
+    cam.position.set(Math.sin(t*.07)*1.2,22-prog*22,6);cam.lookAt(0,20-prog*22,-30);
+    lanterns.forEach(l=>{const u=l.userData;l.position.y+=dt*u.v*(u.fresh?1.4:1);l.position.x+=Math.sin(t*.5+u.ph)*dt*.25;if(l.position.y>u.top){if(u.wish||u.fresh){scene.remove(l);u.dead=1}else l.position.y=-6}
+      if(u.light)u.light.intensity=Math.max(0,u.light.intensity-dt*.6)});
+    for(let i=lanterns.length-1;i>=0;i--)if(lanterns[i].userData.dead)lanterns.splice(i,1);
+    stars.forEach((m,i)=>{m.rotation.y+=dt*(m.userData.lit?1.5:.3);const s=m.userData.pop?1+m.userData.pop*1.5:1;m.scale.setScalar(m.userData.lit?s*(1+Math.sin(t*3+i)*.08):.7);if(m.userData.pop)m.userData.pop=Math.max(0,m.userData.pop-dt*1.5)});
+    if(line.userData.fade){line.material.opacity=Math.min(.9,line.material.opacity+dt*.5)}
+    seats.forEach(m=>{if(m.userData.pop){m.position.y=.3+Math.sin(m.userData.pop*3.14)*.6;m.userData.pop=Math.max(0,m.userData.pop-dt)}});
+    table.children.forEach(c=>{if(c.userData.flame)c.scale.setScalar(.8+Math.random()*.4)});
+    for(const p of parts){if(p.life<=0)continue;p.life-=dt;const i=p.i*3;p.v.y-=2.5*dt;p.v.multiplyScalar(.985);pp[i]+=p.v.x*dt;pp[i+1]+=p.v.y*dt;pp[i+2]+=p.v.z*dt;if(p.life<=0)pp[i+1]=-999}
+    pg.attributes.position.needsUpdate=true;pg.attributes.color.needsUpdate=true;
+    r.render(scene,cam)})();
+}
+</script>
 <script>
 (function(){
   var KEY="dj56-public",got={};
@@ -423,7 +526,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     var im=document.createElement("img");im.src="fw-lantern.webp";im.alt="";f.appendChild(im);
     if(name){var b=document.createElement("b");b.textContent=name;f.appendChild(b)}
     layer.appendChild(f);setTimeout(function(){f.remove()},8000);
-    skyLantern(name,S.names.length-1);fx(r.left+r.width/2,r.top+r.height/2,40);play("lantern");
+    skyLantern(name,S.names.length-1);(window.fw3d||function(){})("lantern",{name:name});fx(r.left+r.width/2,r.top+r.height/2,40);play("lantern");
     $("#lightlbl").textContent="Sent. Light another?"}
   function tick(){if(!t0)return;var p=Math.min(1,(performance.now()-t0)/NEED);setP(p);
     $("#lightlbl").textContent=p<1?"Keep holding…":"Let go to send it up ✦";rq=requestAnimationFrame(tick)}
@@ -448,9 +551,9 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     b.addEventListener("click",function(){var fresh=!S.stars[i];S.stars[i]=1;save();b.setAttribute("aria-pressed","true");var n=lit();
       var r=b.getBoundingClientRect();
       $("#gline").innerHTML="";$("#gline").appendChild(document.createTextNode(LINES[i]));var sm=document.createElement("small");sm.textContent=n+" of 12 lit";$("#gline").appendChild(sm);
-      if(fresh){play("chime",0.75+n*0.06);fx(r.left+22,r.top+22,14)}
+      if(fresh){(window.fw3d||function(){})("star",{i:i});play("chime",0.75+n*0.06);fx(r.left+22,r.top+22,14)}
       if(n===12&&fresh){finish();mark("stars")}})});
-  function finish(){heart.classList.add("done");var r=heart.getBoundingClientRect();setTimeout(function(){play("chime");fx(r.left+r.width/2,r.top+r.height/2,140)},reduce?0:900);
+  function finish(){(window.fw3d||function(){})("stars-done");heart.classList.add("done");var r=heart.getBoundingClientRect();setTimeout(function(){play("chime");fx(r.left+r.width/2,r.top+r.height/2,140)},reduce?0:900);
     var sm=$("#gline small");if(sm)sm.textContent="All 12 lit. You drew him a heart in the sky."}
   if(lit()===12){heart.classList.add("done");$("#gline").innerHTML="You already drew him a heart in the sky.<small>All 12 lit. Tap any star to read it again.</small>"}
 
@@ -472,7 +575,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";play("send");
     var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},12000),done=false;
     function fin(ok){if(done)return;done=true;clearTimeout(timer);send.disabled=false;send.querySelector("span").textContent="Send my wish ✦";
-      S.w=1;mark("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
+      S.w=1;mark("wish");(window.fw3d||function(){})("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
     try{fetch("https://formsubmit.co/ajax/gbellamyai@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
       body:JSON.stringify({name:$("#wname").value.trim(),wish:wt.value.trim(),mood:m?m.value:"",_subject:"Desert Joy 56 wish from afar",_captcha:"false",_template:"table"}),signal:ctl?ctl.signal:undefined})
       .then(function(r){return r.json().then(function(j){fin(r.ok&&(j.success===true||j.success==="true"))},function(){fin(false)})},function(){fin(false)})}catch(err){fin(false)}
@@ -481,7 +584,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   /* 04 toast */
   var glass=$("#glass"),card=$("#toastcard");
   function tcount(){$("#tcount").textContent=S.t?(S.t===1?"1 toast from afar on this device. Cheers!":S.t+" toasts from afar on this device."):""}
-  glass.addEventListener("click",function(){S.t++;save();mark("toast");tcount();play("clink");glass.classList.remove("clink");void glass.offsetWidth;glass.classList.add("clink");
+  glass.addEventListener("click",function(){S.t++;save();mark("toast");(window.fw3d||function(){})("toast");tcount();play("clink");glass.classList.remove("clink");void glass.offsetWidth;glass.classList.add("clink");
     var gr=glass.getBoundingClientRect(),cr=card.getBoundingClientRect();
     for(var i=0;i<12&&!reduce;i++){var b=document.createElement("i");b.className="bub";b.style.left=(gr.left-cr.left+gr.width/2-5+(Math.random()*60-30))+"px";b.style.top=(gr.top-cr.top+gr.height*.3)+"px";b.style.bottom="auto";
       b.style.setProperty("--dx",(Math.random()*40-20)+"px");b.style.animationDelay=(i*60)+"ms";var sz=6+Math.random()*10;b.style.width=b.style.height=sz+"px";card.appendChild(b);setTimeout(function(x){return function(){x.remove()}}(b),2400)}
@@ -496,7 +599,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   $("#spin").addEventListener("click",function(){if(spinning)return;spinning=true;var i=Math.floor(Math.random()*12),target=(360-(i*30+15))%360;
     rot+=1440+((target-rot%360)+360)%360;wheel.style.transform="rotate("+rot+"deg)";play("wheel");$("#isword").innerHTML="<small>spinning…</small>";
     setTimeout(function(){spinning=false;var p=$("#isword");p.innerHTML="";var sm=document.createElement("small");sm.textContent="Gordon is…";var b=document.createElement("b");b.textContent=WORDS[i][0]+" "+WORDS[i][1];
-      p.appendChild(sm);p.appendChild(b);S.spun=1;mark("wheel");var r=wheel.getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,50);play("chime")},reduce?150:3300)});
+      p.appendChild(sm);p.appendChild(b);S.spun=1;mark("wheel");(window.fw3d||function(){})("spin");var r=wheel.getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,50);play("chime")},reduce?150:3300)});
 
   /* v2: glow tracker */
   function done(){return{lantern:S.l>0,stars:lit()===12,wish:!!S.w,toast:S.t>0,wheel:!!S.spun,seat:S.seat!=null,quiz:!!S.quiz}}
@@ -520,13 +623,13 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     var sp=document.createElement("span");sp.textContent="Under your plate: "+FAV[i][0]+" "+FAV[i][1];d.appendChild(sm);d.appendChild(b);d.appendChild(sp);pc.appendChild(d);
     if(fresh){var r=table.querySelectorAll(".chair")[i].getBoundingClientRect();fx(r.left+r.width/2,r.top+r.height/2,36);play("seat")}}
   FAV.forEach(function(f,i){var c=document.createElement("button");c.type="button";c.className="chair";c.textContent="Seat "+(i+1);c.setAttribute("aria-pressed","false");
-    c.addEventListener("click",function(){var nm=who();if(nm)S.nm=nm;S.seat=i;showSeat(i,true);mark("seat")});table.appendChild(c)});
+    c.addEventListener("click",function(){var nm=who();if(nm)S.nm=nm;S.seat=i;showSeat(i,true);mark("seat");(window.fw3d||function(){})("seat",{i:i})});table.appendChild(c)});
   if(S.seat!=null)showSeat(S.seat,false);
 
   /* v2: quiz */
   var QZ=[["When is Gordon’s birthday?",["November 6","November 9","December 9"],1,"Monday, November 9. Put it in your phone!"],
-    ["How old is he turning?",["50","56","65"],1,"56, and dancing like he’s 26."],
-    ["Where is he celebrating this weekend?",["Paris","Provincetown","Palm Springs"],2,"Palm Springs, for Pride weekend. 🌴"],
+    ["Which classic video game series did Gordon help design?",["The Sims","Madden NFL","Halo"],1,"Madden NFL. The man designed football. 🏈"],
+    ["What does Gordon teach at USC?",["Marine biology","Accounting","Game design"],2,"Game design, to the next generation of game makers. 🎓"],
     ["Which community did Gordon start?",["A bowling league","Gay Gaming Professionals","A book club"],1,"Gay Gaming Professionals, around 20 years ago. A room where everyone belongs."],
     ["Where will you find him at any party?",["The dance floor","The dance floor","The dance floor"],-1,"Trick question. It’s always the dance floor. 🪩"]];
   var qi=0,qs=0,qlock=false;
@@ -552,7 +655,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
     S.secret=1;save()}
 
   /* v2: finale + crew card */
-  function finale(){play("finale");fx(innerWidth/2,innerHeight*.45,180);
+  function finale(){(window.fw3d||function(){})("finale");play("finale");fx(innerWidth/2,innerHeight*.45,180);
     var f=document.createElement("div");f.className="finale";f.setAttribute("role","dialog");f.setAttribute("aria-label","The whole room glows");
     var h=document.createElement("h2");h.textContent="The whole room glows for Gordon";var p=document.createElement("p");p.textContent="You lit all 7. That’s love from far away, and he’ll feel it. Your Honorary Crew card is ready.";
     var b=document.createElement("button");b.type="button";b.className="gold-btn";b.innerHTML="<span>See my card ✦</span>";b.style.maxWidth="320px";
@@ -583,8 +686,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
   $("#sndinvite").addEventListener("click",function(){pill.click()});
   var nav=document.createElement("a");nav.className="navpill";document.body.appendChild(nav);
   var room=$("#faraway");
-  function navset(){var r=room.getBoundingClientRect(),inside=r.bottom>innerHeight*.5;
-    if(inside){nav.href="#weekend";nav.textContent="🌴 Weekend ↓"}else{nav.href="#faraway";nav.textContent="🏮 Faraway Room ↑"}}
+  function navset(){var r=room.getBoundingClientRect(),inside=r.top<innerHeight*.5&&r.bottom>innerHeight*.5;
+    document.body.classList.toggle("in-fw",r.top<innerHeight*.6&&r.bottom>0);if(inside){nav.href="#top";nav.textContent="🌴 Weekend ↑"}else{nav.href="#faraway";nav.textContent="🏮 Faraway Room ↓"}}
   addEventListener("scroll",navset,{passive:true});addEventListener("resize",navset);navset();
 })();
 </script>
