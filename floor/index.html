@@ -103,6 +103,13 @@ h2{font-size:clamp(32px,9.5vw,46px)}
 .nojs{padding:24px 16px;max-width:520px;margin:auto;font-size:17px;line-height:1.5}
 .nojs a{color:var(--gold)}
 @media (prefers-reduced-motion:reduce){.chip.bump,.judge.go{animation:none}.toast,.flash{transition:none}}
+.gsend{display:grid;gap:8px;margin-top:10px;padding:12px;border-radius:16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,210,122,.6);text-align:left}
+.gsend label{display:grid;gap:4px;font-weight:800;font-size:15px}
+.gsend input{min-height:46px;border-radius:12px;border:1.5px solid rgba(255,210,122,.6);background:rgba(11,6,32,.6);color:inherit;font:inherit;font-size:17px;padding:8px 12px}
+.gsbtn{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:99px;background:linear-gradient(180deg,#9ff3ea,#2ed3c6);color:#062a27;font-weight:800;font-size:18px;text-decoration:none}
+.gsrow{display:flex;gap:8px}
+.gslink{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:99px;border:1.5px solid rgba(255,255,255,.5);background:transparent;color:inherit;font:inherit;font-weight:800;font-size:15px;text-decoration:none;cursor:pointer}
+.gsnote{margin:0;font-size:14px;opacity:.85}
 </style>
 <script data-goatcounter="https://cybercooper.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -172,6 +179,7 @@ h2{font-size:clamp(32px,9.5vw,46px)}
     <div class="rank" id="rank"></div>
     <p class="note" id="stats"></p>
     <p class="note" id="secrets"></p>
+    <div id="scorehost"></div>
     <div class="unlock" id="unlock" aria-live="polite"></div>
     <div class="tree" id="tree2"></div>
     <button class="btn" id="again" type="button">Run it back ↺</button>
@@ -473,7 +481,8 @@ function showEnd(){const score=Math.round(joy*crewMult());gcEvt("floor_finish");
   const steps=reduce?1:24;let k=0;const iv=setInterval(()=>{k++;const f=k/steps;tJ.textContent=Math.round(joy*f).toLocaleString();if(k%3===0)play("clap",.8+f*.6,.5);
     if(k>=steps){clearInterval(iv);tC.textContent="×"+crewMult().toFixed(2);play("gate",1.2,.8);
       setTimeout(()=>{tS.textContent=score.toLocaleString();play("join",1,.9);
-        $("#rank").textContent=(score>=5600?"👑 Headliner. You beat 5,600.":score>=2800?"🌈 Front of the rail":"💗 Just getting warmed up")+(nb?" · New best!":"");
+        const rk=score>=5600?"👑 Headliner":score>=2800?"🌈 Front of the rail":"💗 Just getting warmed up";$("#rank").textContent=(score>=5600?"👑 Headliner. You beat 5,600.":rk)+(nb?" · New best!":"");
+        const sh=$("#scorehost");sh.innerHTML="";scoreBox(sh,()=>"🎂 The Running Order: "+score.toLocaleString()+" · "+rk+" · "+route.map(k=>STAGES[k].short).join(" → "),"floor");
         $("#secrets").textContent=secrets.has("floor")?"Secret found: Always the Dance Floor (16 perfect beats in a row).":"A secret is hiding in 16 perfect beats in a row.";
         $("#again").focus({preventScroll:true})},reduce?50:500)}},reduce?0:45)}
 
@@ -499,6 +508,27 @@ Promise.all([load("dancer.glb"),load("stage.glb"),load("palm.glb").catch(()=>nul
   buildRoute();route=[0,1,2,5];buildLeg(0);setLegQuiet(0);state="title";$("#loadmsg").textContent="";$("#go").disabled=false;$("#goq").disabled=false;
 }).catch(err=>{$("#loadmsg").textContent="The stage couldn’t load. Try again in a moment.";$("#go").disabled=false;$("#goq").disabled=false;console.error(err)});
 function setLegQuiet(i){legNow=i;applySky(i);floorMat.color.setHex(ST(i).floor);props.forEach(p=>p.visible=p.userData.leg===i);stages.forEach((s,k)=>s.visible=k===i)}
+
+/* Send Gordon my score: one tap texts Darby (Gordon's AI helper), who passes every score to Gordon. */
+function scoreBox(host,getText,tag){if(!host||host.querySelector(".gsend"))return;
+  var K="dj56-name",nm="";try{nm=localStorage.getItem(K)||""}catch(e){}
+  var box=document.createElement("div");box.className="gsend";
+  var lab=document.createElement("label");lab.textContent="Your name (so Gordon knows it’s you)";var inp=document.createElement("input");inp.maxLength=24;inp.autocomplete="given-name";inp.placeholder="First name";inp.value=nm;lab.appendChild(inp);
+  var sms=document.createElement("a");sms.className="gsbtn";sms.textContent="📲 Send Gordon my score";
+  var row=document.createElement("div");row.className="gsrow";
+  var em=document.createElement("a");em.className="gslink";em.textContent="✉️ Email it";
+  var cp=document.createElement("button");cp.type="button";cp.className="gslink";cp.textContent="📋 Copy";
+  var note=document.createElement("p");note.className="gsnote";note.textContent="Opens a text to Darby, Gordon’s AI helper, who hands every score to Gordon and keeps the leaderboard. Just press send.";
+  function msg(){var n=inp.value.trim();return getText()+(n?" · from "+n:"")}
+  function upd(){var t=msg(),ios=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+    sms.href="sms:gbellamyai@gmail.com"+(ios?"&":"?")+"body="+encodeURIComponent(t);
+    em.href="mailto:gbellamyai@gmail.com?subject="+encodeURIComponent("Birthday game score for Gordon")+"&body="+encodeURIComponent(t)}
+  function sent(){try{localStorage.setItem(K,inp.value.trim())}catch(e){}try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:"score_sent",title:tag||"score",event:true})}catch(e){}}
+  inp.addEventListener("input",upd);sms.addEventListener("click",function(){upd();sent()});em.addEventListener("click",function(){upd();sent()});
+  cp.addEventListener("click",function(){var t=msg();sent();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){cp.textContent="Copied ✓"},function(){cp.textContent="Copy failed: select the text"})});
+  sms.addEventListener("focus",upd);sms.addEventListener("pointerdown",upd);
+  row.appendChild(em);row.appendChild(cp);box.appendChild(lab);box.appendChild(sms);box.appendChild(row);box.appendChild(note);host.appendChild(box);upd()}
+
 window.__ro={beat:()=>beatInfo(),state:()=>state};
 requestAnimationFrame(tick);
 </script>

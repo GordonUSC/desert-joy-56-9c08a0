@@ -369,6 +369,7 @@ body.in-fw .meter{visibility:hidden;opacity:0}
       <p class="q" id="qq"></p>
       <div class="opts" id="qopts"></div>
       <p class="say" id="qsay" aria-live="polite"></p>
+      <div id="qsend"></div>
     </article>
 
     <article class="fwc crew" aria-labelledby="h-crew">
@@ -497,6 +498,26 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
 </script>
 <script>
 /* The Faraway Room */
+/* Send Gordon my score: one tap texts Darby (Gordon's AI helper), who passes every score to Gordon. */
+function scoreBox(host,getText,tag){if(!host||host.querySelector(".gsend"))return;
+  var K="dj56-name",nm="";try{nm=localStorage.getItem(K)||""}catch(e){}
+  var box=document.createElement("div");box.className="gsend";
+  var lab=document.createElement("label");lab.textContent="Your name (so Gordon knows it’s you)";var inp=document.createElement("input");inp.maxLength=24;inp.autocomplete="given-name";inp.placeholder="First name";inp.value=nm;lab.appendChild(inp);
+  var sms=document.createElement("a");sms.className="gsbtn";sms.textContent="📲 Send Gordon my score";
+  var row=document.createElement("div");row.className="gsrow";
+  var em=document.createElement("a");em.className="gslink";em.textContent="✉️ Email it";
+  var cp=document.createElement("button");cp.type="button";cp.className="gslink";cp.textContent="📋 Copy";
+  var note=document.createElement("p");note.className="gsnote";note.textContent="Opens a text to Darby, Gordon’s AI helper, who hands every score to Gordon and keeps the leaderboard. Just press send.";
+  function msg(){var n=inp.value.trim();return getText()+(n?" · from "+n:"")}
+  function upd(){var t=msg(),ios=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+    sms.href="sms:gbellamyai@gmail.com"+(ios?"&":"?")+"body="+encodeURIComponent(t);
+    em.href="mailto:gbellamyai@gmail.com?subject="+encodeURIComponent("Birthday game score for Gordon")+"&body="+encodeURIComponent(t)}
+  function sent(){try{localStorage.setItem(K,inp.value.trim())}catch(e){}try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:"score_sent",title:tag||"score",event:true})}catch(e){}}
+  inp.addEventListener("input",upd);sms.addEventListener("click",function(){upd();sent()});em.addEventListener("click",function(){upd();sent()});
+  cp.addEventListener("click",function(){var t=msg();sent();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){cp.textContent="Copied ✓"},function(){cp.textContent="Copy failed: select the text"})});
+  sms.addEventListener("focus",upd);sms.addEventListener("pointerdown",upd);
+  row.appendChild(em);row.appendChild(cp);box.appendChild(lab);box.appendChild(sms);box.appendChild(row);box.appendChild(note);host.appendChild(box);upd()}
+
 function gcEvt(n){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:n,event:true})}catch(e){}}
 (function(){
   function $(s){return document.querySelector(s)}
@@ -640,7 +661,7 @@ function gcEvt(n){try{if(window.goatcounter&&window.goatcounter.count)window.goa
   function qdots(){var d=$("#qdots");d.innerHTML="";QZ.forEach(function(_,i){var e=document.createElement("i");if(i<qi)e.className="ok";d.appendChild(e)})}
   function qshow(){qdots();var o=$("#qopts");o.innerHTML="";$("#qsay").textContent="";
     if(qi>=QZ.length){$("#qq").textContent=(S.qs||qs)+" of 5. "+((S.qs||qs)>=4?"You’re basically family. 💛":"Now you know him even better. 💛");
-      var again=document.createElement("button");again.type="button";again.className="opt";again.textContent="↺ Play again";again.addEventListener("click",function(){qi=0;qs=0;qshow()});o.appendChild(again);return}
+      var again=document.createElement("button");again.type="button";again.className="opt";again.textContent="↺ Play again";again.addEventListener("click",function(){qi=0;qs=0;$("#qsend").innerHTML="";qshow()});o.appendChild(again);var fs=S.qs||qs;scoreBox($("#qsend"),function(){return "🎂 How well do you know Gordon: "+fs+" of 5"},"quiz");return}
     var q=QZ[qi];$("#qq").textContent=(qi+1)+". "+q[0];
     q[1].forEach(function(a,j){var b=document.createElement("button");b.type="button";b.className="opt";b.textContent=a;
       b.addEventListener("click",function(){if(qlock)return;qlock=true;var ok=q[2]<0||j===q[2];if(ok)qs++;
