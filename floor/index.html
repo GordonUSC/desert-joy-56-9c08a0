@@ -68,6 +68,12 @@ h2{font-size:clamp(32px,9.5vw,46px)}
 .tally .tot b{font-size:30px}
 .rank{font-family:var(--display);font-size:clamp(26px,8vw,36px);color:#9ff3ea;line-height:1.05}
 :focus-visible{outline:3px solid #fff;outline-offset:3px}
+.vicskip{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 180px);z-index:10;min-height:44px;padding:8px 16px;border-radius:99px;border:1.5px solid rgba(255,255,255,.6);background:rgba(11,6,32,.8);color:var(--ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.vic{pointer-events:none;position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);z-index:9;width:min(92vw,440px);display:grid;gap:4px;padding:14px 16px;border-radius:22px;border:2px solid var(--gold);background:rgba(11,6,32,.88);color:var(--ink);font:inherit;text-align:center;cursor:pointer}
+.vic b{font-family:var(--display);font-weight:400;font-size:clamp(30px,9vw,42px);color:var(--gold);text-shadow:0 0 22px rgba(255,180,90,.8)}
+.vic span{font-size:18px;font-weight:800}
+.vic small{font-size:14px;color:var(--muted)}
+.screen.arming .btn{pointer-events:none;opacity:.55}
 .art{width:100%;max-width:300px;height:auto;margin:0 auto;border-radius:22px;box-shadow:0 0 40px rgba(255,79,154,.45);border:2px solid var(--gold)}
 .art.sm{max-width:150px;border-radius:16px}
 .big1{font-size:17px;color:var(--ink)}
@@ -146,6 +152,7 @@ h2{font-size:clamp(32px,9.5vw,46px)}
 <div class="judge" id="judge" aria-hidden="true"></div>
 <div class="big" id="big" aria-live="assertive"></div>
 <div class="flash" id="flash" aria-hidden="true"></div>
+<div class="vic" id="vic" role="status" hidden><b>🎉 Victory dance!</b><span id="vicsub"></span><small>Your score is coming up next</small></div><button class="vicskip" id="vicskip" type="button" hidden>Skip ▶</button>
 
 <div class="screen" id="start">
   <div class="card">
@@ -425,7 +432,7 @@ function recruit(power){const pz=player.position.z;let n=0;
   if(n){play("join",1+Math.random()*.1,.85);bumpChip("#chC");const rc2=roleCount();const TH=["Thank you for coming! 💛","You made the night! 🪩","Dance floor family! 🌈","So glad you’re here! 🧡","Love you, mean it! 💗","Best crew ever! ✨"];
     toast(TH[Math.floor(Math.random()*TH.length)],"Crew ×"+crewMult().toFixed(2)+" · 🔥"+rc2.hype+" 🧭"+rc2.nav+" 🛡️"+rc2.guard,1300);
     if(!reduce)for(let h=0;h<n*6;h++){const e=document.createElement("i");e.className="gheart";e.textContent=["💛","💗","🧡","💜"][h%4];e.style.left=(20+Math.random()*60)+"vw";e.style.animationDelay=(h*50)+"ms";document.body.appendChild(e);setTimeout(()=>e.remove(),3600)}}}
-addEventListener("keydown",e=>{if(e.repeat)return;if(e.key==="ArrowLeft"||e.key==="a"){move(-1);e.preventDefault()}else if(e.key==="ArrowRight"||e.key==="d"){move(1);e.preventDefault()}else if(e.key===" "||e.key==="ArrowUp"||e.key==="Enter"&&state==="run"){dance();e.preventDefault()}});
+addEventListener("keydown",e=>{if(e.repeat)return;if(state==="victory"&&vic&&vic.t>1&&e.key==="Escape"){endVictory();e.preventDefault();return}if(e.key==="ArrowLeft"||e.key==="a"){move(-1);e.preventDefault()}else if(e.key==="ArrowRight"||e.key==="d"){move(1);e.preventDefault()}else if(e.key===" "||e.key==="ArrowUp"||e.key==="Enter"&&state==="run"){dance();e.preventDefault()}});
 $("#bl").addEventListener("pointerdown",e=>{e.preventDefault();move(-1)});$("#br").addEventListener("pointerdown",e=>{e.preventDefault();move(1)});$("#bd").addEventListener("pointerdown",e=>{e.preventDefault();dance()});
 // keyboard/AT activation of the pad buttons (detail 0) without double-firing pointer taps
 ["#bl","#br","#bd"].forEach((s,i)=>$(s).addEventListener("click",e=>{if(e.detail===0)[()=>move(-1),()=>move(1),dance][i]()}));
@@ -455,17 +462,21 @@ function tick(){const dt=Math.min(.05,clk.getDelta()),t=clk.elapsedTime;const b=
   // player
   px+=(LANES[lane]-px)*Math.min(1,dt*14);player.position.set(px,0,-dist);
   squash*=Math.pow(.01,dt);spin=Math.max(0,spin-dt*2.5);
-  if(dancer){const bob=Math.abs(Math.sin(b.frac*Math.PI));dancer.position.y=bob*.18+spin*.3;dancer.rotation.y=Math.PI+spin*Math.PI*2*(1-spin);dancer.scale.set(1+squash*.12,1-squash*.15,1);
+  if(vic&&state==="victory"){vic.t+=dt;if(vic.t>(reduce?3:6.5))endVictory()}
+  if(dancer){const bob=Math.abs(Math.sin(b.frac*Math.PI));const V=state==="victory";dancer.position.y=V?bob*.7:bob*.18+spin*.3;dancer.rotation.y=V?(vic.t*2.6)%(Math.PI*2):Math.PI+spin*Math.PI*2*(1-spin);dancer.scale.set(1+squash*.12,1-squash*.15,1);
     if(arms.L){arms.L.rotation.z=-.4-bob*1.2;arms.R.rotation.z=.4+bob*1.2}}
   ring.position.set(px,.03,player.position.z);target.position.set(px,.025,player.position.z);
   // camera
   const shk=reduce?0:shake;shake*=Math.pow(.02,dt);
-  camera.position.set(px*.5+(Math.random()-.5)*shk,4.6+(Math.random()-.5)*shk,player.position.z+8.2);camera.lookAt(px*.35,1.6,player.position.z-7);
+  if(state==="victory"){const a=Math.PI*.15+Math.min(1,vic.t/2.5)*Math.PI*.85;camera.position.set(px+Math.sin(a)*8,6.2,player.position.z+Math.cos(a)*8);camera.lookAt(px,1.2,player.position.z)}
+  else{camera.position.set(px*.5+(Math.random()-.5)*shk,4.6+(Math.random()-.5)*shk,player.position.z+8.2);camera.lookAt(px*.35,1.6,player.position.z-7)}
   // crowds dance on the beat
   const bob2=Math.abs(Math.sin(b.frac*Math.PI));
   crowds.forEach(c=>{if(c.joined)return;const dz=player.position.z-c.z;c.g.visible=dz>-14&&dz<70;if(!c.g.visible)return;c.ppl.forEach(p=>{p.position.y=bob2*.25*((p.userData.ph|0)%2?1:.6)});if(c.heart.visible){c.heart.position.y=2.4+bob2*.2;c.heart.lookAt(camera.position)}});
   // your crew follows in a V behind you
-  crew.forEach((p,i)=>{const side=i%2?1:-1,k=Math.floor(i/2),row=Math.floor(k/3),col=k%3;const tx=px+side*(1.3+col*.75),tz=player.position.z+.4-row*1.1+col*.3;p.position.x+=(tx-p.position.x)*Math.min(1,dt*5);p.position.z+=(tz-p.position.z)*Math.min(1,dt*5);p.position.y=bob2*.3;p.rotation.y=Math.PI});
+  if(state==="victory"){const N=crew.length;crew.forEach((p,i)=>{const ring=i<12?0:1,ang=(i/(Math.min(N,12)||1))*Math.PI*2+vic.t*(ring?-.6:.8),R=2.2+ring*1.3;const tx=px+Math.cos(ang)*R,tz=player.position.z+Math.sin(ang)*R;p.position.x+=(tx-p.position.x)*Math.min(1,dt*4);p.position.z+=(tz-p.position.z)*Math.min(1,dt*4);p.position.y=Math.abs(Math.sin((b.frac+(i%2)*.5)*Math.PI))*.6;p.rotation.y=-ang-Math.PI/2});
+    if(!reduce&&Math.random()<dt*4)burst(v3.set(px+(Math.random()-.5)*4,3+Math.random()*2,player.position.z+(Math.random()-.5)*4),30,4,4,ST(legNow).accent)}
+  else crew.forEach((p,i)=>{const side=i%2?1:-1,k=Math.floor(i/2),row=Math.floor(k/3),col=k%3;const tx=px+side*(1.3+col*.75),tz=player.position.z+.4-row*1.1+col*.3;p.position.x+=(tx-p.position.x)*Math.min(1,dt*5);p.position.z+=(tz-p.position.z)*Math.min(1,dt*5);p.position.y=bob2*.3;p.rotation.y=Math.PI});
   // gates
   gates.forEach(g=>{if(!g.taken&&player.position.z<=g.z+.3&&player.position.z>g.z-1.2){g.taken=true;if(Math.abs(px-LANES[g.lane])<1.1){joy+=Math.round(10*(play_==="fourth"?3:play_==="prevent"?.5:1)*(TR(legNow).gates||1))+3*roleCount().nav;g.g.visible=false;play("gate",1+Math.min(combo,16)*.03,.8);burst(v3.set(LANES[g.lane],1.2,g.z),reduce?8:30,3,4,ST(legNow).accent);bumpChip("#chJ")}}});
   // phone filmers: dodge
@@ -489,11 +500,16 @@ function finaleTick(dt){fin.t+=dt;const n=10-Math.floor(fin.t/.6);
   if(n>=1&&n!==finalCount){finalCount=n;$("#big").textContent=n;if(!reduce)shake=.15}
   if(n<1&&!fin.boom){fin.boom=true;$("#big").textContent="";flash();play("fire",1,1);toast("HAPPY NEW YEAR","and happy 56th, Gordon 💛",3000)}
   if(fin.boom&&!reduce&&Math.random()<dt*6)burst(v3.set((Math.random()-.5)*26,10+Math.random()*10,player.position.z-30-Math.random()*15),90,9,2,[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xe40303,0x24408e]);
-  if(fin.boom&&fin.t>6+(reduce?-3:3.5)&&!fin.done){fin.done=true;showEnd()}}
+  if(fin.boom&&fin.t>(reduce?2.5:4.2)&&!fin.done){fin.done=true;startVictory()}}
+let vic=null;
+function startVictory(){state="victory";vic={t:0};$("#hud").hidden=false;$("#pad").hidden=true;
+  const v=$("#vic");v.hidden=false;$("#vicskip").hidden=false;$("#vicsub").textContent="✨ "+Math.round(joy).toLocaleString()+" joy · 👯 a crew of "+crew.length+(crew.length?" dancing with you":"");
+  play("join",1,.9);setTimeout(()=>play("rail",1.1,.8),900);try{A.music&&(A.music.volume=.55)}catch(e){}}
+function endVictory(){if(state!=="victory")return;state="end";$("#vic").hidden=true;$("#vicskip").hidden=true;showEnd()}
 function showEnd(){const score=Math.round(joy*crewMult());gcEvt("floor_finish");if(score>=5600)gcEvt("floor_headliner");const before=TECH.map((t,i)=>techOn(i));SAVE.runs++;const nb=score>SAVE.best&&SAVE.runs>1;if(score>SAVE.best)SAVE.best=score;persist();
   const newly=TECH.filter((t,i)=>!before[i]&&techOn(i));$("#unlock").textContent=newly.length?"Unlocked: "+newly.map(t=>t.e+" "+t.n).join(", ")+"!":"";drawTree("#tree2");drawTree("#tree");
   if(techOn(3)&&dancer){const cr=dancer.getObjectByName("crown");if(cr&&cr.material)cr.material.emissive&&cr.material.emissive.setHex(0xffb340)}
-  $("#hud").hidden=true;$("#end").hidden=false;
+  $("#hud").hidden=true;$("#end").hidden=false;$("#end").classList.add("arming");$("#end").scrollTop=0;
   const tJ=$("#tJ"),tC=$("#tC"),tS=$("#tS");tJ.textContent="0";tC.textContent="×1.00";tS.textContent="…";$("#rank").textContent="";
   $("#stats").textContent="Your running order: "+route.map(k=>STAGES[k].short).join(" → ")+" · best combo "+bestCombo+" · "+perfects+" perfect beats · crew of "+crew.length+" · "+rails+" of 4 rails";
   const steps=reduce?1:24;let k=0;const iv=setInterval(()=>{k++;const f=k/steps;tJ.textContent=Math.round(joy*f).toLocaleString();if(k%3===0)play("clap",.8+f*.6,.5);
@@ -513,7 +529,7 @@ function showEnd(){const score=Math.round(joy*crewMult());gcEvt("floor_finish");
         const pp=document.createElement("p");pp.textContent=crew.length?crew.length+" friends danced with you tonight. "+(SAVE.friends||crew.length)+" across all your nights. The people are always the best part.":"Next time, dance by the 💗 crowds. The people are always the best part.";gw.appendChild(pp);
         const sh=$("#scorehost");sh.innerHTML="";scoreBox(sh,()=>"🎂 The Running Order: "+score.toLocaleString()+" · "+rk+" · "+route.map(k=>STAGES[k].short).join(" → "),"floor");
         $("#secrets").textContent=secrets.has("floor")?"Secret found: Always the Dance Floor (16 perfect beats in a row).":"A secret is hiding in 16 perfect beats in a row.";
-        $("#again").focus({preventScroll:true})},reduce?50:500)}},reduce?0:45)}
+        setTimeout(()=>{$("#end").classList.remove("arming")},1500)},reduce?50:500)}},reduce?0:45)}
 
 /* ---------- flow ---------- */
 function start(withSound){buildRoute();crew.forEach(p=>scene.remove(p));crew.length=0;clearProps();route=[0,1,2,5];chosen=[true,false,false,true];buildLeg(0);buildLeg(3);
@@ -524,6 +540,7 @@ function start(withSound){buildRoute();crew.forEach(p=>scene.remove(p));crew.len
   if(techOn(0)){const p=person(0xffd27a,SKIN[2]);p.userData.role="hype";scene.add(p);crew.push(p)}
   hud();stageLabels();showCall(0);gcEvt("floor_start")}
 function beginRun(){setLeg(0);state="run";hud();coachN=0}
+$("#vicskip").addEventListener("click",()=>{if(vic&&vic.t>1)endVictory()});
 $("#go").addEventListener("click",()=>start(true));$("#goq").addEventListener("click",()=>start(false));$("#again").addEventListener("click",()=>start(null));
 
 Promise.all([load("dancer.glb"),load("stage.glb"),load("palm.glb").catch(()=>null)]).then(([d,st,pa])=>{
