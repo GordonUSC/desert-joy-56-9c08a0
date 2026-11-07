@@ -1,0 +1,443 @@
+<!doctype html>
+<!-- STYLE: The Running Order, a 3D rhythm journey through Gordon's own festival nights: toon-shaded Blender dancer and main stage, Higgsfield painted skies per stage (Las Vegas lasers, Golden Gate fog, red rocks under stars, midnight fireworks), neon on night-violet, gold crown HUD | WHY: Gordon asked for a me-centric 3D game; fifteen years on the dance floor is his, and "always the dance floor" is how his people know him | ALT: the Float Parade, rejected by Gordon ("I only mildly like parades") -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Running Order</title>
+<meta name="description" content="A 3D dance-floor journey through Gordon's own festival nights for his 56th. Dance on the beat, build your crew, reach the rail.">
+<meta property="og:title" content="The Running Order">
+<meta property="og:description" content="Dance through Gordon's festival nights in 3D. Can you beat 5,600?">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Figtree:wght@400;600;800&family=DM+Mono:wght@500&display=swap">
+<style>
+:root{--deep:#0b0620;--gold:#ffd27a;--gold2:#f2a93b;--pink:#ff4f9a;--pool:#2ed3c6;--ink:#fff3d6;--muted:#c9b8ef;
+--display:"Shrikhand",Georgia,serif;--body:"Figtree","Helvetica Neue",Arial,sans-serif;--mono:"DM Mono",ui-monospace,Menlo,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--deep);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-text-size-adjust:100%}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:fixed;left:0;right:0;top:0;z-index:5;padding:calc(env(safe-area-inset-top,0px) + 10px) max(14px,env(safe-area-inset-right,0px)) 10px max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px;pointer-events:none;background:linear-gradient(rgba(11,6,32,.9),rgba(11,6,32,0))}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.home{pointer-events:auto;display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:99px;border:1.5px solid var(--pool);background:rgba(11,6,32,.85);color:#e8fffb;font-weight:800;font-size:15px;text-decoration:none}
+.snd{pointer-events:auto;min-height:44px;padding:8px 14px;border-radius:99px;border:1.5px solid var(--gold);background:rgba(11,6,32,.85);color:var(--ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.snd[aria-pressed=true]{background:var(--gold);color:#2a1600}
+.score{display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:16px}
+.chip{padding:5px 10px;border-radius:12px;background:rgba(11,6,32,.8);border:1.5px solid rgba(255,210,122,.5)}
+.chip b{font-size:20px;color:var(--gold)}
+.chip.h b{color:#9ff3ea}
+.chip.bump{animation:bump .35s}
+@keyframes bump{50%{transform:scale(1.25)}}
+.stage{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.stage span{display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:14px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage span i{display:block;height:8px;border-radius:5px;background:rgba(255,255,255,.15);overflow:hidden}
+.stage span i b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--gold))}
+.stage span.on{color:var(--gold)}
+.combo{text-align:center;font-family:var(--mono);font-size:15px;color:#9ff3ea;min-height:1.2em}
+.pad{position:fixed;left:0;right:0;bottom:0;z-index:5;display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:10px;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(14px,env(safe-area-inset-left,0px));background:linear-gradient(rgba(11,6,32,0),rgba(11,6,32,.9))}
+.pad button{min-height:68px;border-radius:20px;border:2px solid rgba(255,210,122,.7);background:rgba(26,15,51,.92);color:var(--ink);font:inherit;font-weight:800;font-size:17px;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.pad button.dance{position:relative;overflow:hidden;background:linear-gradient(180deg,#ffe2a0,var(--gold2));color:#2a1600;border-color:#fff3d6;font-size:20px}
+.pad button.dance::after{content:"";position:absolute;inset:0;border-radius:18px;box-shadow:inset 0 0 0 calc(var(--pulse,0) * 6px) rgba(255,79,154,.9)}
+.pad button:active{transform:scale(.96)}
+.toast{position:fixed;left:50%;top:30%;z-index:6;transform:translate(-50%,-50%);width:min(92vw,520px);text-align:center;font-family:var(--display);font-size:clamp(28px,8vw,44px);line-height:1.05;color:var(--ink);text-shadow:0 0 24px rgba(255,120,200,.9),0 3px 0 #0009;pointer-events:none;opacity:0;transition:opacity .25s}
+.toast small{display:block;font-family:var(--body);font-weight:800;font-size:18px;margin-top:8px;text-shadow:0 2px 0 #000a}
+.toast.show{opacity:1}
+.judge{position:fixed;left:50%;top:46%;z-index:6;transform:translateX(-50%);font-family:var(--display);font-size:30px;pointer-events:none;text-shadow:0 2px 0 #000;opacity:0}
+.judge.go{animation:judge .5s ease-out}
+@keyframes judge{0%{opacity:1;transform:translate(-50%,0) scale(1.3)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}
+.big{position:fixed;inset:0;z-index:7;display:grid;place-items:center;pointer-events:none;font-family:var(--display);font-size:clamp(90px,34vw,200px);color:#fff3d6;text-shadow:0 0 40px rgba(255,180,90,.95)}
+.flash{position:fixed;inset:0;z-index:8;background:#fff;pointer-events:none;opacity:0;transition:opacity .5s}
+.flash.on{opacity:.85;transition:none}
+.screen{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 16px) max(16px,env(safe-area-inset-left,0px));background:radial-gradient(circle at 50% 30%,rgba(74,30,110,.88),rgba(11,6,32,.97));overflow-y:auto}
+.card{width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px;text-align:center;margin:auto}
+.kick{font-family:var(--mono);font-size:14px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1;color:var(--ink);text-shadow:0 0 26px rgba(255,120,200,.7);text-wrap:balance}
+h1{font-size:clamp(44px,13vw,66px)}
+h2{font-size:clamp(32px,9.5vw,46px)}
+.lineup{display:grid;gap:6px;text-align:left;font-family:var(--mono);font-size:14px}
+.lineup div{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.06);border-left:4px solid var(--c)}
+.lineup b{font-family:var(--body);font-size:16px;color:var(--ink)}
+.how{list-style:none;margin:0;padding:0;display:grid;gap:8px;text-align:left}
+.how li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,210,122,.3);font-size:16px;line-height:1.35}
+.how li b{color:var(--gold)}
+.how em{font-style:normal;font-size:22px;line-height:1;flex:none}
+.btn{min-height:56px;border-radius:99px;border:0;background:linear-gradient(180deg,#ffe2a0,var(--gold2));color:#2a1600;font:inherit;font-weight:800;font-size:18px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;padding:10px 18px}
+.btn.alt{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:var(--ink)}
+.btn.teal{background:linear-gradient(180deg,#9ff3ea,#2ed3c6);color:#062a27}
+.note{font-size:15px;color:var(--muted);margin:0}
+.tally{display:grid;gap:8px;font-family:var(--mono);font-size:18px}
+.tally div{display:flex;justify-content:space-between;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.06)}
+.tally b{color:var(--gold);font-size:22px}
+.tally .tot{background:rgba(255,210,122,.16);border:1.5px solid var(--gold)}
+.tally .tot b{font-size:30px}
+.rank{font-family:var(--display);font-size:clamp(26px,8vw,36px);color:#9ff3ea;line-height:1.05}
+:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cards{display:grid;gap:10px}
+.pc{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;text-align:left;padding:14px;border-radius:18px;border:2px solid rgba(255,210,122,.6);background:linear-gradient(160deg,rgba(255,79,154,.18),rgba(46,211,198,.12));color:var(--ink);font:inherit;cursor:pointer;min-height:64px}
+.pc em{grid-row:span 2;font-style:normal;font-size:34px}
+.pc b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--gold)}
+.pc span{font-size:15px;line-height:1.3}
+.pc:hover,.pc:focus-visible{border-color:#fff;transform:translateY(-2px)}
+.squad{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.squad span{padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);font-size:15px}
+.tree{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tree div{padding:8px 4px;border-radius:12px;border:1.5px dashed rgba(255,255,255,.3);font-size:14px;line-height:1.2;color:var(--muted)}
+.tree div b{display:block;font-size:22px;margin-bottom:2px}
+.tree div.on{border-style:solid;border-color:var(--gold);color:var(--ink);background:rgba(255,210,122,.12)}
+.unlock{font-family:var(--display);font-size:24px;color:var(--gold)}
+.nojs{padding:24px 16px;max-width:520px;margin:auto;font-size:17px;line-height:1.5}
+.nojs a{color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.chip.bump,.judge.go{animation:none}.toast,.flash{transition:none}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<noscript><div class="nojs"><h1>The Running Order</h1><p>A 3D dance-floor game through Gordon’s festival nights, for his 56th. It needs JavaScript to play.</p><p><a href="../">Back to the birthday page</a></p></div></noscript>
+<canvas id="c" aria-label="3D dance floor: you dance through four festival stages toward the rail"></canvas>
+
+<div class="hud" id="hud" hidden>
+  <div class="row"><a class="home" href="../">← Birthday page</a><button class="snd" id="snd" type="button" aria-pressed="false">🔇 Sound off</button></div>
+  <div class="score"><span class="chip" id="chJ">✨ <b id="joy">0</b></span><span>×</span><span class="chip h" id="chC">👯 <b id="crew">1.0</b></span></div>
+  <div class="stage" aria-hidden="true"><span id="s0">EDC '16<i><b></b></i></span><span id="s1">Outside Lands<i><b></b></i></span><span id="s2">Red Rocks<i><b></b></i></span><span id="s3">Countdown<i><b></b></i></span></div>
+  <div class="combo" id="combo" aria-live="off"></div>
+</div>
+<div class="pad" id="pad" hidden>
+  <button type="button" id="bl" aria-label="Move left">◀ Left</button>
+  <button type="button" id="bd" class="dance" aria-label="Dance on the beat">💃 Dance</button>
+  <button type="button" id="br" aria-label="Move right">Right ▶</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="judge" id="judge" aria-hidden="true"></div>
+<div class="big" id="big" aria-live="assertive"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+
+<div class="screen" id="start">
+  <div class="card">
+    <span class="kick">Gordon turns 56 · fifteen years on the floor</span>
+    <h1>The Running Order</h1>
+    <p class="note">You’re Gordon. Tonight’s set list is your own: four real nights, one dance floor, all the way to the rail.</p>
+    <div class="lineup">
+      <div style="--c:#ff4f9a"><b>EDC Las Vegas</b><span>2016 · “First timer”</span></div>
+      <div style="--c:#ffb340"><b>Outside Lands</b><span>Golden Gate Park · 3 trips</span></div>
+      <div style="--c:#e0523a"><b>Red Rocks</b><span>Colorado · 8 nights</span></div>
+      <div style="--c:#9ff3ea"><b>Countdown NYE</b><span>with Joe · midnight</span></div>
+    </div>
+    <ul class="how">
+      <li><em>💃</em><span><b>Tap Dance on the beat.</b> The pink ring closes on you with every kick drum. Tap as it lands.</span></li>
+      <li><em>💗</em><span><b>Dance next to a glowing crowd</b> and they join your crew, dancing behind you. Crew multiplies everything.</span></li>
+      <li><em>◀▶</em><span><b>Switch lanes</b> to hit light gates and dodge people who stopped to film. Bumps cost your combo, never the night.</span></li>
+    </ul>
+    <p class="kick" style="margin-top:4px">Your festival passport</p>
+    <div class="tree" id="tree"></div>
+    <button class="btn" id="go" type="button">Start with sound 🔊 (best)</button>
+    <button class="btn alt" id="goq" type="button">Start quietly 🔇 (follow the ring)</button>
+    <p class="note" id="best"></p>
+    <a class="btn teal" href="../">← Back to the birthday page</a>
+    <p class="note" id="loadmsg">Loading the stage…</p>
+  </div>
+</div>
+
+<div class="screen" id="call" hidden>
+  <div class="card">
+    <span class="kick" id="callk">Set break · call your play</span>
+    <h2 id="callh">EDC Las Vegas</h2>
+    <p class="note" id="calls"></p>
+    <div class="squad" id="squad"></div>
+    <div class="cards" id="cards"></div>
+  </div>
+</div>
+
+<div class="screen" id="end" hidden>
+  <div class="card">
+    <span class="kick">Happy New Year. Happy 56th.</span>
+    <h2 id="endh">You made the rail, Gordon.</h2>
+    <div class="tally" aria-live="polite">
+      <div><span>✨ Joy</span><b id="tJ">0</b></div>
+      <div><span>👯 Crew</span><b id="tC">×1.0</b></div>
+      <div class="tot"><span>Score</span><b id="tS">0</b></div>
+    </div>
+    <p class="note">Target: <b style="color:var(--gold)">5,600</b> (56 × 100)</p>
+    <div class="rank" id="rank"></div>
+    <p class="note" id="stats"></p>
+    <p class="note" id="secrets"></p>
+    <div class="unlock" id="unlock" aria-live="polite"></div>
+    <div class="tree" id="tree2"></div>
+    <button class="btn" id="again" type="button">Run it back ↺</button>
+    <a class="btn teal" href="../">← Back to the birthday page</a>
+    <a class="btn alt" href="../#faraway">🏮 Visit the Faraway Room</a>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+import {EffectComposer} from "three/addons/postprocessing/EffectComposer.js";
+import {RenderPass} from "three/addons/postprocessing/RenderPass.js";
+import {UnrealBloomPass} from "three/addons/postprocessing/UnrealBloomPass.js";
+import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
+import {RoomEnvironment} from "three/addons/environments/RoomEnvironment.js";
+
+const $=s=>document.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const KEY="dj56-floor";let SAVE={best:0,runs:0};try{SAVE=Object.assign(SAVE,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(SAVE))}catch(e){}};
+if(SAVE.best)$("#best").textContent="Your best: "+SAVE.best.toLocaleString();
+
+/* ---------- audio: all ElevenLabs ---------- */
+const BPM=124,BEAT=60/BPM;
+let soundOn=false;const A={};const FILES={music:"ro-music.mp3",clap:"ro-clap.mp3",gate:"ro-gate.mp3",join:"ro-join.mp3",bump:"ro-bump.mp3",rail:"ro-rail.mp3",countdown:"ro-countdown.mp3",fire:"ro-fireworks.mp3"};
+function aud(n){if(!A[n]){A[n]=new Audio(FILES[n]);A[n].preload="auto";if(n==="music"){A[n].volume=.6}}return A[n]}
+function play(n,rate,vol){if(!soundOn)return;try{const a=n==="music"?aud(n):aud(n).cloneNode();if("preservesPitch" in a)a.preservesPitch=false;a.playbackRate=rate||1;if(vol!=null)a.volume=vol;const p=a.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+function setSound(on){soundOn=on;const b=$("#snd");b.setAttribute("aria-pressed",on);b.textContent=on?"🔊 Sound on":"🔇 Sound off";
+  try{const m=aud("music");if(on&&state==="run"){m.currentTime=songT();m.play().catch(()=>{})}else if(!on)m.pause()}catch(e){}}
+$("#snd").addEventListener("click",()=>setSound(!soundOn));
+// the song clock: music time when playing, else a steady internal clock, so the beat never drifts
+let clock0=0;function songT(){const m=A.music;if(soundOn&&m&&!m.paused&&m.currentTime>0)return m.currentTime;return (performance.now()-clock0)/1000}
+function beatInfo(){const t=songT(),ph=t/BEAT,frac=ph-Math.floor(ph);const off=frac<.5?frac*BEAT:(frac-1)*BEAT;return{t,n:Math.round(ph),frac,off}}
+
+/* ---------- renderer ---------- */
+const canvas=$("#c");let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"})}catch(e){$("#loadmsg").textContent="Your browser can’t show 3D right now. The birthday page still has plenty to play.";throw e}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene();
+{const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(new RoomEnvironment(),.04).texture}
+scene.fog=new THREE.Fog(0x2a1250,30,110);
+const camera=new THREE.PerspectiveCamera(60,1,.1,500);
+const hemi=new THREE.HemisphereLight(0xffd6f0,0x2a1250,1.0);scene.add(hemi);
+const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(-6,12,-8);scene.add(key);
+const ramp=(()=>{const t=new THREE.DataTexture(new Uint8Array([80,165,255]),3,1,THREE.RedFormat);t.minFilter=t.magFilter=THREE.NearestFilter;t.needsUpdate=true;return t})();
+const toon=(c,em)=>new THREE.MeshToonMaterial({color:c,gradientMap:ramp,emissive:em||0});
+const inkMat=new THREE.MeshBasicMaterial({color:0x14081f,side:THREE.BackSide});
+function toonify(root,outline,named){const list=[];root.traverse(o=>{if(o.isMesh)list.push(o)});list.forEach(o=>{const m=o.material;
+  const em=(m.emissiveIntensity>0&&m.emissive&&(m.emissive.r+m.emissive.g+m.emissive.b)>0)?m.emissive.clone().multiplyScalar(Math.min(3,m.emissiveIntensity)):null;
+  if(m.metalness>.8){o.material=new THREE.MeshStandardMaterial({color:0xe9eeff,metalness:1,roughness:.12,flatShading:true,emissive:0x3a2a70,emissiveIntensity:.35})}
+  else o.material=new THREE.MeshToonMaterial({color:m.color,gradientMap:ramp,emissive:em||0});
+  if(outline){const ol=new THREE.Mesh(o.geometry,inkMat);ol.scale.setScalar(1.06);o.add(ol)}})}
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));
+const bloom=new UnrealBloomPass(new THREE.Vector2(256,256),.7,.5,.82);composer.addPass(bloom);composer.addPass(new OutputPass());
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);composer.setSize(w,h);camera.aspect=w/h;camera.fov=w<h?68:54;camera.updateProjectionMatrix()}
+addEventListener("resize",resize);resize();
+
+/* ---------- the running order (his own nights; ledger receipts) ---------- */
+const LEG=230,LEN=LEG*4;
+const STAGES=[
+  {name:"EDC Las Vegas",sub:"2016 · “First timer”",sky:"sky-edc.jpg",fog:0x3a1260,floor:0x2a1650,led:[0xff4f9a,0x2ed3c6,0x8a5cf6,0xff4f9a,0x2ed3c6],accent:[0xff4f9a,0x2ed3c6,0xb388ff]},
+  {name:"Outside Lands",sub:"Golden Gate Park · three trips",sky:"sky-ol.jpg",fog:0xc89a7a,floor:0x4a5a3a,led:[0xffb340,0xffd27a,0xff8c5a,0xffd27a,0xffb340],accent:[0xffd27a,0xffb340,0x9fd36a]},
+  {name:"Red Rocks",sub:"Colorado · eight nights at the rocks",sky:"sky-rr.jpg",fog:0x3a1830,floor:0x5a2a28,led:[0xe0523a,0xffd27a,0x8a5cf6,0xe0523a,0xffd27a],accent:[0xe0523a,0xffd27a,0xb388ff]},
+  {name:"Countdown NYE",sub:"with Joe · midnight is coming",sky:"sky-nye.jpg",fog:0x1a1a4a,floor:0x221a4a,led:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xffd27a],accent:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff]}];
+const skyTex=[];const texLoader=new THREE.TextureLoader();
+STAGES.forEach((s,i)=>texLoader.load(s.sky,t=>{t.colorSpace=THREE.SRGBColorSpace;skyTex[i]=t;if(i===legNow)applySky(i)},undefined,()=>{}));
+function applySky(i){const t=skyTex[i];if(t)scene.background=t;else scene.background=new THREE.Color(STAGES[i].fog);scene.fog.color.setHex(STAGES[i].fog)}
+
+/* floor: a long glowing dance floor with beat-reactive tiles */
+const LANES=[-2.2,0,2.2];
+const floorMat=toon(0x2a1650);const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,LEN+400),floorMat);floor.rotation.x=-Math.PI/2;floor.position.set(0,0,-LEN/2);scene.add(floor);
+const tileG=new THREE.PlaneGeometry(1.9,1.9);const tiles=[];
+{for(let z=0;z>-LEN-60;z-=2.2){for(let l=0;l<3;l++){const m=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.18});const t=new THREE.Mesh(tileG,m);t.rotation.x=-Math.PI/2;t.position.set(LANES[l],.01,z);scene.add(t);tiles.push(t)}}}
+/* approach ring: closes on the dancer on every beat */
+const ring=new THREE.Mesh(new THREE.RingGeometry(.92,1.08,48),new THREE.MeshBasicMaterial({color:0xff4f9a,transparent:true,opacity:.9,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;scene.add(ring);
+const target=new THREE.Mesh(new THREE.RingGeometry(.62,.72,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7,side:THREE.DoubleSide}));target.rotation.x=-Math.PI/2;scene.add(target);
+
+/* stage props per leg */
+const props=[];
+function addProp(o,leg){o.userData.leg=leg;scene.add(o);props.push(o);return o}
+function buildProps(){
+  // EDC: laser towers + ferris lights
+  for(let z=-20;z>-LEG;z-=18)for(const s of[-1,1]){const g=new THREE.Group();const tw=new THREE.Mesh(new THREE.BoxGeometry(.6,9,.6),toon(0x1a1030));tw.position.y=4.5;g.add(tw);
+    const lz=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,30,6),new THREE.MeshBasicMaterial({color:s<0?0xff4f9a:0x2ed3c6,transparent:true,opacity:.75}));lz.position.y=9;lz.userData.laser=true;g.add(lz);g.position.set(s*9,0,z);addProp(g,0)}
+  // Outside Lands: eucalyptus groves and drifting fog sheets
+  const trunkM=toon(0xc9b79a),leafM=toon(0x6f8f6a);
+  for(let z=-LEG-10;z>-LEG*2;z-=11)for(const s of[-1,1]){const g=new THREE.Group();const tr=new THREE.Mesh(new THREE.CylinderGeometry(.25,.4,10,7),trunkM);tr.position.y=5;g.add(tr);
+    for(let k=0;k<3;k++){const b=new THREE.Mesh(new THREE.IcosahedronGeometry(1.8+Math.random(),0),leafM);b.position.set((Math.random()-.5)*2,9+k*1.3,(Math.random()-.5)*2);g.add(b)}
+    g.position.set(s*(9+Math.random()*3),0,z);addProp(g,1)}
+  for(let z=-LEG-20;z>-LEG*2;z-=26){const f=new THREE.Mesh(new THREE.PlaneGeometry(40,6),new THREE.MeshBasicMaterial({color:0xfff0e6,transparent:true,opacity:.22,depthWrite:false}));f.position.set(0,3,z);f.userData.fog=true;addProp(f,1)}
+  // Red Rocks: towering tilted monoliths both sides
+  const rockM=toon(0xb5462e);
+  for(let z=-LEG*2-6;z>-LEG*3;z-=14)for(const s of[-1,1]){const r=new THREE.Mesh(new THREE.DodecahedronGeometry(1,0),rockM);r.scale.set(4+Math.random()*2,10+Math.random()*8,7);r.position.set(s*(12+Math.random()*2),5,z);r.rotation.set(0,Math.random(),s*.25);addProp(r,2)}
+  // Countdown: giant balloons and glowing 2-0-2-x style towers
+  for(let z=-LEG*3-10;z>-LEN;z-=16)for(const s of[-1,1]){const b=new THREE.Mesh(new THREE.SphereGeometry(1.4,16,12),toon([0xffd27a,0xff4f9a,0x9ff3ea,0xffffff][Math.floor(Math.random()*4)]));b.position.set(s*(8+Math.random()*3),6+Math.random()*5,z);b.userData.bob=Math.random()*6;addProp(b,3)}
+}
+/* crowds, joiners and phone-filmers */
+const SKIN=[0x5a3825,0x8d5524,0xc68642,0xe0ac69,0xf1c27d,0x3b2219,0xa86b45];
+const capG=new THREE.CapsuleGeometry(.26,.55,3,8),headG=new THREE.SphereGeometry(.22,10,8);
+const heartG=(()=>{const s=new THREE.Shape();s.moveTo(0,.25);s.bezierCurveTo(0,.4,-.35,.45,-.35,.15);s.bezierCurveTo(-.35,-.1,0,-.25,0,-.4);s.bezierCurveTo(0,-.25,.35,-.1,.35,.15);s.bezierCurveTo(.35,.45,0,.4,0,.25);return new THREE.ShapeGeometry(s)})();
+const heartMat=new THREE.MeshBasicMaterial({color:0xff4f9a,side:THREE.DoubleSide});
+function person(shirt,skin){const p=new THREE.Group();const b=new THREE.Mesh(capG,toon(shirt));b.position.y=.6;const h=new THREE.Mesh(headG,toon(skin));h.position.y=1.2;p.add(b,h);
+  const glow=new THREE.Mesh(new THREE.TorusGeometry(.12,.03,6,12),new THREE.MeshBasicMaterial({color:shirt}));glow.position.set(.3,.85,0);p.add(glow);p.userData.ph=Math.random()*6;return p}
+const crowds=[],gates=[],filmers=[],crew=[];
+function clearRoute(){[...crowds.map(c=>c.g),...gates.map(g=>g.g),...filmers.map(f=>f.g),...crew].forEach(o=>scene.remove(o));crowds.length=gates.length=filmers.length=crew.length=0}
+let rnd=56;const R=()=>(rnd=(rnd*16807)%2147483647)/2147483647;
+function buildRoute(){rnd=56+Math.floor(Math.random()*99999);clearRoute();
+  for(let leg=0;leg<4;leg++){const z0=-leg*LEG,acc=STAGES[leg].accent;
+    for(let z=z0-14;z>z0-LEG+18;z-=12)for(const s of[-1,1]){if(R()<.35)continue;const g=new THREE.Group();const ppl=[];
+      for(let i=0;i<4;i++){const p=person(acc[(i+Math.floor(-z))%acc.length],SKIN[Math.floor(R()*SKIN.length)]);p.position.set((R()-.5)*1.4,0,(i-1.5)*.7);g.add(p);ppl.push(p)}
+      const wants=leg===0?R()<.5:R()<.65;const heart=new THREE.Mesh(heartG,heartMat);heart.position.set(-s*.3,2.4,0);heart.scale.setScalar(1.4);heart.visible=wants;g.add(heart);
+      g.position.set(s*5.2,0,z+R()*4);scene.add(g);crowds.push({g,ppl,side:s,z:g.position.z,wants,joined:false,heart})}
+    for(let z=z0-24;z>z0-LEG+20;z-=(leg===0?20:26)){const lane=Math.floor(R()*3);const g=new THREE.Group();const col=acc[Math.floor(R()*acc.length)];
+      const arch=new THREE.Mesh(new THREE.TorusGeometry(1.05,.09,8,32,Math.PI),new THREE.MeshBasicMaterial({color:col}));g.add(arch);
+      g.position.set(LANES[lane],0,z);scene.add(g);gates.push({g,lane,z,taken:false})}
+    if(leg>=1)for(let z=z0-40;z>z0-LEG+30;z-=(leg===3?22:32)){const lane=Math.floor(R()*3);if(gates.some(q=>q.lane===lane&&Math.abs(q.z-z)<6))continue;
+      const g=person(0x8f87a6,SKIN[Math.floor(R()*SKIN.length)]);const ph=new THREE.Mesh(new THREE.BoxGeometry(.18,.3,.04),new THREE.MeshBasicMaterial({color:0xbfe8ff}));ph.position.set(0,1.5,.35);g.add(ph);
+      const lt=new THREE.PointLight(0xbfe8ff,2,3);lt.position.set(0,1.5,.6);g.add(lt);g.position.set(LANES[lane],0,z);g.rotation.y=Math.PI;scene.add(g);filmers.push({g,lane,z,hit:false,leg})}}}
+
+/* Blender assets */
+const loader=new GLTFLoader();const load=u=>new Promise((res,rej)=>loader.load(u,g=>res(g.scene),undefined,rej));
+let dancer,arms={},stageProto;const stages=[];const player=new THREE.Group();scene.add(player);
+
+/* particles */
+const MAXP=reduce?200:800;const pGeo=new THREE.BufferGeometry();const pPos=new Float32Array(MAXP*3),pCol=new Float32Array(MAXP*3);
+pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));pGeo.setAttribute("color",new THREE.BufferAttribute(pCol,3));
+const pts=new THREE.Points(pGeo,new THREE.PointsMaterial({size:.2,vertexColors:true,transparent:true,depthWrite:false}));pts.frustumCulled=false;scene.add(pts);
+const parts=[];for(let i=0;i<MAXP;i++){parts.push({life:0,v:new THREE.Vector3(),idx:i});pPos[i*3+1]=-999}
+let pi=0;const tc=new THREE.Color();
+function burst(pos,n,spread,up,cols){for(let k=0;k<n;k++){const p=parts[pi];pi=(pi+1)%MAXP;p.life=1.2+Math.random()*.8;const i=p.idx*3;
+  pPos[i]=pos.x;pPos[i+1]=pos.y;pPos[i+2]=pos.z;p.v.set((Math.random()-.5)*spread,up*(.5+Math.random()*.8),(Math.random()-.5)*spread);tc.setHex(cols[k%cols.length]);pCol[i]=tc.r;pCol[i+1]=tc.g;pCol[i+2]=tc.b}}
+
+/* ---------- strategy: play calls (Madden), crew roles (Football Manager), passport tree (Civ) ---------- */
+const PLAYS=[
+  {id:"rush",e:"🏃",n:"Rail Rush",d:"Light gates pay double this stage, and you move 10% faster."},
+  {id:"both",e:"👯",n:"Crew Call",d:"Glowing crowds on BOTH sides join you, from any lane."},
+  {id:"lock",e:"🎯",n:"Lock In",d:"A wider Perfect window this stage. Easier perfects."},
+  {id:"hype",e:"📣",n:"Hype Man",d:"Combo bonuses arrive early: ×2 at 4, ×3 at 12."},
+  {id:"vibe",e:"🧘",n:"Vibe Check",d:"Nobody stops to film this stage. Clear lanes."}];
+const ROLES={hype:{e:"🔥",n:"Hypebeast",d:"+1 Joy on every perfect, per 3 of them"},nav:{e:"🧭",n:"Navigator",d:"+3 Joy per light gate each"},guard:{e:"🛡️",n:"Bodyguard",d:"blocks one bump"}};
+const TECH=[{e:"🎟️",n:"Kandi Trader",d:"Start with a friend",need:s=>s.runs>=1},{e:"🎫",n:"VIP Wristband",d:"4 play cards",need:s=>s.best>=2000},{e:"🏕️",n:"Camping Pass",d:"Wider perfects",need:s=>s.best>=4000},{e:"👑",n:"Headliner",d:"Gold crown glow",need:s=>s.best>=5600}];
+const techOn=i=>TECH[i].need(SAVE);
+function drawTree(id){const el=$(id);el.innerHTML="";TECH.forEach((t,i)=>{const d=document.createElement("div");if(techOn(i))d.className="on";d.innerHTML="<b>"+(techOn(i)?t.e:"🔒")+"</b>";d.appendChild(document.createTextNode(t.n));d.title=t.d;
+  const sm=document.createElement("small");sm.style.display="block";sm.textContent=techOn(i)?t.d:["Finish 1 run","Score 2,000","Score 4,000","Score 5,600"][i];d.appendChild(sm);el.appendChild(d)})}
+drawTree("#tree");
+let play_=null;const roleCount=()=>{const c={hype:0,nav:0,guard:0};crew.forEach(p=>c[p.userData.role]=(c[p.userData.role]||0)+1);return c};
+function showCall(i){state="call";$("#pad").hidden=true;$("#call").hidden=false;$("#callh").textContent=STAGES[i].name;$("#calls").textContent=STAGES[i].sub+(i===0?" · Pick the play that opens your night.":" · Next stage. What’s the call?");
+  $("#callk").textContent=i===0?"Before the gates open · call your play":"Set break "+i+" of 3 · call your play";
+  const rc=roleCount(),sq=$("#squad");sq.innerHTML="";if(crew.length){Object.keys(ROLES).forEach(k=>{if(!rc[k])return;const s=document.createElement("span");s.textContent=ROLES[k].e+" "+rc[k]+" "+ROLES[k].n+(rc[k]>1?"s":"");s.title=ROLES[k].d;sq.appendChild(s)})}
+  else{const s=document.createElement("span");s.textContent="Your crew is just you. Dance by a 💗 crowd to sign them.";sq.appendChild(s)}
+  const pool=PLAYS.slice().sort(()=>Math.random()-.5).slice(0,techOn(1)?4:3);const cards=$("#cards");cards.innerHTML="";
+  pool.forEach((pl,k)=>{const b=document.createElement("button");b.type="button";b.className="pc";b.innerHTML="<em>"+pl.e+"</em><b>"+pl.n+"</b>";const sp=document.createElement("span");sp.textContent=pl.d;b.appendChild(sp);
+    b.addEventListener("click",()=>{play_=pl.id;$("#call").hidden=true;$("#pad").hidden=false;if(i===0){beginRun()}else{setLeg(i);state="run"}
+      speed=play_==="rush"?12.1:11;filmers.forEach(f=>{if(f.leg===i)f.g.visible=play_!=="vibe"});play("gate",1.1,.8);toast(pl.e+" "+pl.n,pl.d,2000);setTimeout(()=>$("#bd").focus({preventScroll:true}),50)});cards.appendChild(b)});
+  setTimeout(()=>cards.firstChild.focus({preventScroll:true}),60)}
+
+/* ---------- state ---------- */
+let state="load",lane=1,px=0,dist=0,speed=11,joy=0,combo=0,bestCombo=0,perfects=0,perfRun=0,legNow=0,lastBeat=-1,lastDanceBeat=-99,squash=0,spin=0,shake=0,rails=0,secrets=new Set(),fin=null,finalCount=-1;
+const crewMult=()=>1+crew.length*.1;
+const v3=new THREE.Vector3();
+function hud(){$("#joy").textContent=Math.round(joy).toLocaleString();$("#crew").textContent=crewMult().toFixed(2);
+  for(let i=0;i<4;i++){const f=Math.max(0,Math.min(1,(dist-i*LEG)/LEG));$("#s"+i+" b").style.width=(f*100)+"%";$("#s"+i).classList.toggle("on",i===legNow)}
+  $("#combo").textContent=combo>=2?("Combo "+combo+(combo>=24?" · ×3 IN THE ZONE":combo>=8?" · ×2":"")):""}
+function bumpChip(id){const e=$(id);e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")}
+let toastT=0;function toast(t,sub,ms){const e=$("#toast");e.innerHTML="";e.appendChild(document.createTextNode(t));if(sub){const s=document.createElement("small");s.textContent=sub;e.appendChild(s)}e.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("show"),ms||1600)}
+function judge(txt,col){const j=$("#judge");j.textContent=txt;j.style.color=col;j.classList.remove("go");void j.offsetWidth;j.classList.add("go")}
+function flash(){if(reduce)return;const f=$("#flash");f.classList.add("on");requestAnimationFrame(()=>requestAnimationFrame(()=>f.classList.remove("on")))}
+
+/* ---------- input ---------- */
+function move(d){if(state!=="run")return;const n=Math.max(0,Math.min(2,lane+d));if(n!==lane){lane=n;squash=.8}}
+function dance(){if(state!=="run")return;const b=beatInfo();if(b.n===lastDanceBeat){return}const a=Math.abs(b.off);
+  const win=.075+(play_==="lock"?.035:0)+(techOn(2)?.015:0);const t2=play_==="hype"?4:8,t3=play_==="hype"?12:24;const rc=roleCount();
+  if(a<=win){lastDanceBeat=b.n;combo++;perfects++;perfRun++;const mul=combo>=t3?3:combo>=t2?2:1;joy+=4*mul+Math.floor(rc.hype/3);judge("PERFECT","#ffd27a");play("clap",1.05,.9);spin=1;burst(v3.set(px,2.2,player.position.z),reduce?8:26,2.4,4,STAGES[legNow].accent);recruit(2)}
+  else if(a<=win+.085){lastDanceBeat=b.n;combo++;perfRun=0;const mul=combo>=t3?3:combo>=t2?2:1;joy+=2*mul;judge("GOOD","#9ff3ea");play("clap",.92,.7);spin=.6;burst(v3.set(px,2,player.position.z),reduce?4:12,2,3,STAGES[legNow].accent);recruit(1)}
+  else{combo=0;perfRun=0;judge(b.off<0?"a little early":"a little late","#c9b8ef");squash=.5}
+  if(combo>bestCombo)bestCombo=combo;
+  if(perfRun===16&&!secrets.has("floor")){secrets.add("floor");joy+=100;toast("ALWAYS THE DANCE FLOOR","16 perfect in a row. Secret found: +100 Joy",2200);burst(v3.set(px,5,player.position.z-3),reduce?40:200,10,3,[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff]);play("join",1.2,1)}
+  if(combo===t2)toast("×2 Combo","Keep it on the beat",900);if(combo===t3)toast("IN THE ZONE","×3 Joy on every beat",1200);
+  bumpChip("#chJ");hud()}
+function recruit(power){const pz=player.position.z;let n=0;
+  crowds.forEach(c=>{if(!c.wants||c.joined)return;const dz=c.z-pz;if(dz>-2&&dz<7&&(lane===1||play_==="both"||(lane===0&&c.side<0)||(lane===2&&c.side>0))){c.joined=true;c.heart.visible=false;n++;
+    c.ppl.forEach(p=>{if(crew.length>=24){c.g.remove(p);return}c.g.remove(p);scene.add(p);p.position.set(c.g.position.x+p.position.x,0,c.z);p.userData.slot=crew.length;p.userData.role=["hype","nav","guard","hype"][crew.length%4];crew.push(p)});scene.remove(c.g)}});
+  if(n){play("join",1+Math.random()*.1,.85);bumpChip("#chC");const rc2=roleCount();toast(n>1?n+" crews signed!":"New crew signed!","Crew ×"+crewMult().toFixed(2)+" · 🔥"+rc2.hype+" 🧭"+rc2.nav+" 🛡️"+rc2.guard,1300)}}
+addEventListener("keydown",e=>{if(e.repeat)return;if(e.key==="ArrowLeft"||e.key==="a"){move(-1);e.preventDefault()}else if(e.key==="ArrowRight"||e.key==="d"){move(1);e.preventDefault()}else if(e.key===" "||e.key==="ArrowUp"||e.key==="Enter"&&state==="run"){dance();e.preventDefault()}});
+$("#bl").addEventListener("pointerdown",e=>{e.preventDefault();move(-1)});$("#br").addEventListener("pointerdown",e=>{e.preventDefault();move(1)});$("#bd").addEventListener("pointerdown",e=>{e.preventDefault();dance()});
+// keyboard/AT activation of the pad buttons (detail 0) without double-firing pointer taps
+["#bl","#br","#bd"].forEach((s,i)=>$(s).addEventListener("click",e=>{if(e.detail===0)[()=>move(-1),()=>move(1),dance][i]()}));
+let sx=0,sy=0;canvas.addEventListener("pointerdown",e=>{sx=e.clientX;sy=e.clientY});
+canvas.addEventListener("pointerup",e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>34&&Math.abs(dx)>Math.abs(dy))move(dx>0?1:-1);else if(Math.abs(dx)<12&&Math.abs(dy)<12)dance()});
+
+/* ---------- legs ---------- */
+function setLeg(i){legNow=i;applySky(i);floorMat.color.setHex(STAGES[i].floor);hemi.groundColor.setHex(STAGES[i].fog);
+  props.forEach(p=>p.visible=p.userData.leg===i);stages.forEach((s,k)=>s.visible=k===i);
+  toast(STAGES[i].name,STAGES[i].sub,2400)}
+function reachRail(i){rails++;joy+=50;flash();play("rail",1,.9);burst(v3.set(px,4,player.position.z-4),reduce?40:220,12,4,STAGES[i].accent);toast("You made the rail!","+50 Joy · "+STAGES[i].name,1600);
+  if(i<3){state="break";setTimeout(()=>showCall(i+1),900)}}
+
+/* ---------- loop ---------- */
+const clk=new THREE.Clock();
+function tick(){const dt=Math.min(.05,clk.getDelta()),t=clk.elapsedTime;const b=beatInfo();
+  if(state==="run"){dist+=speed*dt;const leg=Math.min(3,Math.floor(dist/LEG));
+    if(Math.floor((dist-speed*dt)/LEG)<Math.floor(dist/LEG)&&Math.floor(dist/LEG)<=4){reachRail(Math.floor(dist/LEG)-1)}
+    if(dist>=LEN&&!fin)startFinale()}
+  // beat visuals
+  const onBeat=b.n!==lastBeat;if(onBeat){lastBeat=b.n}
+  const pulse=Math.max(0,1-b.frac*4);$("#bd").style.setProperty("--pulse",(state==="run"?pulse:0).toFixed(2));
+  const approach=b.frac<.5?1+(1-b.frac*2)*0:1+(1-b.frac)*2.2; // ring shrinks over the second half of each beat
+  const s=b.frac>=.5?1+(1-b.frac)*2*2.2:1+Math.max(0,.15-b.frac)*2;ring.scale.setScalar(Math.max(.68,s*.68));ring.material.opacity=b.frac>=.5?.95:Math.max(0,.9-b.frac*3);
+  tiles.forEach((tl,i)=>{const dz=tl.position.z-player.position.z;if(dz>20||dz<-80){tl.visible=false;return}tl.visible=true;tl.material.opacity=.1+pulse*((i+b.n)%3===0?.45:.12);tl.material.color.setHex(STAGES[legNow].accent[(i+b.n)%STAGES[legNow].accent.length])});
+  // player
+  px+=(LANES[lane]-px)*Math.min(1,dt*14);player.position.set(px,0,-dist);
+  squash*=Math.pow(.01,dt);spin=Math.max(0,spin-dt*2.5);
+  if(dancer){const bob=Math.abs(Math.sin(b.frac*Math.PI));dancer.position.y=bob*.18+spin*.3;dancer.rotation.y=Math.PI+spin*Math.PI*2*(1-spin);dancer.scale.set(1+squash*.12,1-squash*.15,1);
+    if(arms.L){arms.L.rotation.z=-.4-bob*1.2;arms.R.rotation.z=.4+bob*1.2}}
+  ring.position.set(px,.03,player.position.z);target.position.set(px,.025,player.position.z);
+  // camera
+  const shk=reduce?0:shake;shake*=Math.pow(.02,dt);
+  camera.position.set(px*.5+(Math.random()-.5)*shk,4.6+(Math.random()-.5)*shk,player.position.z+8.2);camera.lookAt(px*.35,1.6,player.position.z-7);
+  // crowds dance on the beat
+  const bob2=Math.abs(Math.sin(b.frac*Math.PI));
+  crowds.forEach(c=>{if(c.joined)return;const dz=player.position.z-c.z;c.g.visible=dz>-14&&dz<70;if(!c.g.visible)return;c.ppl.forEach(p=>{p.position.y=bob2*.25*((p.userData.ph|0)%2?1:.6)});if(c.heart.visible){c.heart.position.y=2.4+bob2*.2;c.heart.lookAt(camera.position)}});
+  // your crew follows in a V behind you
+  crew.forEach((p,i)=>{const side=i%2?1:-1,k=Math.floor(i/2),row=Math.floor(k/3),col=k%3;const tx=px+side*(1.3+col*.75),tz=player.position.z+.4-row*1.1+col*.3;p.position.x+=(tx-p.position.x)*Math.min(1,dt*5);p.position.z+=(tz-p.position.z)*Math.min(1,dt*5);p.position.y=bob2*.3;p.rotation.y=Math.PI});
+  // gates
+  gates.forEach(g=>{if(!g.taken&&player.position.z<=g.z+.3&&player.position.z>g.z-1.2){g.taken=true;if(Math.abs(px-LANES[g.lane])<1.1){joy+=(play_==="rush"?20:10)+3*roleCount().nav;g.g.visible=false;play("gate",1+Math.min(combo,16)*.03,.8);burst(v3.set(LANES[g.lane],1.2,g.z),reduce?8:30,3,4,STAGES[legNow].accent);bumpChip("#chJ")}}});
+  // phone filmers: dodge
+  filmers.forEach(f=>{if(!f.hit&&f.g.visible&&Math.abs(f.z-player.position.z)<.9&&Math.abs(px-LANES[f.lane])<1.1){f.hit=true;
+    const gi=crew.findIndex(p=>p.userData.role==="guard"&&!p.userData.used);if(gi>=0){crew[gi].userData.used=true;judge("BLOCKED 🛡️","#9ff3ea");toast("Your Bodyguard cleared the way","Combo safe",1000);f.g.rotation.z=.6;return}
+    combo=0;perfRun=0;shake=.45;squash=1;play("bump",1,.85);judge("BONK 📱","#ffb3c7");toast("They stopped to film","Combo reset. The night goes on.",1000)}
+    if(f.hit)f.g.rotation.z=Math.min(.6,f.g.rotation.z+dt*2)});
+  // props
+  props.forEach(p=>{if(!p.visible)return;p.children.forEach(c=>{if(c.userData.laser){c.rotation.z=Math.sin(t*1.3+p.position.z)*.6;c.material.opacity=.35+pulse*.6}});if(p.userData.fog)p.position.x=Math.sin(t*.2+p.position.z)*6;if(p.userData.bob!=null)p.position.y+=Math.sin(t*1.5+p.userData.bob)*.01});
+  stages.forEach((s,i)=>{if(!s.visible)return;s.userData.leds.forEach((m,k)=>{m.material.color.setHex(STAGES[i].led[(k+b.n)%5]);m.material.emissive&&m.material.emissive.setHex(STAGES[i].led[(k+b.n)%5])});const orb=s.getObjectByName("orb");if(orb)orb.rotation.y=t*.6});
+  // particles
+  for(const p of parts){if(p.life<=0)continue;p.life-=dt;const i=p.idx*3;p.v.y-=6*dt;pPos[i]+=p.v.x*dt;pPos[i+1]+=p.v.y*dt;pPos[i+2]+=p.v.z*dt;if(p.life<=0||pPos[i+1]<0)pPos[i+1]=-999}
+  pGeo.attributes.position.needsUpdate=true;pGeo.attributes.color.needsUpdate=true;
+  if(fin)finaleTick(dt);
+  if(state==="run")hud();
+  composer.render();requestAnimationFrame(tick)}
+
+/* ---------- finale: midnight with Joe ---------- */
+function startFinale(){fin={t:0,n:10};state="finale";$("#pad").hidden=true;play("countdown",1,1);try{A.music&&(A.music.volume=.25)}catch(e){}toast("Midnight is coming","Countdown with Joe",1800)}
+function finaleTick(dt){fin.t+=dt;const n=10-Math.floor(fin.t/.6);
+  if(n>=1&&n!==finalCount){finalCount=n;$("#big").textContent=n;if(!reduce)shake=.15}
+  if(n<1&&!fin.boom){fin.boom=true;$("#big").textContent="";flash();play("fire",1,1);toast("HAPPY NEW YEAR","and happy 56th, Gordon 💛",3000)}
+  if(fin.boom&&!reduce&&Math.random()<dt*6)burst(v3.set((Math.random()-.5)*26,10+Math.random()*10,player.position.z-30-Math.random()*15),90,9,2,[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xe40303,0x24408e]);
+  if(fin.boom&&fin.t>6+(reduce?-3:3.5)&&!fin.done){fin.done=true;showEnd()}}
+function showEnd(){const score=Math.round(joy*crewMult());const before=TECH.map((t,i)=>techOn(i));SAVE.runs++;const nb=score>SAVE.best&&SAVE.runs>1;if(score>SAVE.best)SAVE.best=score;persist();
+  const newly=TECH.filter((t,i)=>!before[i]&&techOn(i));$("#unlock").textContent=newly.length?"Unlocked: "+newly.map(t=>t.e+" "+t.n).join(", ")+"!":"";drawTree("#tree2");drawTree("#tree");
+  if(techOn(3)&&dancer){const cr=dancer.getObjectByName("crown");if(cr&&cr.material)cr.material.emissive&&cr.material.emissive.setHex(0xffb340)}
+  $("#hud").hidden=true;$("#end").hidden=false;
+  const tJ=$("#tJ"),tC=$("#tC"),tS=$("#tS");tJ.textContent="0";tC.textContent="×1.00";tS.textContent="…";$("#rank").textContent="";
+  $("#stats").textContent="Best combo "+bestCombo+" · "+perfects+" perfect beats · crew of "+crew.length+" · "+rails+" of 4 rails";
+  const steps=reduce?1:24;let k=0;const iv=setInterval(()=>{k++;const f=k/steps;tJ.textContent=Math.round(joy*f).toLocaleString();if(k%3===0)play("clap",.8+f*.6,.5);
+    if(k>=steps){clearInterval(iv);tC.textContent="×"+crewMult().toFixed(2);play("gate",1.2,.8);
+      setTimeout(()=>{tS.textContent=score.toLocaleString();play("join",1,.9);
+        $("#rank").textContent=(score>=5600?"👑 Headliner. You beat 5,600.":score>=2800?"🌈 Front of the rail":"💗 Just getting warmed up")+(nb?" · New best!":"");
+        $("#secrets").textContent=secrets.has("floor")?"Secret found: Always the Dance Floor (16 perfect beats in a row).":"A secret is hiding in 16 perfect beats in a row.";
+        $("#again").focus({preventScroll:true})},reduce?50:500)}},reduce?0:45)}
+
+/* ---------- flow ---------- */
+function start(withSound){buildRoute();crew.forEach(p=>scene.remove(p));crew.length=0;
+  lane=1;px=0;dist=0;joy=0;combo=0;bestCombo=0;perfects=0;perfRun=0;rails=0;lastDanceBeat=-99;secrets=new Set();fin=null;finalCount=-1;$("#big").textContent="";
+  play_=null;$("#start").hidden=true;$("#end").hidden=true;$("#hud").hidden=false;setLegQuiet(0);
+  if(withSound!=null)soundOn=withSound;setSound(soundOn);
+  if(soundOn){try{const m=aud("music");m.loop=true;m.volume=.6;m.currentTime=0;m.play().catch(()=>{})}catch(e){}}clock0=performance.now();
+  if(techOn(0)){const p=person(0xffd27a,SKIN[2]);p.userData.role="hype";scene.add(p);crew.push(p)}
+  hud();showCall(0)}
+function beginRun(){setLeg(0);state="run";hud()}
+$("#go").addEventListener("click",()=>start(true));$("#goq").addEventListener("click",()=>start(false));$("#again").addEventListener("click",()=>start(null));
+
+Promise.all([load("dancer.glb"),load("stage.glb")]).then(([d,st])=>{
+  dancer=d;toonify(dancer,true);dancer.rotation.y=Math.PI;dancer.scale.setScalar(1.05);player.add(dancer);arms.L=dancer.getObjectByName("armL");arms.R=dancer.getObjectByName("armR");
+  const glow=new THREE.PointLight(0xffc0e0,2.2,6,1.6);glow.position.set(0,2.6,1);player.add(glow);
+  toonify(st,false);stageProto=st;
+  for(let i=0;i<4;i++){const s=stageProto.clone(true);const leds=[];s.traverse(o=>{if(o.isMesh){o.material=o.material.clone();if(/^led/.test(o.name)){o.material=new THREE.MeshBasicMaterial({color:STAGES[i].led[0]});leds.push(o)}
+      if(/^beam/.test(o.name)){o.material=new THREE.MeshBasicMaterial({color:STAGES[i].accent[0],transparent:true,opacity:.18,depthWrite:false})}}});
+    s.userData.leds=leds;s.position.set(0,0,-(i+1)*LEG-16);s.visible=i===0;scene.add(s);stages.push(s)}
+  buildProps();buildRoute();setLegQuiet(0);state="title";$("#loadmsg").textContent="";
+}).catch(err=>{$("#loadmsg").textContent="The stage couldn’t load. Try again in a moment.";console.error(err)});
+function setLegQuiet(i){legNow=i;applySky(i);floorMat.color.setHex(STAGES[i].floor);props.forEach(p=>p.visible=p.userData.leg===i);stages.forEach((s,k)=>s.visible=k===i)}
+window.__ro={beat:()=>beatInfo(),state:()=>state};
+requestAnimationFrame(tick);
+</script>
+</body></html>
