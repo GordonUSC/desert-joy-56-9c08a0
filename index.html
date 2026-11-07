@@ -564,22 +564,24 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
   function copy(txt,cb){function old(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}ta.remove();cb(ok)}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){cb(true)},old)}else old()}
   function fallback(){var txt=wishText(),box=document.createElement("div");box.className="fallback";
-    var p1=document.createElement("p");p1.style.margin="0";p1.textContent="The wish mailbox did not answer just now. Your words are safe here:";
+    var p1=document.createElement("p");p1.style.margin="0";p1.textContent="The wish mailbox is busy right now. One tap still gets your wish to Gordon:";
     var pre=document.createElement("pre");pre.textContent=txt;
     var cb=document.createElement("button");cb.type="button";cb.className="ghost-btn";cb.id="copywish";cb.textContent="Copy my wish";
-    var p2=document.createElement("p");p2.style.margin="0";p2.textContent="Then paste it into a text to Gordon directly, if you have his number. Or try sending again in a minute.";
+    var em=document.createElement("a");em.className="gold-btn";em.style.display="flex";em.style.alignItems="center";em.style.justifyContent="center";em.style.textDecoration="none";
+    em.href="mailto:gbellamyai@gmail.com?subject="+encodeURIComponent("Birthday wish for Gordon from "+($("#wname").value.trim()||"a friend"))+"&body="+encodeURIComponent(txt);em.textContent="✉️ Email my wish to Darby";
+    var p2=document.createElement("p");p2.style.margin="0";p2.textContent="That opens your mail app with your wish filled in, to gbellamyai@gmail.com (Darby, Gordon’s AI helper). Just press send. Or copy it and text Gordon directly.";
     cb.addEventListener("click",function(){copy(txt,function(ok){cb.textContent=ok?"Copied ✓":"Select the text above to copy it"})});
-    box.appendChild(p1);box.appendChild(pre);box.appendChild(cb);box.appendChild(p2);var res=$("#wresult");res.innerHTML="";res.appendChild(box)}
+    box.appendChild(p1);box.appendChild(pre);box.appendChild(em);box.appendChild(cb);box.appendChild(p2);var res=$("#wresult");res.innerHTML="";res.appendChild(box)}
   form.addEventListener("submit",function(e){e.preventDefault();var res=$("#wresult");
     if(!$("#wname").value.trim()||!wt.value.trim()){res.innerHTML="";var w=document.createElement("p");w.className="honest";w.textContent="Add your first name and a few words first.";res.appendChild(w);return}
     var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";play("send");
-    var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},12000),done=false;
+    var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},6000),done=false;
     function fin(ok){if(done)return;done=true;clearTimeout(timer);send.disabled=false;send.querySelector("span").textContent="Send my wish ✦";
       S.w=1;mark("wish");(window.fw3d||function(){})("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
     try{fetch("https://formsubmit.co/ajax/gbellamyai@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
       body:JSON.stringify({name:$("#wname").value.trim(),wish:wt.value.trim(),mood:m?m.value:"",_subject:"Desert Joy 56 wish from afar",_captcha:"false",_template:"table"}),signal:ctl?ctl.signal:undefined})
       .then(function(r){return r.json().then(function(j){fin(r.ok&&(j.success===true||j.success==="true"))},function(){fin(false)})},function(){fin(false)})}catch(err){fin(false)}
-    setTimeout(function(){fin(false)},12500)});
+    setTimeout(function(){fin(false)},6500)});
 
   /* 04 toast */
   var glass=$("#glass"),card=$("#toastcard");
