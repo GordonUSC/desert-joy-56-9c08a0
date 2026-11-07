@@ -208,7 +208,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;heigh
 .fw>*:not(.fw3dwrap):not(.glow){position:relative;z-index:1}
 .fwc{background:linear-gradient(180deg,rgba(21,16,58,.62),rgba(11,8,32,.5));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 body.in-fw .meter{visibility:hidden;opacity:0}
-</style></head><body>
+</style><script data-goatcounter="https://cybercooper.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head><body>
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="wrap" id="top">
 
@@ -496,6 +497,7 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
 </script>
 <script>
 /* The Faraway Room */
+function gcEvt(n){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:n,event:true})}catch(e){}}
 (function(){
   function $(s){return document.querySelector(s)}
   var KEY="dj56-faraway",S={l:0,names:[],t:0,stars:{}};
@@ -520,7 +522,7 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
   S.names.slice(-18).forEach(function(n,i){skyLantern(n,i)});
   function lcount(){$("#lcount").textContent=S.l?(S.l===1?"1 lantern lit from this device. It’s in his sky now.":S.l+" lanterns lit from this device."):""}
   function setP(p){btn.style.setProperty("--p",p);orn.style.setProperty("--p",p)}
-  function launch(){var name=($("#lname").value||"").trim().slice(0,24);S.l++;S.names.push(name);mark("lantern");if(S.names.length>40)S.names.shift();save();lcount();
+  function launch(){var name=($("#lname").value||"").trim().slice(0,24);S.l++;S.names.push(name);mark("lantern");gcEvt("lantern_lit");if(S.names.length>40)S.names.shift();save();lcount();
     var r=orn.getBoundingClientRect(),f=document.createElement("div");f.className="flyer";
     f.style.left=(r.left+r.width/2-32)+"px";f.style.top=(r.top+10)+"px";f.style.setProperty("--dx",(Math.random()*120-60)+"px");
     var im=document.createElement("img");im.src="fw-lantern.webp";im.alt="";f.appendChild(im);
@@ -577,7 +579,7 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
     var send=$("#wsend");send.disabled=true;send.querySelector("span").textContent="Sending…";play("send");
     var m=form.querySelector("input[name=mood]:checked"),ctl=window.AbortController?new AbortController():null,timer=setTimeout(function(){if(ctl)ctl.abort()},6000),done=false;
     function fin(ok){if(done)return;done=true;clearTimeout(timer);send.disabled=false;send.querySelector("span").textContent="Send my wish ✦";
-      S.w=1;mark("wish");(window.fw3d||function(){})("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
+      S.w=1;mark("wish");gcEvt("wish_sent");(window.fw3d||function(){})("wish");if(ok){res.innerHTML="";var d=document.createElement("div");d.className="ok";d.textContent="Wish sent ✦ Darby collects these and gives them to Gordon on his birthday.";res.appendChild(d);var r=send.getBoundingClientRect();fx(r.left+r.width/2,r.top,80);play("chime")}else fallback()}
     try{fetch("https://formsubmit.co/ajax/gbellamyai@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
       body:JSON.stringify({name:$("#wname").value.trim(),wish:wt.value.trim(),mood:m?m.value:"",_subject:"Desert Joy 56 wish from afar",_captcha:"false",_template:"table"}),signal:ctl?ctl.signal:undefined})
       .then(function(r){return r.json().then(function(j){fin(r.ok&&(j.success===true||j.success==="true"))},function(){fin(false)})},function(){fin(false)})}catch(err){fin(false)}
@@ -657,7 +659,7 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
     S.secret=1;save()}
 
   /* v2: finale + crew card */
-  function finale(){(window.fw3d||function(){})("finale");play("finale");fx(innerWidth/2,innerHeight*.45,180);
+  function finale(){gcEvt("room_glows");(window.fw3d||function(){})("finale");play("finale");fx(innerWidth/2,innerHeight*.45,180);
     var f=document.createElement("div");f.className="finale";f.setAttribute("role","dialog");f.setAttribute("aria-label","The whole room glows");
     var h=document.createElement("h2");h.textContent="The whole room glows for Gordon";var p=document.createElement("p");p.textContent="You lit all 7. That’s love from far away, and he’ll feel it. Your Honorary Crew card is ready.";
     var b=document.createElement("button");b.type="button";b.className="gold-btn";b.innerHTML="<span>See my card ✦</span>";b.style.maxWidth="320px";

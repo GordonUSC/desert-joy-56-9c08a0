@@ -76,7 +76,10 @@ h2{font-size:clamp(32px,9.5vw,46px)}
 .howto .how{margin:4px 0 10px}
 .tree div,.tree small{font-size:14px}
 .pc[aria-pressed=true]{border-color:#fff;background:linear-gradient(160deg,rgba(255,210,122,.35),rgba(255,79,154,.25));box-shadow:0 0 0 3px var(--gold)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+#gobtn{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+#gobtn.hot{animation:hot 1s ease-in-out infinite alternate}
+@keyframes hot{to{box-shadow:0 0 0 6px rgba(255,210,122,.45),0 8px 24px rgba(0,0,0,.5)}}
 .assign{display:grid;gap:8px}
 .arow{display:grid;grid-template-columns:1fr 48px 36px 48px;align-items:center;gap:6px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.06);text-align:left}
 .arow b{font-size:16px}
@@ -101,6 +104,7 @@ h2{font-size:clamp(32px,9.5vw,46px)}
 .nojs a{color:var(--gold)}
 @media (prefers-reduced-motion:reduce){.chip.bump,.judge.go{animation:none}.toast,.flash{transition:none}}
 </style>
+<script data-goatcounter="https://cybercooper.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head><body>
 <noscript><div class="nojs"><h1>The Running Order</h1><p>A 3D dance-floor game through Gordon’s festival nights, for his 56th. It needs JavaScript to play.</p><p><a href="../">Back to the birthday page</a></p></div></noscript>
@@ -186,6 +190,7 @@ import {OutputPass} from "three/addons/postprocessing/OutputPass.js";
 import {RoomEnvironment} from "three/addons/environments/RoomEnvironment.js";
 
 const $=s=>document.querySelector(s);
+function gcEvt(n){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:n,event:true})}catch(e){}}
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const KEY="dj56-floor";let SAVE={best:0,runs:0};try{SAVE=Object.assign(SAVE,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(SAVE))}catch(e){}};
@@ -328,7 +333,7 @@ function sec(title){const h=document.createElement("p");h.className="kick";h.sty
 function optCard(e,n,lines,sel,on){const b=document.createElement("button");b.type="button";b.className="pc";b.setAttribute("aria-pressed","false");b.innerHTML="<em>"+e+"</em><b>"+n+"</b>";
   const sp=document.createElement("span");lines.forEach((l,k)=>{if(k)sp.appendChild(document.createElement("br"));sp.appendChild(document.createTextNode(l))});b.appendChild(sp);
   b.addEventListener("click",()=>{[...b.parentNode.children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");on();play("clap",1.2,.6);ready()});return b}
-function ready(){const need=(callSlot===1||callSlot===2)?pick.route!=null:true;$("#gobtn").disabled=!(need&&pick.play)}
+function ready(){const need=(callSlot===1||callSlot===2)?pick.route!=null:true;const g=$("#gobtn");if(!g)return;g.disabled=!(need&&pick.play);g.textContent=g.disabled?(pick.play?"Pick the night above ↑":"Call a play to continue"):(callSlot===0?"Gates open ▶":"Back on the floor ▶");if(!g.disabled){g.classList.add("hot")}}
 let callSlot=0;
 function showCall(i){callSlot=i;state="call";$("#pad").hidden=true;$("#call").hidden=false;pick={route:null,play:null};
   $("#callk").textContent=i===0?"Before the gates open":"Set break "+i+" of 3";
@@ -458,7 +463,7 @@ function finaleTick(dt){fin.t+=dt;const n=10-Math.floor(fin.t/.6);
   if(n<1&&!fin.boom){fin.boom=true;$("#big").textContent="";flash();play("fire",1,1);toast("HAPPY NEW YEAR","and happy 56th, Gordon 💛",3000)}
   if(fin.boom&&!reduce&&Math.random()<dt*6)burst(v3.set((Math.random()-.5)*26,10+Math.random()*10,player.position.z-30-Math.random()*15),90,9,2,[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xe40303,0x24408e]);
   if(fin.boom&&fin.t>6+(reduce?-3:3.5)&&!fin.done){fin.done=true;showEnd()}}
-function showEnd(){const score=Math.round(joy*crewMult());const before=TECH.map((t,i)=>techOn(i));SAVE.runs++;const nb=score>SAVE.best&&SAVE.runs>1;if(score>SAVE.best)SAVE.best=score;persist();
+function showEnd(){const score=Math.round(joy*crewMult());gcEvt("floor_finish");if(score>=5600)gcEvt("floor_headliner");const before=TECH.map((t,i)=>techOn(i));SAVE.runs++;const nb=score>SAVE.best&&SAVE.runs>1;if(score>SAVE.best)SAVE.best=score;persist();
   const newly=TECH.filter((t,i)=>!before[i]&&techOn(i));$("#unlock").textContent=newly.length?"Unlocked: "+newly.map(t=>t.e+" "+t.n).join(", ")+"!":"";drawTree("#tree2");drawTree("#tree");
   if(techOn(3)&&dancer){const cr=dancer.getObjectByName("crown");if(cr&&cr.material)cr.material.emissive&&cr.material.emissive.setHex(0xffb340)}
   $("#hud").hidden=true;$("#end").hidden=false;
@@ -478,7 +483,7 @@ function start(withSound){buildRoute();crew.forEach(p=>scene.remove(p));crew.len
   if(withSound!=null)soundOn=withSound;setSound(soundOn);
   if(soundOn){try{const m=aud("music");m.loop=true;m.volume=.6;m.currentTime=0;m.play().catch(()=>{})}catch(e){}}clock0=performance.now();
   if(techOn(0)){const p=person(0xffd27a,SKIN[2]);p.userData.role="hype";scene.add(p);crew.push(p)}
-  hud();stageLabels();showCall(0)}
+  hud();stageLabels();showCall(0);gcEvt("floor_start")}
 function beginRun(){setLeg(0);state="run";hud();coachN=0}
 $("#go").addEventListener("click",()=>start(true));$("#goq").addEventListener("click",()=>start(false));$("#again").addEventListener("click",()=>start(null));
 
