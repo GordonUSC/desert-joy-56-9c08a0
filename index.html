@@ -4,8 +4,8 @@
 <title>Desert Joy 56</title>
 <meta name="description" content="Gordon Bellamy turns 56. Can’t make it to Palm Springs? The Faraway Room is for you: light a lantern, send a wish, raise a glass.">
 <meta property="og:title" content="Desert Joy 56">
-<meta property="og:description" content="Can’t make it to Palm Springs? Light a lantern, send a wish and raise a glass for Gordon’s 56th.">
-<meta property="og:image" content="fw-hero.jpg">
+<meta property="og:description" content="Gordon turns 56 at Palm Springs Pride. Play his weekend, light a lantern in the Faraway Room, or dance his favorite nights in 3D. Can’t make it? Light a lantern, send a wish and raise a glass for Gordon’s 56th.">
+<meta property="og:image" content="https://gordonusc.github.io/desert-joy-56-9c08a0/hero.jpg"><meta property="og:image:width" content="828"><meta property="og:image:height" content="1100"><meta property="og:url" content="https://gordonusc.github.io/desert-joy-56-9c08a0/"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://gordonusc.github.io/desert-joy-56-9c08a0/hero.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Figtree:wght@400;600;800&family=DM+Mono:wght@500&display=swap">
 <style>
 :root{--night:#24123d;--plum:#3a1f5c;--card:#fff4e2;--ink:#24123d;--muted:#6c5a86;--sun:#ffc23d;--pink:#ff4f9a;--pool:#2ed3c6;--sage:#9fd36a;
@@ -498,6 +498,14 @@ async function boot(){let THREE;try{THREE=await import("three")}catch(e){return}
 </script>
 <script>
 /* The Faraway Room */
+function thankYou(name){try{var a=new Audio(window.__thanksSnd||"thanks.mp3");a.volume=.8;var on=window.__sndOn?window.__sndOn():true;if(on){var p=a.play();p&&p.catch&&p.catch(function(){})}}catch(e){}
+  var line=(window.thankHook&&window.thankHook(name))||("Gordon’s gratitude, delivered: thank you"+(name?", "+name:"")+"! Every friend who plays is part of his 56th. 💛");
+  var o=document.createElement("div");o.className="gthanks";o.setAttribute("role","status");
+  var l=document.createElement("div");l.className="glant";l.textContent="🏮";var t=document.createElement("p");t.textContent=line;var b=document.createElement("button");b.type="button";b.textContent="💛 You’re welcome";
+  b.addEventListener("click",function(){o.remove()});o.appendChild(l);o.appendChild(t);o.appendChild(b);document.body.appendChild(o);setTimeout(function(){b.focus()},50);
+  for(var i=0;i<18;i++){var h=document.createElement("i");h.className="gheart";h.textContent=["💛","💗","🧡","💜","💙","💚"][i%6];h.style.left=(5+Math.random()*90)+"vw";h.style.animationDelay=(i*90)+"ms";o.appendChild(h)}
+  try{window.fw3d&&window.fw3d("lantern",{name:name})}catch(e){}
+  setTimeout(function(){if(o.parentNode)o.remove()},9000)}
 /* Send Gordon my score: one tap texts Darby (Gordon's AI helper), who passes every score to Gordon. */
 function scoreBox(host,getText,tag){if(!host||host.querySelector(".gsend"))return;
   var K="dj56-name",nm="";try{nm=localStorage.getItem(K)||""}catch(e){}
@@ -513,7 +521,7 @@ function scoreBox(host,getText,tag){if(!host||host.querySelector(".gsend"))retur
     sms.href="sms:gbellamyai@gmail.com"+(ios?"&":"?")+"body="+encodeURIComponent(t);
     em.href="mailto:gbellamyai@gmail.com?subject="+encodeURIComponent("Birthday game score for Gordon")+"&body="+encodeURIComponent(t)}
   function sent(){try{localStorage.setItem(K,inp.value.trim())}catch(e){}try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:"score_sent",title:tag||"score",event:true})}catch(e){}}
-  inp.addEventListener("input",upd);sms.addEventListener("click",function(){upd();sent()});em.addEventListener("click",function(){upd();sent()});
+  inp.addEventListener("input",upd);sms.addEventListener("click",function(){upd();sent();setTimeout(function(){thankYou(inp.value.trim())},600)});em.addEventListener("click",function(){upd();sent();setTimeout(function(){thankYou(inp.value.trim())},600)});
   cp.addEventListener("click",function(){var t=msg();sent();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){cp.textContent="Copied ✓"},function(){cp.textContent="Copy failed: select the text"})});
   sms.addEventListener("focus",upd);sms.addEventListener("pointerdown",upd);
   row.appendChild(em);row.appendChild(cp);box.appendChild(lab);box.appendChild(sms);box.appendChild(row);box.appendChild(note);host.appendChild(box);upd()}
@@ -528,7 +536,7 @@ function gcEvt(n){try{if(window.goatcounter&&window.goatcounter.count)window.goa
   var fx=window.__djBurst||function(){};
 
   /* sound: off by default */
-  var on=false,A={},files={night:"fw-night.mp3",lantern:"fw-lantern.mp3",clink:"fw-clink.mp3",chime:"fw-chime.mp3",wheel:"fw-wheel.mp3",right:"fw-right.mp3",nope:"fw-nope.mp3",send:"fw-send.mp3",seat:"fw-seat.mp3",star:"fw-star.mp3",finale:"fw-finale.mp3"};
+  window.__sndOn=function(){return on};var on=false,A={},files={night:"fw-night.mp3",lantern:"fw-lantern.mp3",clink:"fw-clink.mp3",chime:"fw-chime.mp3",wheel:"fw-wheel.mp3",right:"fw-right.mp3",nope:"fw-nope.mp3",send:"fw-send.mp3",seat:"fw-seat.mp3",star:"fw-star.mp3",finale:"fw-finale.mp3"};
   function aud(n){if(!A[n]){A[n]=new Audio(files[n]);A[n].preload="auto";if(n==="night"){A[n].loop=true;A[n].volume=.45}}return A[n]}
   function play(n,rate){if(!on)return;try{var a=aud(n);a.currentTime=0;if("preservesPitch" in a)a.preservesPitch=false;if("webkitPreservesPitch" in a)a.webkitPreservesPitch=false;a.playbackRate=rate||1;var p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
   var pill=document.createElement("button");pill.className="sndpill";pill.type="button";pill.setAttribute("aria-pressed","false");pill.textContent="🔇 Sound off";document.body.appendChild(pill);
