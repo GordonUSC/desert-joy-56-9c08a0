@@ -228,16 +228,20 @@ const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(SAVE))}catch(e){}
 if(SAVE.best)$("#best").textContent="Your best: "+SAVE.best.toLocaleString();
 
 /* ---------- audio: all ElevenLabs ---------- */
-const BPM=124,BEAT=60/BPM;
-let soundOn=false;const A={};const FILES={music:"ro-music.mp3",clap:"ro-clap.mp3",gate:"ro-gate.mp3",join:"ro-join.mp3",bump:"ro-bump.mp3",rail:"ro-rail.mp3",countdown:"ro-countdown.mp3",fire:"ro-fireworks.mp3"};
-function aud(n){if(!A[n]){A[n]=new Audio(FILES[n]);A[n].preload="auto";if(n==="music"){A[n].volume=.6}}return A[n]}
+let BEAT=60/124,PHASE=0,curTrack="music";
+let soundOn=false;const A={};const FILES={music:"ro-music.mp3",m_edc:"ro-m-edc.mp3",m_ol:"ro-m-ol.mp3",m_rr:"ro-m-rr.mp3",m_hard:"ro-m-hard.mp3",m_bw:"ro-m-bw.mp3",clap:"ro-clap.mp3",gate:"ro-gate.mp3",join:"ro-join.mp3",bump:"ro-bump.mp3",rail:"ro-rail.mp3",countdown:"ro-countdown.mp3",fire:"ro-fireworks.mp3"};
+function aud(n){if(!A[n]){A[n]=new Audio(FILES[n]);A[n].preload=n===curTrack?"auto":"metadata";if(n==="music"||n.startsWith("m_")){A[n].volume=.6;A[n].loop=true}}return A[n]}
 function play(n,rate,vol){if(!soundOn)return;try{const a=n==="music"?aud(n):aud(n).cloneNode();if("preservesPitch" in a)a.preservesPitch=false;a.playbackRate=rate||1;if(vol!=null)a.volume=vol;const p=a.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
 function setSound(on){soundOn=on;const b=$("#snd");b.setAttribute("aria-pressed",on);b.textContent=on?"🔊 Sound on":"🔇 Sound off";
-  try{const m=aud("music");if(on&&state==="run"){m.currentTime=songT();m.play().catch(()=>{})}else if(!on)m.pause()}catch(e){}}
+  try{const m=aud(curTrack);if(on&&state==="run"){m.currentTime=songT();m.play().catch(()=>{})}else if(!on)m.pause()}catch(e){}}
+// each venue has its own ElevenLabs track; the beat grid follows that track's tempo and first downbeat
+function useTrack(stage){const k=stage.track||"music";const old=A[curTrack];if(old&&k!==curTrack)try{old.pause()}catch(e){}
+  curTrack=k;BEAT=60/(stage.bpm||124);PHASE=stage.phase||0;clock0=performance.now();
+  if(soundOn){try{const m=aud(k);m.volume=.6;m.currentTime=0;m.play().catch(()=>{})}catch(e){}}}
 $("#snd").addEventListener("click",()=>setSound(!soundOn));
 // the song clock: music time when playing, else a steady internal clock, so the beat never drifts
-let clock0=0;function songT(){const m=A.music;if(soundOn&&m&&!m.paused&&m.currentTime>0)return m.currentTime;return (performance.now()-clock0)/1000}
-function beatInfo(){const t=songT(),ph=t/BEAT,frac=ph-Math.floor(ph);const off=frac<.5?frac*BEAT:(frac-1)*BEAT;return{t,n:Math.round(ph),frac,off}}
+let clock0=0;function songT(){const m=A[curTrack];if(soundOn&&m&&!m.paused&&m.currentTime>0)return m.currentTime;return (performance.now()-clock0)/1000}
+function beatInfo(){const t=songT(),ph=(t-PHASE)/BEAT,frac=ph-Math.floor(ph);const off=frac<.5?frac*BEAT:(frac-1)*BEAT;return{t,n:Math.round(ph),frac,off}}
 
 /* ---------- renderer ---------- */
 const canvas=$("#c");let renderer;
@@ -265,12 +269,12 @@ addEventListener("resize",resize);resize();
 /* ---------- the running order (his own nights; ledger receipts) ---------- */
 const LEG=230,LEN=LEG*4;
 const STAGES=[
-  {id:"edc",name:"EDC Las Vegas",short:"EDC '16",sub:"2016 · “camped out at kineticField”",sky:"sky-edc.jpg",fog:0x3a1260,floor:0x2a1650,led:[0xff4f9a,0x2ed3c6,0x8a5cf6,0xff4f9a,0x2ed3c6],accent:[0xff4f9a,0x2ed3c6,0xb388ff],tr:{}},
-  {id:"ol",name:"Outside Lands",short:"Outside Lands",sub:"Golden Gate Park · three trips",trait:"🌫️ Fog rolls in: nobody can film, but light gates are rare.",sky:"sky-ol.jpg",fog:0xc89a7a,floor:0x4a5a3a,led:[0xffb340,0xffd27a,0xff8c5a,0xffd27a,0xffb340],accent:[0xffd27a,0xffb340,0x9fd36a],tr:{films:0,gates:.5}},
-  {id:"rr",name:"Red Rocks",short:"Red Rocks",sub:"Colorado · eight nights at the rocks",trait:"🪨 The rocks echo: every Perfect pays +3, but the aisles are crowded with filmers.",sky:"sky-rr.jpg",fog:0x3a1830,floor:0x5a2a28,led:[0xe0523a,0xffd27a,0x8a5cf6,0xe0523a,0xffd27a],accent:[0xe0523a,0xffd27a,0xb388ff],tr:{perf:3,films:2}},
-  {id:"hard",name:"HARD Summer",short:"HARD Summer",sub:"Los Angeles · every summer since 2021",trait:"🔥 Summer heat: 15% faster and gates pay double. Fewer crowds want in.",sky:"sky-hard.jpg",fog:0x8a3a4a,floor:0x4a2030,led:[0xff6a1a,0xff4f9a,0xffd27a,0xff6a1a,0xff4f9a],accent:[0xff6a1a,0xff4f9a,0xffd27a],tr:{speed:1.15,gates:2,crowds:.6}},
-  {id:"bw",name:"Beyond Wonderland",short:"Beyond Chicago",sub:"Chicago · Northerly Island · both days",trait:"🏙️ Lakefront crowds: twice the glowing crowds, but the lanes are tight.",sky:"sky-bw.jpg",fog:0x241a4a,floor:0x1e2a4a,led:[0x9ff3ea,0xb388ff,0xff4f9a,0x9ff3ea,0xb388ff],accent:[0x9ff3ea,0xb388ff,0xff4f9a],tr:{crowds:1.8,films:1.4}},
-  {id:"nye",name:"Countdown NYE",short:"Countdown",sub:"with Joe · midnight is coming",sky:"sky-nye.jpg",fog:0x1a1a4a,floor:0x221a4a,led:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xffd27a],accent:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff],tr:{}}];
+  {id:"edc",track:"m_edc",bpm:128,phase:0,name:"EDC Las Vegas",short:"EDC '16",sub:"2016 · “camped out at kineticField”",sky:"sky-edc.jpg",fog:0x3a1260,floor:0x2a1650,led:[0xff4f9a,0x2ed3c6,0x8a5cf6,0xff4f9a,0x2ed3c6],accent:[0xff4f9a,0x2ed3c6,0xb388ff],tr:{}},
+  {id:"ol",track:"m_ol",bpm:122,phase:0,name:"Outside Lands",short:"Outside Lands",sub:"Golden Gate Park · three trips · foggy melodic house",trait:"🌫️ Fog rolls in: nobody can film, but light gates are rare.",sky:"sky-ol.jpg",fog:0xc89a7a,floor:0x4a5a3a,led:[0xffb340,0xffd27a,0xff8c5a,0xffd27a,0xffb340],accent:[0xffd27a,0xffb340,0x9fd36a],tr:{films:0,gates:.5}},
+  {id:"rr",track:"m_rr",bpm:70,phase:0,name:"Red Rocks",short:"Red Rocks",sub:"Colorado · eight nights at the rocks · melodic 808 dubstep",trait:"🪨 The rocks echo: every Perfect pays +3, but the aisles are crowded with filmers.",sky:"sky-rr.jpg",fog:0x3a1830,floor:0x5a2a28,led:[0xe0523a,0xffd27a,0x8a5cf6,0xe0523a,0xffd27a],accent:[0xe0523a,0xffd27a,0xb388ff],tr:{perf:3,films:2}},
+  {id:"hard",track:"m_hard",bpm:128,phase:0,name:"HARD Summer",short:"HARD Summer",sub:"Los Angeles · every summer since 2021 · hard bass",trait:"🔥 Summer heat: 15% faster and gates pay double. Fewer crowds want in.",sky:"sky-hard.jpg",fog:0x8a3a4a,floor:0x4a2030,led:[0xff6a1a,0xff4f9a,0xffd27a,0xff6a1a,0xff4f9a],accent:[0xff6a1a,0xff4f9a,0xffd27a],tr:{speed:1.15,gates:2,crowds:.6}},
+  {id:"bw",track:"m_bw",bpm:120,phase:0,name:"Beyond Wonderland",short:"Beyond Chicago",sub:"Chicago · Northerly Island · both days · dark mid-tempo",trait:"🏙️ Lakefront crowds: twice the glowing crowds, but the lanes are tight.",sky:"sky-bw.jpg",fog:0x241a4a,floor:0x1e2a4a,led:[0x9ff3ea,0xb388ff,0xff4f9a,0x9ff3ea,0xb388ff],accent:[0x9ff3ea,0xb388ff,0xff4f9a],tr:{crowds:1.8,films:1.4}},
+  {id:"nye",track:"music",bpm:124,phase:0,name:"Countdown NYE",short:"Countdown",sub:"with Joe · midnight is coming",sky:"sky-nye.jpg",fog:0x1a1a4a,floor:0x221a4a,led:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff,0xffd27a],accent:[0xffd27a,0xff4f9a,0x9ff3ea,0xffffff],tr:{}}];
 let route=[0,1,2,5];const ST=i=>STAGES[route[i]];const TR=i=>ST(i).tr||{};
 const skyTex=[];const texLoader=new THREE.TextureLoader();
 STAGES.forEach((s,i)=>texLoader.load(s.sky,t=>{t.colorSpace=THREE.SRGBColorSpace;skyTex[i]=t;if(route[legNow]===i)applySky(legNow)},undefined,()=>{}));
@@ -440,7 +444,7 @@ let sx=0,sy=0;canvas.addEventListener("pointerdown",e=>{sx=e.clientX;sy=e.client
 canvas.addEventListener("pointerup",e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>34&&Math.abs(dx)>Math.abs(dy))move(dx>0?1:-1);else if(Math.abs(dx)<12&&Math.abs(dy)<12)dance()});
 
 /* ---------- legs ---------- */
-function setLeg(i){legNow=i;applySky(i);floorMat.color.setHex(ST(i).floor);hemi.groundColor.setHex(ST(i).fog);
+function setLeg(i){legNow=i;useTrack(ST(i));applySky(i);floorMat.color.setHex(ST(i).floor);hemi.groundColor.setHex(ST(i).fog);
   props.forEach(p=>p.visible=p.userData.leg===i);stages.forEach((s,k)=>s.visible=k===i);
   toast(ST(i).name,ST(i).sub,2400);stageLabels()}
 function stageLabels(){for(let k=0;k<4;k++){const el=$("#s"+k);el.firstChild.nodeValue=(k===1||k===2)&&legNow<k&&state!=="run"&&!chosen[k]?"?":ST(k).short}}
@@ -495,7 +499,7 @@ function tick(){const dt=Math.min(.05,clk.getDelta()),t=clk.elapsedTime;const b=
   composer.render();requestAnimationFrame(tick)}
 
 /* ---------- finale: midnight with Joe ---------- */
-function startFinale(){fin={t:0,n:10};state="finale";$("#pad").hidden=true;play("countdown",1,1);try{A.music&&(A.music.volume=.25)}catch(e){}toast("Midnight is coming","Countdown with Joe",1800)}
+function startFinale(){fin={t:0,n:10};state="finale";$("#pad").hidden=true;play("countdown",1,1);try{A[curTrack]&&(A[curTrack].volume=.25)}catch(e){}toast("Midnight is coming","Countdown with Joe",1800)}
 function finaleTick(dt){fin.t+=dt;const n=10-Math.floor(fin.t/.6);
   if(n>=1&&n!==finalCount){finalCount=n;$("#big").textContent=n;if(!reduce)shake=.15}
   if(n<1&&!fin.boom){fin.boom=true;$("#big").textContent="";flash();play("fire",1,1);toast("HAPPY NEW YEAR","and happy 56th, Gordon 💛",3000)}
@@ -504,7 +508,7 @@ function finaleTick(dt){fin.t+=dt;const n=10-Math.floor(fin.t/.6);
 let vic=null;
 function startVictory(){state="victory";vic={t:0};$("#hud").hidden=false;$("#pad").hidden=true;
   const v=$("#vic");v.hidden=false;$("#vicskip").hidden=false;$("#vicsub").textContent="✨ "+Math.round(joy).toLocaleString()+" joy · 👯 a crew of "+crew.length+(crew.length?" dancing with you":"");
-  play("join",1,.9);setTimeout(()=>play("rail",1.1,.8),900);try{A.music&&(A.music.volume=.55)}catch(e){}}
+  play("join",1,.9);setTimeout(()=>play("rail",1.1,.8),900);try{A[curTrack]&&(A[curTrack].volume=.55)}catch(e){}}
 function endVictory(){if(state!=="victory")return;state="end";$("#vic").hidden=true;$("#vicskip").hidden=true;showEnd()}
 function showEnd(){const score=Math.round(joy*crewMult());gcEvt("floor_finish");if(score>=5600)gcEvt("floor_headliner");const before=TECH.map((t,i)=>techOn(i));SAVE.runs++;const nb=score>SAVE.best&&SAVE.runs>1;if(score>SAVE.best)SAVE.best=score;persist();
   const newly=TECH.filter((t,i)=>!before[i]&&techOn(i));$("#unlock").textContent=newly.length?"Unlocked: "+newly.map(t=>t.e+" "+t.n).join(", ")+"!":"";drawTree("#tree2");drawTree("#tree");
@@ -536,7 +540,7 @@ function start(withSound){buildRoute();crew.forEach(p=>scene.remove(p));crew.len
   lane=1;px=0;dist=0;joy=0;combo=0;bestCombo=0;perfects=0;perfRun=0;rails=0;lastDanceBeat=-99;secrets=new Set();fin=null;finalCount=-1;$("#big").textContent="";
   play_=null;$("#start").hidden=true;$("#end").hidden=true;$("#hud").hidden=false;setLegQuiet(0);
   if(withSound!=null)soundOn=withSound;setSound(soundOn);
-  if(soundOn){try{const m=aud("music");m.loop=true;m.volume=.6;m.currentTime=0;m.play().catch(()=>{})}catch(e){}}clock0=performance.now();
+  clock0=performance.now();
   if(techOn(0)){const p=person(0xffd27a,SKIN[2]);p.userData.role="hype";scene.add(p);crew.push(p)}
   hud();stageLabels();showCall(0);gcEvt("floor_start")}
 function beginRun(){setLeg(0);state="run";hud();coachN=0}
@@ -584,7 +588,7 @@ function scoreBox(host,getText,tag){if(!host||host.querySelector(".gsend"))retur
   row.appendChild(em);row.appendChild(cp);box.appendChild(lab);box.appendChild(sms);box.appendChild(row);box.appendChild(note);host.appendChild(box);upd()}
 
 window.__sndOn=()=>soundOn;
-window.__ro={beat:()=>beatInfo(),state:()=>state};
+window.__ro={beat:()=>Object.assign(beatInfo(),{beat:BEAT}),state:()=>state};
 requestAnimationFrame(tick);
 </script>
 </body></html>
